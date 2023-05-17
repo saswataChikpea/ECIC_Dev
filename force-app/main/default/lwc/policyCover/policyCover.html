@@ -1,0 +1,154 @@
+<template>
+    <div class="slds-grid slds-wrap" style="font-family: Montserrat; font-size: 20px;">
+       
+         <div class="slds-size_1-of-2">
+             <!-- <div class="slds-text-align_left">Our ref:&nbsp;{phoneNumber}</div> -->
+             <div style="font-family: Montserrat; font-size: 15px; ">
+                <b><u>CONFIDENTIAL</u></b><br>
+                {policyHolderName}<br>
+                <template if:true={Registered_Address_Line_1}>
+                    {Registered_Address_Line_1}<br>
+                </template>
+                <template if:true={Registered_Address_Line_2}>
+                    {Registered_Address_Line_2}<br>
+                </template>
+                <template if:true={Registered_Address_Line_3}>
+                    {Registered_Address_Line_3}<br>
+                </template>
+                <template if:true={Registered_District}>
+                    {Registered_District}<br>
+                </template>
+                <template if:true={Registered_Territory}>
+                    {Registered_Territory}<br>
+                </template>
+             </div>
+             
+        </div>
+        <div class="slds-size_1-of-2">
+            <div class="slds-text-align_right">
+                {issueDate}
+            </div>
+        </div>
+        
+    </div>
+    <br>
+    <div style="font-family: Montserrat; font-size: 15px; ">
+        
+        Dear Policyholder,<br><br>
+        <span class="slds-align_absolute-center"><b><u>{productName}</u></b></span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;We are pleased to inform you that we have accepted your application on {Proposal_Submission_Date} for
+        <b> {productName}</b>. It is our pleasure in providing you with:
+        <br><br>
+        <template if:true={isSbp}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (a)&nbsp;&nbsp;<b>SBP;</b><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (b)&nbsp;&nbsp;<b>Schedule I, Schedule II and Schedule III;</b><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (c)&nbsp;&nbsp;<b>Personal Information Collection Statement</b><br>
+            <br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </template>
+        <template if:true={isSup}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (a)&nbsp;&nbsp;<b>SUP;</b>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (b)&nbsp;&nbsp;<b>Schedule I, Schedule II, Schedule III, Schedule IV;</b>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (c)&nbsp;&nbsp;<b>Endorsement(s) to the Policy, if any; and</b>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (d)&nbsp;&nbsp;<b>Personal Information Collection Statement</b>
+            <br>
+            <br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </template>
+        <template if:true={isOmbp}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (a)&nbsp;&nbsp;<b>OMBP;</b><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            (b)&nbsp;&nbsp;<b>Schedule</b><br>
+            <br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </template>
+
+        You can submit up to {Number_of_credit_limit_applications} credit limit applications during each 12-month period starting from the date of
+        application of the first credit limit.
+        <br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        You may manage your policy via our 24-hour online platform <b>EC-Reach</b>. Simply log in to your
+        <b>EC-Reach</b> account at www.ec-reach.com.hk by using:
+        <br>
+        <!--div class="slds-text-longform">
+            <ul>
+                <li>
+                    User ID: {name}, and
+                </li>
+                
+                <li>
+                    Password: (Password which you have set during the online policy application).
+                </li>
+            </ul>class="slds-list_dotted"
+        </div-->
+        <div class="slds-text-longform">
+            <ul class="li">
+                <li>User ID: {name}, and</li>
+                <li>Password: (Password which you have set during the online policy application).</li>
+            </ul>
+        </div>
+
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        To protect your interest and understand your obligations under {productShortForm}, please read through the terms
+        and conditions of <b>{productShortForm}</b>.
+        <br><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        For the explanation of the policy and operations, please visit EC-Reach.
+        <br><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        If you have any queries, please contact us at 2732 9988 or via <a
+            href="ec-reach@hkecic.com">ec-reach@hkecic.com</a>.
+        <br>
+        <br>
+        <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-2">
+                <div class="slds-text-align_right"></div>
+            </div>
+            <div class="slds-size_1-of-2">
+                <div class="slds-text-align_right">
+                    Hong Kong Export Credit Insurance Corporation
+                </div>
+            </div>
+        </div>
+
+    </div>
+</template>

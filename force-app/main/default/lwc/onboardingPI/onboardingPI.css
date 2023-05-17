@@ -1,0 +1,80 @@
+.body_div {
+	/* background-color: #D3D3D3; */
+}
+
+.product_card {
+	border-radius: 10px;
+	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+	margin: var(--lwc-squareIconUtilityMedium, 1.25rem);
+	padding: var(--lwc-borderWidthThick, 10px) var(--lwc-varSpacingMedium, 1rem);
+}
+
+.card_body {
+	/* background: #fff; */
+	margin: 3rem auto;
+	width: 80vw;
+}
+
+.path1 {
+	margin: 2em;
+}
+
+.card_title {
+	font-weight: bold;
+}
+
+.section_container {
+	background: #fff;
+	padding: 2rem 5rem;
+	border: 1px solid #ece5e5;
+	border-radius: 10px;
+	margin-top: .5rem;
+}
+
+.margin_top_1 {
+	margin-top: 1rem;
+}
+
+.input_small_c {
+	--sds-c-input-radius-border: 50px;
+}
+
+.color_red {
+	color: red
+}
+
+.back_button {
+	font-weight: bold;
+	color: #fff;
+	background-color: rgb(140, 152, 206);
+	border-radius: 15px;
+	padding: 0 .5rem;
+}
+
+.next_button {
+	font-weight: bold;
+	color: #fff;
+	background-color: red;
+	border-radius: 15px;
+	padding: 0 1rem;
+	margin-left: 2rem;
+}
+
+.mt_2 {
+	margin-top: 2rem;
+}
+
+.disabled {
+	pointer-events: none;
+	opacity: 0.4;
+}
+
+@media all and (max-width: 768px) {
+	.card_body {
+		padding: 3rem 0;
+	}
+
+	.section_container {
+		padding: 1rem 2rem;
+	}
+}

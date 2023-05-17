@@ -1,0 +1,94 @@
+<template>
+    <template if:true={error}>
+        Something is wrong
+    </template>
+    <div class="body_div">
+        <!-- <div class="ibanner_img">
+            <img class="banner_img" src="https://i.pinimg.com/originals/27/73/98/277398fde0e665c8d490b6dd579448ee.jpg"
+                alt="">
+        </div> -->
+        <template if:false={error}>
+            <div class="slds-grid slds-wrap slds-grid_align-space">
+
+                <template for:each={products} for:item="prdt">
+                    <div key={prdt.Id} class="slds-col slds-size_1-of-1 slds-large-size_1-of-3 card1">
+                        <!-- <div class="item_center" style="height:5rem">
+                             <img src={prdt.Image_Url__c} alt={prdt.Name}> -->
+                        <!-- <span class="slds-avatar slds-avatar_circle slds-avatar_large avatar_custom_dim">
+                                <img src={prdt.Image_Url__c} alt={prdt.Name}>
+                            </span>
+                        </div>
+                        <div class="item_center">
+                            <p class="red_bold">{prdt.Full_Name__c}</p>
+                            <p class="red_bold">({prdt.Name})</p>
+                        </div> -->
+                        <div class="ibanner_img">
+                            <img class="banner_img" src={prdt.Image_Url__c} alt="">
+
+                        </div>
+
+                    </div>
+                </template>
+
+                <!-- Spinner -->
+                <div if:true={showLoadingSpinner}>
+                    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                </div>
+            </div>
+            <div class="slds-grid slds-grid_align-center mt_2">
+                <span class="get-quote" onclick={handleFreeQuote}>Get a Quote</span>
+            </div>
+            <div class="table_container mt_2">
+                <table
+                    class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered custom_border">
+                    <thead class="red_bold">
+                        <tr class="slds-line-height_reset">
+                            <th style="background-color: #fff;"></th>
+                            <template for:each={products} for:item="prdt">
+                                <th key={prdt.Id} class="red_bold text_align_center" style="background-color: #fff;"
+                                    scope="col">
+                                    <div class="slds-truncate" title="Name">{prdt.Full_Name__c}</div>
+                                </th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={product_features} for:item="row">
+                            <tr key={row.id}>
+                                <template for:each={row.value} for:item="col">
+                                    <td key={col} class="slds-cell-wrap text_align_center">{col}</td>
+                                </template>
+                            </tr>
+                        </template>
+                        <!-- <tr key={btnRow} style="border-left: none;">
+                            <td></td>
+                            <td style="padding: 8px">
+                                <div class="item_center display_flex">
+                                    <lightning-button variant="destructive" label="Apply" title="Apply"
+                                        onclick={ombpClick} class="slds-var-m-left_x-small"></lightning-button>
+                                </div>
+                            </td>
+                            <td style="padding: 8px">
+                                <div class="item_center display_flex">
+                                    <lightning-button variant="destructive" label="Apply" title="Apply"
+                                        onclick={sbpClick} class="slds-var-m-left_x-small"></lightning-button>
+                                </div>
+                            </td>
+                            <td style="padding: 8px">
+                                <div class="item_center display_flex">
+                                    <lightning-button variant="destructive" label="Apply" title="Apply"
+                                        onclick={supClick} class="slds-var-m-left_x-small"></lightning-button>
+                                </div>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="slds-var-m-around_small slds-align_absolute-center" style="padding-bottom: 100px;">
+                <button onclick={showOnboardingHome} class="slds-button back_button"><span>Back</span>
+                </button>
+            </div>
+        </template>
+    </div>
+</template>

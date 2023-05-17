@@ -1,0 +1,417 @@
+<apex:page controller="PolicyDocument_Pdf_controller" 
+    sidebar="false" 
+    showHeader="false" 
+    standardStylesheets="false"
+    applyBodyTag="false"
+    renderAs="PDF">
+    <apex:stylesheet value="{!$Resource.PolicyScheduleOne}" />
+<head>
+    <style>
+        @page {
+            size: A4;
+            margin-top: 150px;
+            margin-left: .5in;
+            margin-right: .5in;
+            margin-bottom: 285px;
+            @bottom-right {
+                content: element(footer);
+            }
+            @top-center {
+                content: element(header);
+            }
+        }
+        
+        div.header {
+            position: running(header);
+        }
+        div.footer {     
+            /* padding: 1px; */
+            position: running(footer);
+        }
+        .pagenumber:before {
+            content: counter(page);
+        }
+        .pagecount:before {
+            content: counter(pages);
+        }
+    </style>
+</head>
+    <body>
+        <div class="header">
+            <header style="padding-top:10px;">
+                <img src="{!$Resource.ECIC_logo}" width="300" height="50" alt="logo" />
+                <h3 class="heading">
+                    <u>{!headerTitle}</u>
+                </h3>
+            </header>
+        </div>
+        
+        
+         
+        <div class="content">
+            <apex:outputPanel rendered="{!Policy_Type == 'OMBP'}">
+            
+                <table style="width:100%;border-collapse: collapse;">
+    
+                    <tr align="right">
+                        <td class="detail"></td>
+                        <td style="text-align:right">
+                            <span class="issue_date">Issue Date : &nbsp; </span>{!scheduleOneIssueDate}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">
+                            1. &nbsp;Policyholder’s name &amp; Address
+                            <span style="margin-left:105px;">:</span>
+                        </th>
+                        <hr />
+                        <td class="detail">{!Policy_Holder_Name}
+                            <br/> {!Registered_Address_Line_1}
+                            <br/> {!Registered_Address_Line_2}
+                            <br/> {!Registered_Address_Line_3}
+                            <br/> {!Registered_District}
+                            <br/> {!Registered_Territory}
+                        </td>
+                        
+                        <td class="detail">
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <th class="title">2. &nbsp;Policy Number</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Number}</td>
+                    </tr> -->
+                    <tr>
+                        <th class="title">3. &nbsp;Commencement date</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            {!policyCommencementDate}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">4. &nbsp;Issue Date of 1st credit Limit </th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            {!issueDateOfFirstCL}
+                        </td>
+                    </tr> 
+                    <tr>
+                        <th class="title">7. &nbsp;This Schedule takes effect from</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            {!effectiveDate}
+                        </td>
+    
+                    </tr>
+                    <tr>
+                        <th class="title">5. &nbsp;Maximum Liability</th>
+                        <th class="title">:</th>
+                        <td>
+                            {!Policy_Maximum_Liability}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">6. &nbsp;Percentage of Indemnity</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Percentage_of_Indemnity} %</td>
+                    </tr>
+                    
+                    <tr>
+                        <th class="title">8. &nbsp;Maximum Credit Period</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Credit_Period}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">9. &nbsp;Countries/Markets of Shipments (Clause 54) </th>
+                        <th class="title">:</th>
+                        <br/>
+                        <table  border="1" style="border-collapse: collapse; width: 100%;">
+                            <thead>
+    
+                                <tr class="table_head ">
+                                    <th style="width: 50%;  height: 65px; text-align: center; ">Countries/Markets of
+                                        Shipment</th>
+                                    <th style="width: 50%;   height: 65px;text-align: center;">Code</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!OMBPclauseCountryList}" var="country" id="theRepeat">
+                                    <tr>
+                                        <td style="width: 50%;">{!country.name}</td>
+                                        <td style="width: 50%;">{!country.code}</td>
+                                    </tr>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+                         
+                    </tr>
+                    <br/>
+                </table>
+                <div class="footer">
+                    <div class="remark_1">
+                        <p>
+                            <u>Remark:</u> (1) The maximum amount shall not exceed HK$2,500,000 for
+                            <br/> each 12 month period starting from the issue date of the 1st credit limit.</p>
+                    </div>
+                    <div class="note">
+                        <p>
+                            <u>Note:</u> This Schedule together with the OMBP constitute the Policy.</p>
+                    </div>
+                    <div class="company_addr" >
+                        <p class="ecic">ECIC 1011 9/2018</p>
+                        <br/>
+                        <p>2/F., Tower 1, South Seas Centre, 75 Mody Road, Tsimshatsui East, Kowloon, Hong Kong
+                            <br/> Tel : 2732 9988 Fax : 2722 6277 E-mail : ec-reach@hkecic.com
+                            <br/> EC-Reach portal : www.ec-reach.com.hk</p>
+                            <p align="right">Page<span class="pagenumber" /> of <span class="pagecount" />&nbsp;&nbsp;</p> 
+                            
+                    </div>
+                    
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!Policy_Type == 'SBP'}">
+               
+                <table style="width:100%;border-collapse: collapse;">
+    
+                    <tr align="right">
+                        <td class="detail"></td>
+                        <td style="text-align:right">
+                            <span class="issue_date">Issue Date : &nbsp; </span>
+                            <!-- <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                                <apex:param value="{!Policy_Issue_Date}" />
+                            </apex:outputText> -->
+                            {!scheduleOneIssueDate}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">
+                            1. &nbsp;Policyholder’s name &amp; Address
+                            <span style="margin-left:123px;">:</span>
+                        </th>
+                        <hr />
+                        <td class="detail">{!Policy_Holder_Name}</td>
+                        <br/>
+                        <td class="detail">{!Policy_Holder_Address}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">2. &nbsp;Policy Number</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Number}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">3. &nbsp;Commencement date</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            {!policyCommencementDate}
+    
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">4. &nbsp;Policy period </th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            {!Policy_Period}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">5. &nbsp;Maximum Liability</th>
+                        <th class="title">:</th>
+                        <td class="detail">HKD&nbsp;{!Policy_Maximum_Liability}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">6. &nbsp;Policy deposit</th>
+                        <th class="title">:</th>
+                        <td class="detail">HKD&nbsp;{!Policy_Deposit}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">7. &nbsp;Policy fee</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            HKD&nbsp;{!Policy_Fee}
+    
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">8. &nbsp;Percentage of indemnity</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Percentage_of_Indemnity} %</td>
+                    </tr>
+                    <tr>
+                        <th class="title">9. &nbsp;This Schedule takes effect from</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                                <apex:param value="{!Policy_Schedule}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">10. &nbsp;Amount referred to in Sub-clauses 1.2 and 69.2</th>
+                        <th class="title">:</th>
+                        <td class="detail">HKD&nbsp;{!Policy_AOL}</td>
+                    </tr>
+                    <tr style="background-color:yellow;">
+                        <th class="title">11. &nbsp;Non-qualifying loss amount</th>
+                        <th class="title">:</th>
+                        <td class="detail">HKD&nbsp;{!Policy_Loss_Amount}</td>
+                    </tr>
+                    <tr style="background-color:yellow;">
+                        <th class="title">12. &nbsp;Exclusion of risk</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Exclusion_of_Risk}</td>
+                    </tr>
+                    <tr style="background-color:yellow;">
+                        <th class="title">13. &nbsp;Maximum credit period</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Credit_Period}</td>
+                    </tr>
+                    
+                </table>
+                <div class="footer">
+                    <p class="hkecic">Hong Kong Export Credit Insurance Corporation</p>
+                    <div style="margin-bottom:20px;"></div>
+                    <div class="remark_1_sbp">
+                        <p>
+                            <u>Remark:</u> (1) The maximum amount shall not exceed HK$10,000,000,
+                            <br/> with sub-caps of HK$5,000,000 for pre-shipment cover and
+                            <br/> HK$5,000,000 for post-shipment cover.</p>
+                    </div>
+                    <div class="note_sbp">
+                        <p>
+                            <u>Note</u>: This Schedule, together with the SBP, the
+                            <br/> Proposal, Schedules II and III and Endorsements (if any) constitute the Policy.</p>
+                    </div>
+                    <div class="remark_2_sbp">
+                        <p>
+                            <u>Remark:</u> (2) Further policy fee of HK$400 will be charged and invoiced
+                            <br/> under separate cover for each additional credit limit
+                            <br/>application submitted during the policy period exceeding the
+                            <br/> credit checking facility quota. Please refer to the monthly
+                            <br/> statement for the credit checking facility of the Policy</p>
+                    </div>
+                    <div class="company_addr">
+                        <p class="ecic">ECIC 950A 1/3/2021</p>
+                        <!-- <p style="margin-bottom:0%">COMPANY_ADDRESS</p> -->
+                        <p align="right">Page<span class="pagenumber" /> of <span class="pagecount" />&nbsp;&nbsp;</p> 
+                    </div>
+                </div>
+                
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!Policy_Type == 'SUP'}">
+                
+                <table style="width:100%;border-collapse: collapse;">
+                    <tr align="right">
+                        <td class="detail"></td>
+                        <td style="text-align:right">
+                            <span class="issue_date">Issue Date : &nbsp; </span>
+                            {!scheduleOneIssueDate}
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">
+                            1. &nbsp;Policyholder’s name &amp; Address
+                            <span style="margin-left:90px;">:</span>
+                        </th>
+                        <hr/>
+                        <td class="detail">{!Policy_Holder_Name}</td>
+                        <br/>
+                        <td class="detail">{!Policy_Holder_Address}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">2. &nbsp;Policy Number</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Number}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">3. &nbsp;Commencement date</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                                <apex:param value="{!Policy_Commencement_Date}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">4. &nbsp;Policy period </th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            {!Policy_Period}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title">5. &nbsp;Maximum Liability</th>
+                        <th class="title">:</th>
+                        <td class="detail">HKD&nbsp;{!Policy_Maximum_Liability}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">6. &nbsp;Policy deposit</th>
+                        <th class="title">:</th>
+                        <td class="detail">HKD&nbsp;{!Policy_Deposit}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">7. &nbsp;Policy fee</th>
+                        <th class="title">:</th>
+                        <td class="detail">HKD&nbsp;{!Policy_Fee}</td>
+                    </tr>
+                    <tr>
+                        <th class="title">8. &nbsp;Percentage of indemnity</th>
+                        <th class="title">:</th>
+                        <td class="detail">{!Policy_Percentage_of_Indemnity} %</td>
+                    </tr>
+                    <tr>
+                        <th class="title">9. &nbsp;This Schedule takes effect from</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                                <apex:param value="{!Policy_Schedule}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr style="background-color:yellow;">
+                        <th class="title">10. &nbsp;Non-qualifying loss amount</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            HKD&nbsp;{!Policy_Loss_Amount}
+                        </td>
+                    </tr>
+                    <tr style="background-color:yellow;">
+                        <th class="title">11. &nbsp;Maximum credit period</th>
+                        <th class="title">:</th>
+                        <td class="detail">
+                            &nbsp;{!Policy_Credit_Period}
+                        </td>
+                    </tr>
+                </table>
+                <div class="footer">
+                    <span class="hkecic">Hong Kong Export Credit Insurance Corporation</span>
+                    <div class="remark_1">
+                        <p>
+                            <u>Remark:</u> (1) Further policy fee of HK$400 will be charged and invoiced
+                            <br/> under separate cover for each additional credit limit
+                            <br/> application submitted during the policy period exceeding the
+                            <br/> credit checking facility quota. Please refer to the monthly
+                            <br/> statement for the credit checking facility of the Policy.
+                        </p>
+                    </div>
+                    <div class="note">
+                        <p>
+                            <u>Note</u> : This Schedule, together with the SUP, the
+                            <br/> Proposal, Schedules II, III and IV and
+                            <br/> Endorsements (if any) constitute the Policy
+                        </p>
+                    </div>
+                    <div class="company_addr">
+                        <p>ECIC 950A 1/3/2021</p>
+                        <!-- <p>COMPANY_ADDRESS</p> -->
+                        <p align="right">Page<span class="pagenumber" /> of <span class="pagecount" />&nbsp;&nbsp;</p> 
+
+                    </div>
+                </div>
+                
+            </apex:outputPanel>
+        </div>
+        <div style="page-break-after:auto;" />
+        <div style="page-break-before:auto;" />
+    </body>
+</apex:page>

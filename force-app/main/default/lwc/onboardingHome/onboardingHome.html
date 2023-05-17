@@ -1,0 +1,35 @@
+<template>
+    <template if:true={boardingSetting}>
+        <div class="body_div">
+            <div class="ibanner_img">
+                <img class="banner_img" src={boardingSetting.Step_1A_Banner__c} alt="">
+            </div>
+            <div class="slds-grid slds-grid_align-center margin-top-2">
+                <h1><b>Available Policies</b></h1>
+            </div>
+            <div class="slds-grid slds-wrap slds-grid_align-space card-container">
+                <template if:true={products}>
+                    <template for:each={products} for:item="prdt">
+                        <div id={prdt.Id} key={prdt.Id} class={prdt.className}>
+                            <span><strong> {prdt.Full_Name__c}</strong></span>
+                            <br>
+                            <span><strong> ({prdt.Name})</strong></span>
+
+                        </div>
+                    </template>
+                </template>
+            </div>
+            <div class="slds-grid slds-grid_align-center margin-top-2" style="margin-bottom: 5em;">
+                <button onclick={showProductCom} class="slds-button comp_button">View Policy Comparison Table
+                </button>
+                <button onclick={showOnboardingPI} style="margin-left: 1rem;" class="slds-button next_button">Next
+                </button>
+            </div>
+            <!-- <div class="slds-grid slds-grid_align-center margin-top-2">
+                <button onclick={showOnboardingPI} class="slds-button next_button">
+                    Not sure which policy to choose?
+                </button>
+            </div> -->
+        </div>
+    </template>
+</template>

@@ -1,0 +1,26 @@
+<template>
+    <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+        <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+            <p class="p4"> Who is the contractual seller? <span style="color: red;">*</span></p>
+        </div>
+        <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+            <lightning-combobox placeholder="Contractual Seller"
+                options={contractual_seller_options} variant="label-hidden" value=''
+                onchange={handleContractualSeller} class="input1">
+            </lightning-combobox>
+        </div>
+    </div>
+    <template if:true={show_subsidiaries}>
+        <template for:each={subsidiaries} for:item="subsidiary">
+            <div key={subsidiary.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <lightning-input type="checkbox" label={subsidiary.Name} data-id={subsidiary.Id}
+                        onchange={handleSelectSubisiary}></lightning-input>
+                </div>
+            </div>
+        </template>
+    </template>
+</template>

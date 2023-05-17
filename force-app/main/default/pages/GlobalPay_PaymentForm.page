@@ -1,0 +1,134 @@
+<apex:page standardController="Account" extensions="GlobalPaymentController">
+    <html>
+        <head>
+            <title>Secure Acceptance - Payment Form Example</title>
+            <!-- <link rel="stylesheet" type="text/css" href="payment.css"/>
+            <script type="text/javascript" src="jquery-1.7.min.js"></script> -->
+            <apex:includeScript value="{!$Resource.global_pay_jquery_min_js_1_7}"/>
+            <apex:includeScript value="{!$Resource.global_pay_paymment_css}"/>
+            
+            <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-md5.js"></script>
+            <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js"></script>
+            <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha256.js"></script>
+            <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha512.js"></script>
+            <script>
+                function generatehmac(){
+                    alert('generatehmac function called');
+                    var signaturedata = '';
+                    var param = "access_key=544fa12bd4e1326893b53ac1b8288514,";
+                    param = param+ "profile_id=BA00FC41-3941-40F1-92A9-D17E1AF38B7D,";
+                    param = param + "transaction_uuid=bsB8KM0kvTb0eqlzzOAr,";
+                    param = param + "signed_field_names=access_key,profile_id,transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,";
+                    param = param + "unsigned_field_names=,"+
+                    param = param + "signed_date_time=2021-06-25T21:52:08Z,";
+                    param = param + "locale=en,";
+                    param = param + "transaction_type=authorization,";
+                    param = param + "reference_number=1624627240718,";
+                    param = param + "amount=100.00,";
+                    param = param + "currency=usd";
+                    
+                    
+                    var hash = CryptoJS.HmacSHA256(param, "e4bc623fa4af4109973c06feee69250e5950e67de0094b55b887da8610fbdc111aa14b03ea784cd28e0803dcc4e872a969a488a8285a4a34a9dcb2df4f1b55976060f003f5a24c589805a77c2e8a4560a29931073cc541abb0bde423db6182fa745147a779bb4ee89fb2418ea41b616082ea9c74fe05425db00db67de5bfd384");
+                    var encodedStringBtoA = btoa(hash);
+                    console.log(encodedStringBtoA);
+                    
+                    document.getElementById("signatureid").value=encodedStringBtoA;
+                }
+                generatehmac();
+            </script>
+            
+            
+            
+            <script type="text/javascript">
+            
+            $(function () {
+                payment_form = $('form').attr('id');
+                addLinkToSetDefaults();
+            });
+
+
+            function setDefaultsForAll() {
+                    if (payment_form === "payment_confirmation"){
+                setDefaultsForUnsignedDetailsSection();
+            }
+            else {
+                setDefaultsForPaymentDetailsSection();
+            } 
+            }
+
+            function addLinkToSetDefaults() {
+                $(".section").prev().each(function (i) {
+                    legendText = $(this).text();
+                    $(this).text("");
+
+                    var setDefaultMethod = "setDefaultsFor" + capitalize($(this).next().attr("id")) + "()";
+
+                    newlink = $(document.createElement("a"));
+                    newlink.attr({
+                        id:'link-' + i, name:'link' + i, href:'#'
+                    });
+                    newlink.append(document.createTextNode(legendText));
+                    newlink.bind('click', function () {
+                        eval(setDefaultMethod);
+                    });
+
+                    $(this).append(newlink);
+                });
+
+                newbutton = $(document.createElement("input"));
+                newbutton.attr({
+                    id:'defaultAll', value:'Default All', type:'button', onClick:'setDefaultsForAll()'
+                });
+                newbutton.bind('click', function() {
+                    setDefaultsForAll;
+                });
+                $("#"+payment_form).append(newbutton);
+            }
+
+            function capitalize(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            function setDefaultsForPaymentDetailsSection() {
+                $("input[name='transaction_type']").val("authorization");
+                $("input[name='reference_number']").val(new Date().getTime());
+                $("input[name='amount']").val("100.00");
+                $("input[name='currency']").val("USD");
+            }
+
+            function setDefaultsForUnsignedDetailsSection(){
+                $("input[name='card_type']").val("001");
+                $("input[name='card_number']").val("4242424242424242");
+                $("input[name='card_expiry_date']").val("11-2020");
+            }
+            </script>
+        </head>
+        <body>
+        <form id="payment_form" action="https://testsecureacceptance.cybersource.com/pay" method="post">
+            <input type="hidden" name="access_key" value="544fa12bd4e1326893b53ac1b8288514"></input>
+            <input type="hidden" name="profile_id" value="BA00FC41-3941-40F1-92A9-D17E1AF38B7D"> </input>
+            <!-- currently hardcoded in the page need a setting value from where we need to fetch. -->
+            <input type="hidden" name="transaction_uuid" value="{!transaction_uuid}"></input>
+            <input type="hidden" name="signed_field_names" value="access_key,profile_id,transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency"></input>
+            <input type="hidden" name="unsigned_field_names"></input>
+            <input type="hidden" name="signed_date_time" value="{!signDate}"></input>
+            <input type="hidden" name="locale" value="en"></input>
+            <input type="hidden" name="signature" id="signatureid"></input>
+            <fieldset>
+                <legend>Payment Details</legend>
+                <div id="paymentDetailsSection" class="section">
+                    <span>transaction_type:</span><input type="text" name="transaction_type" size="25"></input><br/>
+                    <span>reference_number:</span><input type="text" name="reference_number" size="25"></input><br/>
+                    <span>amount:</span><input type="text" name="amount" size="25"></input><br/>
+                    <span>currency:</span><input type="text" name="currency" size="25"></input><br/>
+                </div>
+            </fieldset>
+            <input type="submit" id="submit" name="submit" value="Submit"></input>
+            <apex:outputText value="{!signDate}"> </apex:outputText> <br/>
+            <apex:outputText value="{!transaction_uuid}"></apex:outputText>
+            <!-- <script type="text/javascript" src="payment_form.js"></script> -->
+        </form>
+        </body>
+        </html>
+        
+</apex:page>

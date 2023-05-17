@@ -1,0 +1,87 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class=" inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_11-of-12 slds-medium-size--5-of-6 slds-size--2-of-2">&nbsp;</div>
+                <div class="slds-large-size_1-of-12 slds-medium-size--1-of-6 slds-size--2-of-2">
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" title="Close"
+                        onclick={closeModal}></lightning-icon>
+                </div>
+            </div>
+            <!-- <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button> -->
+
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p7">{label.Credit_Check_Facility}</p>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p3">{label.Free_Credit_Check_Facility}</p>
+                    <p class="p6" style="margin-left:15%;">{free_credit}</p>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p3">{label.Free_Credit_Check_Facility_Utilized}</p>
+                    <p class="p6" style="margin-left:18%;">{credit_utilized}</p>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p3">{label.Free_Credit_Check_Facility_Balance}</p>
+                    <p class="p6" style="margin-left:23%;">{free_credit_balance}</p>
+                </div>
+            </div>
+            <hr class="hr1" />
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Credit_Limit_Application_Record} </p>
+                </div>
+            </div>
+            <div class="slds-scrollable_x" style="height: 10rem; overflow-y:auto">
+                <template if:true={cl_list}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        style="border-top: none;width:96%;">
+                        <thead>
+                            <tr style="height:45px">
+                                <th style="width:25%">
+                                    <div class="slds-truncate">{label.Application_Date_CL}</div>
+                                </th>
+                                <th style="width:25%">
+                                    <div class="slds-truncate">{label.Buyer_Code}</div>
+                                </th>
+                                <th style="width:25%">
+                                    <div class="slds-truncate">{label.Buyer_Name}</div>
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <!-- <tbody> -->
+                        <template for:each={cl_list} for:item="cl">
+                            <tr key={cl.Id} style="height:45px">
+                                <td>
+                                    <div class="slds-truncate">{cl.Application_Date__c}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{cl.Buyer_Code__c}</div>
+                                </td>
+                                <td>
+                                    <div class="slds-truncate">{cl.Buyer_Name__c}</div>
+                                </td>
+                                
+                            </tr>
+                        </template>
+                        <!-- </tbody> -->
+                    </table>
+                </template>
+            </div>
+
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

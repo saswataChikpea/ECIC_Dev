@@ -1,0 +1,212 @@
+<template>
+
+    <template if:true={isLoading}>
+        <div class="exampleHolder">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+    
+        <h2 class="slds-align_absolute-center slds-text-heading_medium top_text">{pageTitle}</h2>
+        <br>
+    <template if:true={isSbp}>
+        <table  style="border-collapse: collapse; width: 100%;">
+            <tbody>
+                <tr>
+                    <td class="first_table_content"><b>Policy Number:</b></td>
+                    <td class="first_table_content">{policyNumber}</td>
+                    <td class="first_table_content"><b>Issue Date:</b></td>
+                    <td class="first_table_content">{issueDate}</td>
+                </tr>
+                <tr>
+                    <td class="first_table_content"></td>
+                    <td class="first_table_content"></td>
+                    <td class="first_table_content"><b>Effective Date:</b></td>
+                    <td class="first_table_content">{policyCommDate}</td>
+                </tr>
+            </tbody>
+        </table>
+        <span class="head_content">
+            The Policyholder must pay premium within 14 days from the date of an invoice in accordance
+            with Clause 11 of the SBP and the following terms:
+        </span>
+        <br><br>
+        <span class="prem_content slds-text-title_bold"><b>Premium Rates Table [Clause 11]</b></span>
+        <br><br>
+        <table border="1">
+            <tbody>
+                <tr style="height: 47px;" class="table_head">
+                    <td style="width: 16.6667%; height: 89px;" rowspan="3">Buyer's Country/Market Group Specified in Part2</td>
+                    <td style="width: 83.3335%; height: 47px; text-align: center;" colspan="5"><span>Premium Rates Per HKD100</span></td>
+                </tr>
+                <tr style="height: 21px;" class="table_head" >
+                    <td style="width: 16.6667%; height: 42px; text-align: center;" rowspan="2" >DP</td>
+                    <td style="width: 66.6668%; height: 21px; text-align: center;" colspan="4">DA and OA - Period of credit</td>
+                </tr>
+                <tr style="height: 21px;" class="table_head">
+                    <td class="bottom_td">up to 30 days</td>
+                    <td class="bottom_td">31-60 days</td>
+                    <td class="bottom_td">61-90 days</td>
+                    <td class="bottom_td">91-120 days</td>
+                </tr>
+               
+                <tr style="height: 21px;">
+                    <td class="bottom_td table_head"><strong>A</strong></td>
+                    <td class="bottom_td">{DP}</td>
+                    <td class="bottom_td">{DA_OA_0_30}</td>
+                    <td class="bottom_td">{DA_OA_31_60}</td>
+                    <td class="bottom_td">{DA_OA_61_90}</td>
+                    <td class="bottom_td">{DA_OA_91_120}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td class="table_head bottom_td"><strong>B/C</strong></td>
+                    <td class="bottom_td">{DP_NonA}</td>
+                    <td class="bottom_td">{DA_OA_0_30_NonA}</td>
+                    <td class="bottom_td">{DA_OA_31_60_NonA}</td>
+                    <td class="bottom_td">{DA_OA_61_90_NonA}</td>
+                    <td class="bottom_td">{DA_OA_91_120_NonA}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+        
+        <span class="prem_content slds-text-title_bold"><b>Premium Rates For Countries/Markets In Addition To Those Listed In Part 2</b></span>
+        <br><br>
+        <table border="1" style="border-collapse: collapse; width: 100%;">
+            <tbody>
+                <tr class="middle_head">
+                    <td class="middle_td" rowspan="3">Buyer’s Country/Market</td>
+                    <td class="middle_td" rowspan="3">Code</td>
+                    <td class="middle_td" colspan="5">Premium Rates Per HKD100</td>
+                    <td class="middle_td" rowspan="3">Special Conditions</td>
+                </tr>
+                <tr class="middle_head">
+                    <td class="middle_td" rowspan="2">DP</td>
+                    <td class="middle_td" colspan="4">DA and OA - Period of Credit</td>
+                </tr>
+                <tr class="middle_head">
+                    <td class="middle_td">Up to 30 days</td>
+                    <td class="middle_td">31-60 days</td>
+                    <td class="middle_td">61-90 days</td>
+                    <td class="middle_td">91-180 days</td>
+                </tr>
+                <tr>
+                    <td class="middle_td">*</td>
+                    <td class="middle_td">*</td>
+                    <td class="middle_td">*</td>
+                    <td class="middle_td">*</td>
+                    <td class="middle_td">*</td>
+                    <td class="middle_td">*</td>
+                    <td class="middle_td">*</td>
+                    <td class="middle_td">*</td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+        <span class="prem_content slds-text-title_bold"><b>Countries/Markets of Shipment [Clause 70]</b></span>
+        <br><br>
+        <table border="1" style="border-collapse: collapse; width: 100%;">
+            <tbody>
+            <tr class="table_head ">
+                <th style="width: 50%;  height: 65px; text-align: center; ">Countries/Markets of Shipment</th>
+                <th style="width: 50%;   height: 65px;text-align: center;">Code</th>
+            </tr>
+            <template for:each={clause70CountryList} for:item="country">
+                <tr key={country.code}>
+                    <td style="width: 50%;">{country.name}</td>
+                    <td style="width: 50%;">{country.code}</td>
+                </tr>
+            </template>
+            
+            </tbody>
+        </table>
+        <br><br>
+        <span class="prem_content ">
+                Note: Please inform HKECIC if the Policyholder has any insurable <b>shipments</b> made from a <b>country</b>/market of <b>shipment</b> other than those<br>
+                listed in Schedule II. HKECIC may add such <b>country</b>/market of <b>shipment</b> to Schedule II or may exclude them from cover.
+        </span>
+        <br><br>
+        <h2 class="slds-align_absolute-center slds-text-heading_medium top_text">SCHEDULE II (PART 2)</h2><br>
+        <h2 class="slds-text-heading_medium top_text">Country/Market Group [Sub-clause 3.3]</h2>
+        <br><br>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-2">
+                <table border="1" style="border-collapse: collapse; width: 100%;">
+                    <tbody>
+                        <tr class="part2">
+                            <td align="center"><b>COUNTRY/ MARKET</b></td>
+                            <td align="center"><b>CODE</b></td>
+                            <td align="center"><b>GROUP</b></td>
+                            <td align="center"><b>SPECIAL <br />CONDITIONS</b></td>
+                        </tr>
+                        <template for:each={leftCountryList} for:item="country">
+                            <tr key={country.name}>
+                                <td>{country.name}</td>
+                                <td>{country.code}</td>
+                                <td>{country.group}</td>
+                                <td>{country.condition}</td>
+                            </tr>
+                        </template>
+                        <tr>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="slds-size_1-of-2">
+                <table border="1" style="border-collapse: collapse; width: 100%;">
+                    <tbody>
+                        <tr class="part2">
+                            <td align="center"><b>COUNTRY/ MARKET</b></td>
+                            <td align="center"><b>CODE</b></td>
+                            <td align="center"><b>GROUP</b></td>
+                            <td align="center"><b>SPECIAL <br />CONDITIONS</b></td>
+                        </tr>
+                        <template for:each={rightCountryList} for:item="country">
+                            <tr key={country.name}>
+                                <td>{country.name}</td>
+                                <td>{country.code}</td>
+                                <td>{country.group}</td>
+                                <td>{country.condition}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div><br><br> 
+        Notes: 
+        <ul class="slds-list_ordered">
+            <li>SPECIAL CONDITION 1 indicates an extension of the date of loss specified in Sub-clause 62.4 from 4 months to the number of months shown in the brackets for such countries/markets.</li>
+            <li>SPECIAL CONDITION 2 indicates that notwithstanding anything contained in Sub-clause 3.3, the Policyholder must apply for a specific Endorsement from ECIC.</li>
+            <li>SPECIAL CONDITION 3 indicates that cover is only provided under the payment term of irrevocable letter of credit (ILC).</li>
+            <li>Please inform ECIC if the Policyholder has any insurable shipments made to countries/markets other than those listed in Schedule II.  ECIC may add such countries/markets and their respective premium rates to Schedule II or may exclude them from cover.</li>
+            <li>This Schedule II (Part 2) takes effect from 1 April 2021 and is valid until it is superseded.</li>
+        </ul>
+        <br><br>
+
+    </template>
+    <template if:true={isSup}>
+        <table  style="border-collapse: collapse; width: 100%;">
+            <tbody>
+                <tr>
+                    <td class="first_table_content"><b>Policy Number:</b></td>
+                    <td class="first_table_content">{policyNumber}</td>
+                    <td class="first_table_content"><b>Issue Date:</b></td>
+                    <td class="first_table_content">{issueDate}</td>
+                </tr>
+                <tr>
+                    <td class="first_table_content"></td>
+                    <td class="first_table_content"></td>
+                    <td class="first_table_content"><b>Effective Date:</b></td>
+                    <td class="first_table_content">{policyCommDate}</td>
+                </tr>
+            </tbody>
+        </table>
+        <span class="head_content">
+            The Policyholder must pay premium within 14 days from the date of an invoice in accordance
+            with Clause 11 of the SUP and the following terms:
+        </span>
+        <br><br>
+        <b>Premium Rate: {baseRatePerAnnum}%</b>
+        
+    </template>
+</template>

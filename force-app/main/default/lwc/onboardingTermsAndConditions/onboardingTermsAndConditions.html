@@ -1,0 +1,122 @@
+<template>
+
+    <c-onboarding-progress active-index="4"></c-onboarding-progress>
+    <div class="card_body">
+        <div class="slds-card default_padding">
+
+            <div class="slds-grid slds-grid_align-center ">
+                <span class="red_bold ">{sectionHeading}</span>
+            </div>
+            <div if:false={isLoaded} class="slds-is-relative">
+                <lightning-spinner alternative-text="Loading..." variant="brand">
+                </lightning-spinner>
+            </div>
+            <template if:true={showFirstPage}>
+                <div class="section_container mt_1" onscroll={handleScroll}>
+                    <div class="conent_div">
+                        <!-- <div class="content_header">
+                            <span>1. Terms and Conditions for EC-Reach</span>
+                        </div> -->
+
+                        <div class="content_body">
+                            <!-- <p>
+                                {termsData}
+                            </p> -->
+                            <lightning-formatted-rich-text value={termsData}></lightning-formatted-rich-text>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class={disableNextClass}>
+                    <div class="mt_1">
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-checkbox">
+                                <input type="checkbox" name="checkbox_turnover" checked={checkbox_turnover}
+                                    id="checkbox_turnover" onchange={handleCheckboxChange}
+                                    aria-describedby="error_01" />
+                                <label class="slds-checkbox__label" for="checkbox_turnover">
+                                    <span class="slds-checkbox_faux">&nbsp;</span>
+                                    <span class="slds-form-element__label red_bold">{label.Sales_Turnover_declaration}
+                                        {turnoverMessage}.</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-checkbox">
+                                <input type="checkbox" name="checkbox1" checked={checkbox1Value} id="checkbox1"
+                                    onchange={handleCheckboxChange} aria-describedby="error_01" />
+                                <label class="slds-checkbox__label" for="checkbox1">
+                                    <span class="slds-checkbox_faux">&nbsp;</span>
+                                    <span class="slds-form-element__label red_bold">{label.Terms_Conditions}</span>
+                                </label>
+                            </div>
+                            <div if:true={showCheckboxError} class="slds-form-element__help color_red">
+                                {checkboxNotSelectedErrorMsg}</div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div class="slds-grid slds-grid_align-center mt_1">
+                    <button onclick={showPrevious} class="slds-button back_button"><span>Back</span>
+                    </button>
+                    <button disabled={btnDisabled} onclick={togglePage}
+                        class="slds-button slds-button_destructive next_button">Next</button>
+                </div>
+
+            </template>
+            <template if:true={showSecondPage}>
+                <div class="section_container mt_1" onscroll={handleScroll}>
+                    <!-- <div class="content_header_underline">
+                        <span>Personal Information Collection Statement ("Statement")</span>
+                    </div> -->
+                    <!-- <div class="content_header_ceneter">
+                        Hong Kong Export Credit Insurance Corporation ("Corporation", "we", "us" or "our", including our
+                        successors and assigns)
+                    </div>
+                    <div class="content_body">
+                        <span>
+                            This Statement informs you of the purpose for which your personal data collected may be
+                            used, to whom it may be transferred and who is to handle data access/ correction requests.
+                        </span>
+                    </div> -->
+                    <div class="conent_div">
+                        <!-- <div class="content_header">
+                            <span>Information collection and use</span>
+                        </div> -->
+
+                        <div class="content_body">
+                            <!-- <p>{PIData}</p> -->
+                            <lightning-formatted-rich-text value={PIData}></lightning-formatted-rich-text>
+                        </div>
+                    </div>
+                </div>
+                <div class={disableNextClass}>
+                    <div class="mt_1">
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-checkbox">
+                                <input type="checkbox" name="checkbox2" checked={checkbox2Value} id="checkbox2"
+                                    onchange={handleCheckboxChange} aria-describedby="error_01" />
+                                <label class="slds-checkbox__label" for="checkbox2">
+                                    <span class="slds-checkbox_faux">&nbsp;</span>
+                                    <span class="slds-form-element__label red_bold">{label.Personal_Information}</span>
+                                </label>
+                            </div>
+                            <div if:true={showCheckboxError} class="slds-form-element__help color_red">
+                                {checkboxNotSelectedErrorMsg}</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="slds-grid slds-grid_align-center mt_1">
+                    <button onclick={togglePage} class="slds-button back_button"><span>Back</span>
+                    </button>
+                    <button disabled={btnDisabled} onclick={confirmSubmitTerms}
+                        class="slds-button slds-button_destructive next_button">Read and Agree</button>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

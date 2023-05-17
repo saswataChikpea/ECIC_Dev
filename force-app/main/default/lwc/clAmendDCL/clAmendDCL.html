@@ -1,0 +1,96 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class=" inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_11-of-12 slds-medium-size--5-of-6 slds-size--2-of-2">&nbsp;</div>
+                <div class="slds-large-size_1-of-12 slds-medium-size--1-of-6 slds-size--2-of-2">
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" title="Close"
+                        onclick={closeModal}></lightning-icon>
+                </div>
+            </div>
+            <!-- <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button> -->
+
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p7">{label.Update_Buyer_Name_and_or_Address} </p>
+                </div>
+            </div>
+            
+            <hr class="hr1" />
+            <div class="slds-grid slds-wrap div2" style="padding-top: 1%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Current_Buyer_Name} </p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p5">{dcldetail.Buyer_Name__c}<lightning-icon style="padding-left: 5%;"
+                        onclick={handleEditBuyerName} icon-name="utility:edit" size="xx-small"
+                        class="slds-current-color" alternative-text="Edit" title="Edit">
+                    </lightning-icon></p>
+                </div>
+            </div>
+            <template if:true={edit_buyer_name}>
+                <div class="slds-grid slds-wrap div2" style="padding-top: 1%;">
+                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">{label.New_Buyer_Name} </p>
+                    </div>
+                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <lightning-input type="text" maxlength="255" variant="label-hidden" class="input1"
+                            onchange={handleBuyerNameChange} ></lightning-input>
+                    </div>
+                </div>
+            </template>
+            <div class="slds-grid slds-wrap div2" style="padding-top: 1%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Current_Buyer_Address} </p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p5">{dcldetail.Buyer_Address_Line_1__c}<lightning-icon style="padding-left: 5%;"
+                        onclick={handleEditBuyerAddress} icon-name="utility:edit" size="xx-small"
+                        class="slds-current-color" alternative-text="Edit" title="Edit">
+                    </lightning-icon></p>
+                    <p class="p5">{dcldetail.Buyer_Address_Line_2__c}</p>
+                    <p class="p5">{dcldetail.Buyer_Address_Line_3__c}</p>
+                    <p class="p5">{dcldetail.Buyer_Address_Line_4__c}</p>
+                </div>
+            </div>
+            <template if:true={edit_buyer_add}>
+                <div class="slds-grid slds-wrap div2" style="padding-top: 1%;">
+                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">{label.New_Buyer_Address} </p>
+                    </div>
+                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <lightning-input type="text" maxlength="60" variant="label-hidden" class="input1"
+                            onchange={handleBuyerAdd1Change} ></lightning-input>
+                        <lightning-input type="text" maxlength="60" variant="label-hidden" class="input2"
+                            onchange={handleBuyerAdd2Change} ></lightning-input>
+                        <lightning-input type="text" maxlength="60" variant="label-hidden" class="input2"
+                            onchange={handleBuyerAdd3Change} ></lightning-input>
+                        <lightning-input type="text" maxlength="60" variant="label-hidden" class="input2"
+                            onchange={handleBuyerAdd4Change} ></lightning-input>
+                    </div>
+                    
+                </div>
+            </template>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <button class="slds-button slds-button_neutral btn3" onclick={closeModal}>{label.Cancel}</button>
+                    <button class="slds-button slds-button_neutral btn2" onclick={handleSubmit} >{label.Submit}</button>
+                </div>
+            </div>
+            
+
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

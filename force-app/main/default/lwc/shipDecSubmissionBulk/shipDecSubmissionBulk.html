@@ -1,0 +1,468 @@
+<template>
+    <template if:true={isShowBulkScreen}>
+        <div class="slds-grid slds section_head" id="sectionDecAndPrem">
+            <h2>{label.Declaration_Record}</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon size="x-small" class="slds-current-color" alternative-text="Declaration Record"
+                    title="Declaration Record">
+                </lightning-icon>
+            </div>
+        </div>
+        <br />
+        <!-- <lightning-card theme="slds-theme_shade"> -->
+        <article class="card_shadow">
+            <div class="inner-container">
+                <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">label.Company_Name</p>
+                        <p class="p5">{companyName}</p>
+                    </div>
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">{label.Policy_Number}</p>
+                        <p class="p5">{policyNumber}</p>
+                    </div>
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">{label.Policy_Type}</p>
+                        <p class="p5">{policyType}</p>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+        <article class="card_shadow">
+            <div class="" style="padding: 1rem;">
+                <div class="">
+                    <p class="p1">{label.Declaration}</p>
+                    <div class="slds-grid slds-wrap">
+                        <span class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">{label.Download_Shipment_Template}</span>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <div class="slds-grid slds-wrap">
+                                <span class="downloadTemplate">
+                                    <a download="Shimpemt_Declaration_Bulk.csv" target="_new" href={templateLink}>
+                                        {label.Download_Template}
+                                    </a>
+                                </span>
+                                <lightning-input if:false={openSubmitPage} class="mb_1 input_small_c" type="file"
+                                    variant="label-hidden" label="Attachment" onchange={openfileUpload}>
+                                </lightning-input>
+                                <span class="whiteButton" onclick={gotoFormScreen}>{label.By_Entry}</span>
+                                <span class="redButton">{label.By_Batch}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="" if:false={openSubmitPage}>
+                    <div class="table_container">
+                        <!-- openSubmitPage false -->
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th if:true={editData}></th>
+
+                                    <template for:each={allDataKeys} for:item="key">
+                                        <th key={key.fieldName} class="" scope="col">
+                                            <div class="slds-truncate slds-line-clamp" style="display: flex;"
+                                                title="Name">
+                                                {key.label}
+                                                <span if:true={key.isRequired} style="color: red;">*</span>
+                                                <div class="sortIconContainer">
+                                                    <lightning-icon class={key.upIconClass} icon-name="utility:up"
+                                                        variant="success" alternative-text="up" size="xx-small"
+                                                        data-type="ALL" title="Sort asending" data-id={key.fieldName}
+                                                        onclick={sortAsending}>
+                                                    </lightning-icon>
+                                                    <lightning-icon class={key.downIconClass} icon-name="utility:down"
+                                                        variant="success" alternative-text="down" size="xx-small"
+                                                        data-type="ALL" title="Sort decending" data-id={key.fieldName}
+                                                        onclick={sortDecending}>
+                                                    </lightning-icon>
+                                                </div>
+                                            </div>
+
+                                        </th>
+                                    </template>
+                                    <!-- </div> -->
+                                </tr>
+                            </thead>
+
+
+                            <!-- <div class="slds-grid slds-grid_vertical"> -->
+                            <tbody>
+                                <template if:false={data.length}>
+                                    <tr class="">
+                                        <th colspan={keys.length} style="">
+                                            Please add some records to upload
+                                        </th>
+                                    </tr>
+                                </template>
+                                <template if:true={data.length} for:each={dataList} for:item="row">
+
+                                    <!-- <div key={row.key} aria-selected="false" class="slds-grid "> -->
+                                    <tr key={row.key} class={row.class} title={row.errorMsg}>
+                                        <th if:true={editData}>
+                                            <lightning-icon icon-name="utility:ban" data-countrymarketfor={row.Name}
+                                                variant="Error" style="color:red; cursor:pointer"
+                                                alternative-text="Remove" size="small" title="Delete this row"
+                                                data-id={row.key} onclick={removeRow}>
+                                            </lightning-icon>
+                                        </th>
+
+                                        <template for:each={row.data} for:item="item">
+                                            <!-- <div key={item.key} class="data_column">
+                                <a href="#" tabindex="0">{item.value}</a>
+                            </div> -->
+                                            <th key={item.key} scope="col" style="font-size: small;">
+                                                <div class="nonEditableCell" if:false={editData}>{item.value}</div>
+                                                <div if:true={editData} style="width: 100px; font-size: small;">
+                                                    <template if:true={item.isText}>
+
+
+                                                        <input class="input_small" type="text" name={item.Name}
+                                                            value={item.value} data-name={item.Name} data-id={row.key}
+                                                            onchange={handleQChange}>
+
+
+                                                    </template>
+                                                    <template if:true={item.isDropdown}>
+                                                        <lightning-combobox class="" style="width: 100px;"
+                                                            name={item.Name} value={item.value} data-name={item.Name}
+                                                            data-id={row.key} variant="label-hidden"
+                                                            placeholder="--Select--" options={item.options}
+                                                            onchange={handleQChange}>
+                                                        </lightning-combobox>
+                                                    </template>
+                                                    <template if:true={item.isDate}>
+
+                                                        <lightning-input type="date" label='fds' variant="label-hidden"
+                                                            name={item.Name} value={item.value} data-name={item.Name}
+                                                            date-style="short" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
+                                                            data-id={row.key} onchange={handleQChange}>
+                                                        </lightning-input>
+                                                    </template>
+                                                </div>
+
+                                            </th>
+                                        </template>
+                                    </tr>
+                                    <!-- </div> -->
+
+
+                                </template>
+                                <tr if:true={editData}>
+                                    <th>
+                                        <lightning-icon icon-name="utility:new" variant="success"
+                                            style="color:rgb(18, 163, 13);" alternative-text="Add" size="small"
+                                            title="Add a new row" onclick={addNewRow}>
+                                        </lightning-icon>
+                                    </th>
+                                </tr>
+                            </tbody>
+                            <!-- </div> -->
+                        </table>
+                    </div>
+                    <div class="slds-grid slds-grid_align-center " style="margin-top: 2rem;">
+                        <button onclick={showPrevious} class="slds-button btn_general"><span>{label.Cancel}</span>
+                        </button>
+                        <button if:true={editData} onclick={toggleEdit}
+                            class="slds-button slds-button_destructive slds-button_neutral btn_general next_button">
+                            {label.Next}
+                            <lightning-icon class="slds-button__icon slds-button__icon_right slds-current-color"
+                                icon-name="utility:right" variant="success" alternative-text="right" size="x-small"
+                                title="xx-small size">
+                            </lightning-icon>
+                        </button>
+                        <button if:false={editData} onclick={toggleEdit} class="slds-button btn_general">{label.Edit}
+                        </button>
+                        <button if:false={editData} onclick={verifyData}
+                            class="slds-button slds-button_destructive slds-button_neutral btn_general next_button">{label.Submit}
+
+                            <lightning-icon class="slds-button__icon slds-button__icon_right slds-current-color"
+                                icon-name="utility:upload" variant="success" alternative-text="upload" size="x-small"
+                                title="xx-small size">
+                            </lightning-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="" if:true={openSubmitPage}>
+                    <!-- error tabel -->
+                    <div class="table_container" if:true={successDataList.length}>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+
+                                    <template for:each={successfulDataKeys} for:item="key">
+                                        <th key={key.fieldName} class="" scope="col">
+                                            <div class="slds-truncate slds-line-clamp" style="display: flex;"
+                                                title="Name">
+                                                {key.label}
+                                                <span if:true={key.isRequired} style="color: red;">*</span>
+                                                <div class="sortIconContainer">
+                                                    <lightning-icon class={key.upIconClass} icon-name="utility:up"
+                                                        variant="success" alternative-text="up" size="xx-small"
+                                                        title="Sort asending" data-id={key.fieldName}
+                                                        data-type="SUCCESSFUL" onclick={sortAsending}>
+                                                    </lightning-icon>
+                                                    <lightning-icon class={key.downIconClass} icon-name="utility:down"
+                                                        variant="success" alternative-text="down" size="xx-small"
+                                                        title="Sort decending" data-id={key.fieldName}
+                                                        data-type="SUCCESSFUL" onclick={sortDecending}>
+                                                    </lightning-icon>
+                                                </div>
+                                            </div>
+
+                                        </th>
+                                    </template>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={successDataList} for:item="row">
+                                    <tr key={row.key} class={row.class} title={row.errorMsg}>
+                                        <template for:each={row.data} for:item="item">
+                                            <th key={item.key} scope="col" style="font-size: small;">
+                                                <div class="nonEditableCell" if:false={row.isEditable}>{item.value}
+                                                </div>
+                                            </th>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- error tabel -->
+                    <h5 if:true={errDataList.length} style="font-weight: bold; margin-top: 2rem;">Please correct the
+                        below
+                        record accordingly
+                        to
+                        the error message(s).</h5>
+                    <div class="" if:true={errDataList.length}>
+                        <div class="table_container">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th if:true={lateDecErrDataList.length}></th>
+                                        <template for:each={errDataKeys} for:item="key">
+                                            <th key={key.fieldName} class="" scope="col">
+                                                <div class="slds-truncate slds-line-clamp" style="display: flex;"
+                                                    title="Name">
+                                                    {key.label}
+                                                    <span if:true={key.isRequired} style="color: red;">*</span>
+                                                    <div class="sortIconContainer">
+                                                        <lightning-icon class={key.upIconClass} icon-name="utility:up"
+                                                            variant="success" alternative-text="up" size="xx-small"
+                                                            title="Sort asending" data-id={key.fieldName}
+                                                            data-type="ERR" onclick={sortAsending}>
+                                                        </lightning-icon>
+                                                        <lightning-icon class={key.downIconClass}
+                                                            icon-name="utility:down" variant="success"
+                                                            alternative-text="down" size="xx-small"
+                                                            title="Sort decending" data-id={key.fieldName}
+                                                            data-type="ERR" onclick={sortDecending}>
+                                                        </lightning-icon>
+                                                    </div>
+                                                </div>
+
+                                            </th>
+                                        </template>
+                                        <th if:true={editData}></th>
+                                        <th if:true={editData}></th>
+
+                                        <!-- </div> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <template for:each={errDataList} for:item="row">
+
+                                        <!-- <div key={row.key} aria-selected="false" class="slds-grid "> -->
+                                        <tr key={row.key} class={row.class} title={row.errorMsg}>
+                                            <th if:true={lateDecErrDataList.length}>
+                                                <!-- <span class="warningIcon"> -->
+                                                <lightning-icon class="warningIcon" if:true={row.isLateDeclared}
+                                                    icon-name="utility:warning" data-countrymarketfor={row.Name}
+                                                    alternative-text="Late Declaration" size="xx-small"
+                                                    title="Late Declaration" data-id={row.key}>
+                                                </lightning-icon>
+                                                <!-- </span> -->
+                                            </th>
+
+                                            <template for:each={row.data} for:item="item">
+
+                                                <th key={item.key} scope="col" style="font-size: small;">
+                                                    <div class="nonEditableCell" if:false={row.isEditable}>{item.value}
+                                                    </div>
+                                                    <div if:true={row.isEditable}
+                                                        style="width: 100px; font-size: small;">
+                                                        <template if:true={item.isText}>
+
+                                                            <!-- class="slds-input input_small_c" -->
+                                                            <!-- <lightning-input class="input_small_c" type="text" label="dsf"
+                                                variant="label-hidden" name={item.Name} value={item.value}
+                                                data-id={item.Name} onchange={handleQChange}>
+                                            </lightning-input> -->
+                                                            <input class="input_small" type="text" name={item.Name}
+                                                                value={item.value} data-name={item.Name}
+                                                                data-id={row.key} onchange={handleQChangeErr}>
+                                                        </template>
+                                                        <template if:true={item.isDropdown}>
+                                                            <lightning-combobox class="" style="width: 100px;"
+                                                                name={item.Name} value={item.value}
+                                                                data-name={item.Name} data-id={row.key}
+                                                                variant="label-hidden" placeholder="--Select--"
+                                                                options={item.options} onchange={handleQChangeErr}>
+                                                            </lightning-combobox>
+                                                        </template>
+                                                        <template if:true={item.isDate}>
+                                                            <lightning-input type="date" style="width: 110px;"
+                                                                label='fds' variant="label-hidden" name={item.Name}
+                                                                value={item.value} data-name={item.Name}
+                                                                date-style="short" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
+                                                                data-id={row.key} onchange={handleQChangeErr}>
+                                                            </lightning-input>
+                                                        </template>
+                                                    </div>
+                                                </th>
+                                            </template>
+                                            <th>
+                                                <lightning-icon icon-name="utility:edit"
+                                                    data-countrymarketfor={row.Name} style="color:#ddd; cursor:pointer"
+                                                    alternative-text="Remove" size="xx-small" title="Delete this row"
+                                                    data-id={row.key} onclick={editErrRow}>
+                                                </lightning-icon>
+                                            </th>
+                                            <th>
+                                                <lightning-icon icon-name="utility:delete"
+                                                    data-countrymarketfor={row.Name} style="color:#ddd; cursor:pointer"
+                                                    alternative-text="Remove" size="xx-small" title="Delete this row"
+                                                    data-id={row.key} onclick={removeErrRow}>
+                                                </lightning-icon>
+                                            </th>
+                                        </tr>
+                                    </template>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div if:true={lateDecErrDataList.length} class="slds-grid" style="margin-top: 1rem;">
+                            <div class="slds-col">
+                                Late declaration
+                            </div>
+                            <div class="slds-col" style="margin-left: 1rem;">
+                                <span> The above shipment declaration has been late declared (refer to Schedule III of
+                                    the
+                                    Policy). Please confirm the items below:</span>
+                                <div class="" style="margin-bottom: .6rem;">
+                                    <div class="slds-form-element slds-has-error">
+                                        <div class="slds-checkbox">
+                                            <input type="checkbox" name="1st" id="1st" onchange={handleCheckboxChange}
+                                                data-value="The shipment involved has not become overdue and the buyer has not requested any extension or change of payment terms."
+                                                aria-describedby="error_01" />
+                                            <label class="slds-checkbox__label" for="1st">
+                                                <span class="slds-checkbox_faux">&nbsp;</span>
+                                                <span class="slds-form-element__label">The shipment involved has not
+                                                    become
+                                                    overdue
+                                                    and
+                                                    the buyer has not requested any extension or change of payment
+                                                    terms.</span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="" style="margin-bottom: .6rem;">
+                                    <div class="slds-form-element slds-has-error">
+                                        <div class="slds-checkbox">
+                                            <input type="checkbox" name="1st" id="2nd" onchange={handleCheckboxChange}
+                                                data-value="No overdue payment is heard about the buyer."
+                                                aria-describedby="error_01" />
+                                            <label class="slds-checkbox__label" for="2nd">
+                                                <span class="slds-checkbox_faux">&nbsp;</span>
+                                                <span class="slds-form-element__label">No overdue payment is heard about
+                                                    the
+                                                    buyer.</span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="" style="margin-bottom: .6rem;">
+                                    <div class="slds-form-element slds-has-error">
+                                        <div class="slds-checkbox">
+                                            <input type="checkbox" name="1st" id="3rd" onchange={handleCheckboxChange}
+                                                data-value="No adverse information is heard about the buyer."
+                                                aria-describedby="error_01" />
+                                            <label class="slds-checkbox__label" for="3rd">
+                                                <span class="slds-checkbox_faux">&nbsp;</span>
+                                                <span class="slds-form-element__label">No adverse information is heard
+                                                    about
+                                                    the
+                                                    buyer.</span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+
+                                    <div class="" style="margin-bottom: .6rem;">
+                                        <div class="slds-form-element slds-has-error">
+                                            <div class="slds-checkbox">
+                                                <input type="checkbox" name="1st" id="4th"
+                                                    onchange={handleCheckboxChange} data-value="OTHERS"
+                                                    aria-describedby="error_01" />
+                                                <label class="slds-checkbox__label" for="4th">
+                                                    <span class="slds-checkbox_faux">&nbsp;</span>
+                                                    <span class="slds-form-element__label">Others, Please
+                                                        specify.</span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <input type="text" class="input_small" onchange={handleCheckboxChange} name="OTHERS"
+                                        style="width: 200px; margin: 0 1rem">
+                                    <button onclick={validateLateDeclaration}
+                                        class="slds-button slds-button_destructive slds-button_neutral btn_general next_button">Submit
+
+                                        <lightning-icon
+                                            class="slds-button__icon slds-button__icon_right slds-current-color"
+                                            icon-name="utility:upload" variant="success" alternative-text="upload"
+                                            size="x-small" title="xx-small size">
+                                        </lightning-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="slds-grid slds-grid_align-center " style="margin-top: 2rem;">
+                        <button onclick={toggleShowSubmit} class="slds-button btn_general"><span>{label.Back}</span>
+                        </button>
+                        <button onclick={submitData}
+                            class="slds-button slds-button_destructive slds-button_neutral btn_general next_button">
+                            Next
+                            <lightning-icon class="slds-button__icon slds-button__icon_right slds-current-color"
+                                icon-name="utility:right" variant="success" alternative-text="right" size="x-small"
+                                title="xx-small size">
+                            </lightning-icon>
+                        </button>
+                        <!-- <button if:false={editData} onclick={submitData}
+                        class="slds-button slds-button_destructive slds-button_neutral btn_general next_button">Submit
+
+                        <lightning-icon class="slds-button__icon slds-button__icon_right slds-current-color"
+                            icon-name="utility:upload" variant="success" alternative-text="upload" size="x-small"
+                            title="xx-small size">
+                        </lightning-icon>
+                    </button> -->
+                    </div>
+                </div>
+
+            </div>
+        </article>
+        <br />
+    </template>
+    <template if:true={isShowShipDecSubmissionForm}>
+        <c-ship-dec-submission-form></c-ship-dec-submission-form>
+    </template>
+</template>

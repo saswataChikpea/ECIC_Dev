@@ -1,0 +1,705 @@
+<template>
+    <div if:true={loading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>Please Wait
+    </div>
+    <div if:false={loading}>
+        <div class="container">
+            <p class="p8" style="margin-left:2%;margin-bottom:1%;">{label.Cancel_Credit_Limit_Application}</p>
+        <div class="inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Company_Name}</p>
+                    <p class="p5">{policydetail.Exporter__r.Name}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Number}</p>
+                    <p class="p5">{policydetail.Legacy_Customer_Number__c}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Type}</p>
+                    <p class="p5">{policydetail.Product__r.Name}</p>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Free_Credit_Check_Facility_Balance}</p>
+                    <p class="p5"><span onclick={handleCreditCheckFacility}>{policydetail.Available_Credit_Check__c} (<a href="javascript:void(0)">Details</a>)</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section1" onclick={expandHandler1}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section1.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section1.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section1.isSectionOpen}>
+                        
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{label.Policyholder}</p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{policydetail.Exporter__r.Name}</p>
+                            </div>
+                            <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <!-- <lightning-icon style="padding-left: 5%;" data-id="section1"
+                                    onclick={handleEdit} icon-name="utility:edit" size="xx-small"
+                                    class="slds-current-color" alternative-text="Edit" title="Edit">
+                                </lightning-icon> -->
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Export_of_Goods_Export_of_Services}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.exportType}</p>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Are_you_holding_a_valid_credit_limit_on_the} {user_type_small}?<span
+                                        style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.is_credit_limit_exist}</p>
+                            </div>
+                        </div>
+                        
+                                                                            
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {user_type}{label.Country_Market}<span style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                 <p class="p4">{clconfirmationdata.buyer_country}</p>
+                            </div>
+                        </div>
+                        <template if:true={is_hkg_buyer}>
+                            <template if:false={is_service}>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Will_the_goods_to_be_sold_to_the_Hong_Kong_exporter_be_exported}<span style="color: red;">*</span>
+                                        </p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.hkg_goods_exported}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Destination_Country_Market}<span style="color: red;">*</span>
+                                        </p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.destination_country}</p>
+                                    </div>
+                                </div>
+                        </template>
+                        <template if:true={is_service}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">  {label.Will_the_service_be_ultabately_rendered_to_an_overseas_client}<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{clconfirmationdata.hkg_goods_exported}</p>
+                                </div>
+                            </div>
+                        </template>
+                        </template>
+                        <!-- <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">5. {user_type} Code<span style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.buyer_code}</p>
+                            </div>
+                        </div> -->
+                            
+                        
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {user_type} {label.Name}<span style="color: red;">*</span></p>
+                            </div>                         
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.buyer_name}</p>
+                            </div>
+                        </div>
+                            
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {user_type} {label.Address}<span style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.buyer_address_line1}</p>
+                                <p class="p4">{clconfirmationdata.buyer_address_line2}</p>
+                                <p class="p4">{clconfirmationdata.buyer_address_line3}</p>
+                                <p class="p4">{clconfirmationdata.buyer_address_line4}</p>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {user_type}'s {label.Registration_Number_If_any}</p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.registration_no}</p>
+                            </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <template if:false={is_service}>
+                                        <p class="p4"> {label.Goods_Involved}<span style="color: red;">*</span></p>
+                                    </template>
+                                    <template if:true={is_service}>
+                                        <p class="p4"> {label.Services_Involved}<span style="color: red;">*</span></p>
+                                    </template>
+                                </div>                                
+                                <template if:true={is_miscellaneous}>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.goods_involved}&nbsp;,&nbsp;{clconfirmationdata.specific_goods_involved}</p>                                        
+                                    </div>
+                                </template>
+                                <template if:false={is_miscellaneous}>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.goods_involved}</p>                                        
+                                    </div>
+                                </template>
+                            </div>
+                            <template if:true={is_preshipment}>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Application_Amount_for_pre_shipment_HKD}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{application_amount_pre_shipment}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Payment_Terms}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container" >
+                                        <p class="p4">{clconfirmationdata.payment_terms_value_pre_shipment}&nbsp;&nbsp;{clconfirmationdata.payment_terms_days_pre_shipment}&nbsp;&nbsp;{label.Days}</p>
+                                    </div>                                
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Application_Amount_for_post_shipment_HKD}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{application_amount}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Payment_Terms}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container" >
+                                        <p class="p4">{clconfirmationdata.payment_terms_value}&nbsp;&nbsp;{clconfirmationdata.payment_terms_days}&nbsp;&nbsp;{label.Days}</p>
+                                    </div>                                
+                                </div>
+                            </template>
+                            <template if:false={is_preshipment}>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Application_Amount_HKD}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{application_amount}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Payment_Terms}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container" >
+                                        <p class="p4">{clconfirmationdata.payment_terms_value}&nbsp;&nbsp;{clconfirmationdata.payment_terms_days}&nbsp;&nbsp;{label.Days}</p>
+                                    </div>                                
+                                </div>
+                            </template>                           
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section2" onclick={expandHandler2}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section2.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section2.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section2.isSectionOpen}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Is_this_your_new_buyer}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.is_new_buyer}</p>
+                            </div>
+                            <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <!-- <lightning-icon style="padding-left: 5%;" data-id="section2"
+                                onclick={handleEdit} icon-name="utility:edit" size="xx-small"
+                                class="slds-current-color" alternative-text="Edit" title="Edit">
+                                </lightning-icon> -->
+                            </div>
+                        </div>
+                        <template if:false={is_new_buyer}>
+                            
+                            <template if:true={is_preshipment}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.How_many_years_have_you_been_trading_with_this} {user_type_small}?<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{clconfirmationdata.buyer_trading_time}</p>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Please_provide_the_amount_and_payment_terms_of_the_shipments_you_made_to_this} {user_type} {label.in_the_last_12_months_HKD}<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{shipment_payment_terms_amount}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method1}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method2}</p>
+                                    <p class="p4">{shipment_payment_terms_days_amount}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method3}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method4}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method5}</p>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Please_provide_the_amount_and_payment_terms_of_the_orders_you_made_to_this} {user_type} {label.in_the_last_12_months_HKD}<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{order_payment_terms_amount_12months}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.order_payment_term_method1_12months}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.order_payment_term_method2_12months}</p>                                    
+                                    <p class="p4">{order_payment_terms_days_12month_amount}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.order_payment_term_method3_12months}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.order_payment_term_method4_12months}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.order_payment_term_method5_12months}</p>                                    
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Has_the} {user_type} {label.previously_cancelled_from_the_order_unilaterally}<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{clconfirmationdata.unilaterally_cancel_order}</p>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Any_payment_currently_overdue_from_this} {user_type} {label.ILC_or_payment_in_advance_transactions}<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{clconfirmationdata.overdue_payment_order}</p>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Is_there_any_amount_currently_unpaid_for_more_than_30_days_from_the_due_date_for} {user_type}?<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{clconfirmationdata.unpaid_amount}</p>                                    
+                                </div>
+                            </div>
+                            </template>
+                            <template if:false={is_preshipment}>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.How_many_years_have_you_been_trading_with_this} {user_type_small}?<span style="color: red;">*</span>
+                                        </p>
+                                    </div>
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.buyer_trading_time}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Please_provide_the_amount_and_payment_terms_of_the_shipments_you_made_to_this} {user_type} {label.in_the_last_12_months_HKD}<span style="color: red;">*</span>
+                                        </p>
+                                    </div>
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{shipment_payment_terms_amount}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method1}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method2} </p>
+                                        <p class="p4"></p>
+                                        <p class="p4">{shipment_payment_terms_days_amount}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method3}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method4}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_payment_term_method5}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Is_there_any_amount_currently_unpaid_for_more_than} {unpaid_days} {label.days_from_the_due_date_for_this} {user_type}?<span style="color: red;">*</span>
+                                        </p>
+                                    </div>
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.unpaid_amount}</p>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+                        
+                        <template if:true={flag_unpaid_shipment}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p8" style="margin-bottom:1%;">{label.Unpaid_Shipment_Details}</p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_12-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <!-- <th>
+                                                    <p>&nbsp;</p>
+                                                </th> -->
+                                                <th>
+                                                    <p class="p1">{label.Shipment_Invoice_date}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Gross_Invoice_Value_Currency}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Gross_Invoice_Value_Amount}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Payment_Terms}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Due_Date}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Remark}</p>
+                                                </th>
+                                                <!-- <th>
+                                                    <p class="p1">Add</p>
+                                                </th> -->
+                                            </tr>
+                                        </thead>
+                                        <template for:each={pending_invoice_list} for:item="inv" for:index="indx">
+                                            <tr key={inv.key} id={inv.key}>
+                                                <td>
+                                                    <p class="p4">{inv.InvoiceDate}</p>
+                                                </td>
+                                                <td style="padding-left: 1%;">
+                                                    <p class="p4">{inv.InvoiceCurrency}</p>
+                                                </td>
+                                                <td>                                                    
+                                                    <p class="p4">{inv.InvoiceAmount_formatted}</p>
+                                                </td>
+                                                <td>
+                                                    <p class="p4">{inv.PaymentTermsType} &nbsp;&nbsp;{inv.PaymentTermsDays}&nbsp;{label.Days}</p>
+                                                </td>
+                                                <td>
+                                                    <p class="p4">{inv.InvoiceDueDate}</p>
+                                                </td>  
+                                                <td>
+                                                    <p class="p4">{inv.InvoiceRemark}</p>
+                                                </td>                                         
+                                            </tr>
+                                        </template>
+                                    </table>                                   
+                                    <!-- <hr style="margin-top:10px;margin-bottom:10px;width:92%" /> -->
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <template if:false={is_service}>
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section3" onclick={expandHandler3}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section3.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section3.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section3.isSectionOpen}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Do_you_have_any_orders_confirmed_negotiation_with_this} {user_type}?<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.order_confirm_negotiation_value}</p>
+                            </div>
+                            <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <!-- <lightning-icon style="padding-left: 5%;" data-id="section3"
+                                onclick={handleEdit} icon-name="utility:edit" size="xx-small"
+                                class="slds-current-color" alternative-text="Edit" title="Edit">
+                                </lightning-icon> -->
+                            </div>
+                        </div>
+                        <template if:true={is_order_confirm}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Please_provide_the_amount_and_payment_terms_of_the_orders}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <template if:true={show_confirm_order_amount}>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{payment_term_order_amount}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.confirm_order_payment_terms_method1}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.confirm_order_payment_terms_method2}</p>
+                                    <p class="p4">{clconfirmationdata.confirm_order_payment_terms_method3}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.confirm_order_payment_terms_method4}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.confirm_order_payment_terms_method5}</p>                                
+                                    <p class="p4">{clconfirmationdata.order_payment_term_days}&nbsp;{label.Days}</p>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.When_will_the_shipments_commence}
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.shipment_commencement_month}&nbsp;&nbsp;&nbsp;&nbsp;{clconfirmationdata.shipment_commencement_year}</p>
+                            </div>
+                        </div>
+                        </template>
+                        <template if:false={is_preshipment}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Remarks}
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{clconfirmationdata.remarks}</p>
+                                </div>
+                            </div>
+                        </template>
+                        <template if:true={is_preshipment}>
+                            <template if:true={is_order_confirm}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.What_is_the_amount_of_ILC_payment_in_advance_received_in_respect_of_the_orders}
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">{received_payment_amount} </p>
+                                    <p class="p4">{clconfirmationdata.received_payment_term_method1}</p>
+                                    <p class="p4">{clconfirmationdata.received_payment_term_method2}</p>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Remarks}
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.remarks}</p>
+                            </div>
+                        </div>
+                    </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </template>
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                &nbsp;
+            </div>
+            <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                <div class="slds-checkbox" style="width: 80%;">
+                    <input type="checkbox" name="first-declaration" id="first-declaration"  onchange={handleFirstDeclaration}/>
+                    <label class="slds-checkbox__label" for="first-declaration">
+                      <span class="slds-checkbox_faux"></span>
+                      <span class="slds-form-element__label checkbox-label" >{label.We_declare_that_the_information_given_in_this_application_is_to_the_best_of_our}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                &nbsp;
+            </div>
+            <!-- <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                <div class="slds-checkbox" style="width: 80%;">
+                    <input type="checkbox" name="second-declaration" id="second-declaration"  onchange={handleSecondDeclaration}/>
+                    <label class="slds-checkbox__label" for="second-declaration">
+                      <span class="slds-checkbox_faux"></span>
+                      <span class="slds-form-element__label checkbox-label" >We declare that our annual sales turnover is below HK$20 million.</span>
+                    </label>
+                </div>                
+            </div> -->
+        </div>
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                &nbsp;
+            </div>
+            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                <button class="slds-button slds-button_neutral btn3" onclick={handleEdit}>{label.Back}</button>
+                <button class="slds-button slds-button_neutral btn3" onclick={handleCancel}>{label.Cancel}</button>
+                <button class="slds-button slds-button_neutral btn3" onclick={handleSave}>{label.Save_and_Exit}</button>
+                <template if:true={disable_submit}>
+                    <button class="slds-button slds-button_neutral btn4" disabled>{label.Submit}</button>
+                </template>
+                <template if:false={disable_submit}>
+                    <button class="slds-button slds-button_neutral btn2" onclick={handleConfirm} >{label.Submit}</button>
+                </template>
+                
+            </div>
+        </div>
+            
+            <!-- <div class="inner-container" style="margin-top: 2%;">
+                <p class="p1">Credit Limit Application - Confirmation Page</p>
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;padding-left:4%;">
+                    <div class="slds-size_8-of-12">
+                        <p class="p3">(OMBP)</p>
+                        <p class="p5">Online Micro-Business Policy is only applicable to HK exporters with annual
+                            turnover
+                            below HK$20 million</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;padding-left:4%;">
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">Export of Goods / Export of Services</p>
+                        <p class="p2">{clconfirmationpagedata.type}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_1-of-12">
+                        &nbsp;
+                    </div>
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">Harmonized Code</p>
+                        <p class="p2">{clconfirmationpagedata.harmonized_code}&nbsp;</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;padding-left:4%;">
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">Policy Holder</p>
+                        <p class="p2">{clconfirmationpagedata.policy_holder}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_1-of-12">
+                        &nbsp;
+                    </div>
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">Application Amount(HKD)</p>
+                        <p class="p6">${clconfirmationpagedata.application_amount}&nbsp;</p>
+                        <p class="p7">You are holding a valid credit limit of
+                            HK${clconfirmationpagedata.application_amount} or a discretionary credit limit
+                            on this buyer, please confirm if you would like to proceed the application</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;padding-left:4%;">
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">{buyer_label} Code</p>
+                        <p class="p2">{clconfirmationpagedata.buyer_code}</p>
+                    </div>
+                    <div class="slds-size_1-of-12">
+                        &nbsp;
+                    </div>
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">Payment Terms</p>
+                        <p class="p2">{clconfirmationpagedata.payment_terms}&nbsp;</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;padding-left:4%;">
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">{buyer_label} Country/ Market</p>
+                        <p class="p2">{clconfirmationpagedata.buyer_country}</p>
+                    </div>
+                    <div class="slds-size_1-of-12">
+                        &nbsp;
+                    </div>
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">Country/ Market of Shipment (Port of Loading)</p>
+                        <p class="p2">{clconfirmationpagedata.shipment_country}&nbsp;</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;padding-left:4%;">
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">{buyer_label} Name (In English)</p>
+                        <p class="p2">{clconfirmationpagedata.buyer_name}</p>
+                    </div>
+                    <div class="slds-size_1-of-12">
+                        &nbsp;
+                    </div>
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">Destination Country / Market</p>
+                        <p class="p2">{clconfirmationpagedata.destination_country}&nbsp;</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;padding-left:4%;">
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">{buyer_label} Address (In English)</p>
+                        <p class="p5">4327 Saint Francis Way, Warminister, PA, 18974</p>
+                    </div>
+                    <div class="slds-size_1-of-12">
+                        &nbsp;
+                    </div>
+                    <div class="slds-size_5-of-12">
+                        <p class="p1">Does this {buyer_label_small} have any unpaid, shipments (whether due or not)?</p>
+                        <template if:true={clconfirmationpagedata.unpaid_shipment}>
+                            <p class="p5">Yes</p>
+                        </template>
+                        <template if:false={clconfirmationpagedata.unpaid_shipment}>
+                            <p class="p5">No</p>
+                        </template>
+                    </div>
+                </div>
+                <hr class="hr1" />
+                <p class="p8" style="padding-left:4%;">We declare that the information given in this application is, to
+                    the best of our knowledge,
+                    complete, true and correct.</p>
+                <p class="p8" style="padding-left:4%;">We declare that our annual sales turnover is below HK$20 million.
+                </p>
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;">
+                    <div class="slds-size_4-of-12">
+                        &nbsp;
+                    </div>
+                    <div class="slds-size_4-of-12">
+                        <button style="color: white;background-color:rgb(133 126 126);border-radius:20px;"
+                            class="slds-button slds-button_neutral">Back to Credit Limit Application</button>
+                        <button style="color: white;background-color:rgb(216, 38, 38);border-radius:20px;"
+                            class="slds-button slds-button_neutral" onclick={handleConfirm}>Confirm</button>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div if:true={showCheckFacilityModal}>
+        <c-cl-check-facility policydetail={policydetail} ondisplayclfacilitychange={handleDisplayccfmodal}></c-cl-check-facility>
+    </div>
+</template>

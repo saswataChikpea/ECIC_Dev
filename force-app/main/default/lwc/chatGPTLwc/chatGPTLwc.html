@@ -1,0 +1,57 @@
+<template>
+    <div>
+    <template if:true={showChatButtton}>
+        <a class="float" onclick={handleChatNav}>
+            <lightning-icon icon-name="utility:chat" alternative-text="Chat" title="Chat" class="mTop"></lightning-icon>
+        </a>
+    </template>
+    <div class="float2">
+    <template if:true={showChat}>
+          <div class="chatbox-wrapper">
+            <div class="chatbox-message-wrapper">
+                <div class="chatbox-message-header">
+                    <div class="chatbox-message-profile">
+                         <lightning-icon icon-name="utility:user" alternative-text="User" title="User" class="chatbox-message-image"></lightning-icon>
+					<div>
+						<h4 class="chatbox-message-name">Chat GPT AI</h4>
+						<p class="chatbox-message-status">online</p>
+					</div>
+                    </div>
+                    <div class="chatbox-message-dropdown">
+                        <!-- <button onclick={handleClose}>Close</button> -->
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" title="Close" onclick={handleClose} style="cursor:pointer;"></lightning-icon>
+                    </div>
+                </div>
+                <div class="chatbox-message-content slds-scrollable_y" ref="messagesDiv" style="height:25rem;">
+                    <!-- <h4 class="chatbox-message-no-message">You don't have message yet!</h4> -->
+                                    <template for:each={messages} for:item="message">
+                                        <template if:true={message.type}>
+                                            <div key={message.id} class="chatbox-message-item sent">
+                                                <span class="chatbox-message-item-text">{message.content}</span>
+                                                <!-- <span class="chatbox-message-item-time">{message.timestamp}</span> -->
+                                            </div>
+                                        </template>
+                                        <template if:false={message.type}>
+                                            <div key={message.id} class="chatbox-message-item received">
+                                                <span class="chatbox-message-item-text">{message.content}</span>
+                                                <!-- <span class="chatbox-message-item-time">{message.timestamp}</span> -->
+                                            </div>
+                                        </template>
+                                    </template>
+                </div>
+            
+            <div class="chatbox-message-bottom">
+                <form action="#" class="chatbox-message-form" onsubmit={handleFormSubmit}>
+                    <input type="text" value={messageInput} oninput={handleInputChange} class="chatbox-message-input" placeholder="Type your message" />
+
+					<button type="submit" class="chatbox-message-submit" onclick={handleSendMessage}>
+                        <lightning-icon icon-name="utility:send" alternative-text="Send" title="Send" style="cursor:pointer;"></lightning-icon>
+                    </button>
+				</form>
+            </div>
+          </div>
+        </div>
+    </template>
+    </div>
+</div>
+</template>

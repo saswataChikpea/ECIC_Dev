@@ -1,0 +1,1573 @@
+<apex:page controller="PolicyDocument_Pdf_controller" 
+    sidebar="false" 
+    showHeader="false" 
+    standardStylesheets="false"
+    applyBodyTag="false"
+    renderAs="PDF">
+    <apex:stylesheet value="{!$Resource.PolicyScheduleTwo}" />
+    <head>
+        <style>
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-left: .5in;
+                margin-right: .5in;
+                margin-bottom: 100px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+            
+            div.header {
+                position: running(header);
+            }
+            div.footer {     
+                /* padding: 1px; */
+                position: running(footer);
+            }
+            .pagenumber:before {
+                content: counter(page);
+            }
+            .pagecount:before {
+                content: counter(pages);
+            }
+            .company_addr{
+                float: left;
+                font-size: 8.5px;
+                color: #000;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        
+
+        <apex:outputPanel rendered="{!Policy_Type == 'SUP'}">
+            <div class="header">
+                <!-- <header style="padding-top:10px;"> -->
+                    <img src="{!$Resource.ECIC_logo}" width="300" height="50" alt="logo" />
+                    <h3 class="heading">
+                        <u><span>SELF-UNDERWRITTEN POLICY (SUP) - SCHEDULE II (PART 1)</span></u>
+                    </h3>
+                <!-- </header> -->
+            </div>
+            
+            <div class="policy_number">
+                    <span class="title">Policy Number:</span>
+                    <span>{!Policy_Number}</span>
+            </div>
+            <div class="issue_date">
+                    <span class="title">Issue Date:</span>
+                    {!scheduleTwoIssueDate}
+                    <!-- <apex:outputText styleClass="output_date" value="{0,date,MMMM d ',' yyyy}">
+                        <apex:param value="{!Policy_Issue_Date}" />
+                    </apex:outputText> -->
+            </div>
+            <div class="effective_date">
+                    <span class="title">Effective Date:</span>
+                    <!-- <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                        <apex:param value="{!Policy_Schedule}" />
+                    </apex:outputText> -->
+                    {!scheduleTwoEffectiveDate}
+            </div>
+            <div class="para">
+                <p>
+                    The Policyholder must pay premium within 14 days from the date of an invoice in accordance with Clause 11 of the SUP and
+                    the following terms:
+                </p>
+                <br/><br/>
+                <b>Premium Rate: {!baseRatePerAnnum}%</b>
+            </div>
+           <!-- <div class="small_heading">
+                <div>
+                    <span class="title sub_heading">Premium Rates Table [Clause 11]</span>
+                </div>
+
+                <br/>
+                <div class="table">
+                    <div>
+                        <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                            <tbody>
+                                <tr style="height: 47px;" class="table_head">
+                                    <td style="width: 16.6667%; height: 89px;text-align: center;" rowspan="3">Buyer's Country/Market Group Specified in Part2
+                                    </td>
+                                    <td style="width: 83.3335%; height: 47px; text-align: center;" colspan="5">
+                                        <span>Premium Rates Per HKD100
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="height: 21px;" class="table_head">
+                                    <td style="width: 16.6667%; height: 42px; text-align: center;" rowspan="2">DP</td>
+                                    <td style="width: 66.6668%; height: 21px; text-align: center;" colspan="4">DA and OA - Period of credit
+                                    </td>
+                                </tr>
+                                <tr style="height: 21px;" class="table_head">
+                                    <td style="text-align: center;">up to 30 days</td>
+                                    <td style="text-align: center;">31-60 days</td>
+                                    <td style="text-align: center;">61-90 days</td>
+                                    <td style="text-align: center;">91-180 days</td>
+                                </tr>
+                                <tr style="height: 21px;">
+                                    <td class="bottom_td table_head" style="text-align: center;">
+                                        <strong>A</strong>
+                                    </td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <p style="font-size:8px;margin-top:500px;">
+                    <small>COMPANY_ADDRESS»</small>
+                </p>
+                <div class="empty_sup"></div>
+                <img src="{!$Resource.ECIC_CL_LOGO}" width="300" height="50" alt="logo" />
+                <p style="font-size:13.33px;font-weight:bold;text-decoration:underline;text-align:center;">SCHEDULE II (PART 2)</p>
+                <div style="font-size:10px;font-weight:bold;">
+                    <p>
+                        <u>Country/Market Group [Sub-clause 3.3]</u>
+                    </p>
+                </div>
+                <div class="left_table">
+                    <table border="1" style="width: 100%;" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr class="part2">
+                                <td align="center">
+                                    <b>COUNTRY/ MARKET</b>
+                                </td>
+                                <td align="center">
+                                    <b>CODE</b>
+                                </td>
+                                <td align="center">
+                                    <b>GROUP</b>
+                                </td>
+                                <td align="center">
+                                    <b>SPECIAL
+                                        <br />CONDITIONS</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Aland Islands</td>
+                                <td>ALA</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td class="country_name">Algeria</td>
+                                <td>DZA</td>
+                                <td>C</td>
+                                <td>1 (9 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">American Samoa</td>
+                                <td>ASM</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Andorra</td>
+                                <td>AND</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Angola</td>
+                                <td>AGO</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Anguilla</td>
+                                <td>AIA</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Argentina</td>
+                                <td>ARG</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Aruba</td>
+                                <td>ABW</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Australia</td>
+                                <td>AUS</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Austria</td>
+                                <td>AUT</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Azerbaijan</td>
+                                <td>AZE</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bahamas</td>
+                                <td>BHS</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bahrain</td>
+                                <td>BHR</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bangladesh</td>
+                                <td>BGD</td>
+                                <td>C</td>
+                                <td>1 (6 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Barbados</td>
+                                <td>BRB</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Belgium</td>
+                                <td>BEL</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Benin</td>
+                                <td>BEN</td>
+                                <td>C</td>
+                                <td>1 (12 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bermuda</td>
+                                <td>BMU</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bhutan</td>
+                                <td>BTN</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bolivia (Plurinational State of)</td>
+                                <td>BOL</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bonaire, SintEustatius and Saba</td>
+                                <td>BES</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Botswana</td>
+                                <td>BWA</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bouvet Island</td>
+                                <td>BVT</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Brazil</td>
+                                <td>BRA</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">British Indian OceanTerritory</td>
+                                <td>IOT</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Brunei Darussalam</td>
+                                <td>BRN</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Bulgaria</td>
+                                <td>BGR</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Burkina Faso</td>
+                                <td>BFA</td>
+                                <td>C</td>
+                                <td>1 (6 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Cabo Verde</td>
+                                <td>CPV</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Cameroon</td>
+                                <td>CMR</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Canada</td>
+                                <td>CAN</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Cayman Islands</td>
+                                <td>CYM</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Chile</td>
+                                <td>CHL</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">China</td>
+                                <td>CHN</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Christmas Island</td>
+                                <td>CXR</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Cocos (Keeling) Islands</td>
+                                <td>CCK</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Colombia</td>
+                                <td>COL</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Comoros</td>
+                                <td>COM</td>
+                                <td>C</td>
+                                <td>1 (12 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Cook Islands</td>
+                                <td>COK</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Costa Rica</td>
+                                <td>CRI</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Croatia</td>
+                                <td>HRV</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Curacao</td>
+                                <td>CUW</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Cyprus</td>
+                                <td>CYP</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Czechia</td>
+                                <td>CZE</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Denmark</td>
+                                <td>DNK</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Djibouti</td>
+                                <td>DJI</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Dominica</td>
+                                <td>DMA</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Dominican Republic</td>
+                                <td>DOM</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="font-size:8.5px;text-align:left">ECIC 807 1/4/2021</p>
+
+                </div>
+                <div class="right_table">
+                    <table border="1" style="width: 100%;" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr class="part2">
+                                <td align="center">
+                                    <b>COUNTRY/ MARKET</b>
+                                </td>
+                                <td align="center">
+                                    <b>CODE</b>
+                                </td>
+                                <td align="center">
+                                    <b>GROUP</b>
+                                </td>
+                                <td align="center">
+                                    <b>SPECIAL
+                                        <br />CONDITIONS</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Ecuador</td>
+                                <td>ECU</td>
+                                <td>C</td>
+                                <td>1 (9 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Egypt</td>
+                                <td>EGY</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">El Salvador</td>
+                                <td>SLV</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Equatorial Guinea</td>
+                                <td>GNQ</td>
+                                <td>C</td>
+                                <td>1 (9 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Estonia</td>
+                                <td>EST</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Eswatini</td>
+                                <td>SWZ</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Ethiopia</td>
+                                <td>ETH</td>
+                                <td>C</td>
+                                <td>1 (9 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Falkland Islands (Malvinas)</td>
+                                <td>FLK</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Faroe Islands</td>
+                                <td>FRO</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Fiji</td>
+                                <td>FJI</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Finland</td>
+                                <td>FIN</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">France</td>
+                                <td>FRA</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">French Guiana</td>
+                                <td>GUF</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">French Polynesia</td>
+                                <td>PYF</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">French Southern Territories</td>
+                                <td>ATF</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Gabon</td>
+                                <td>GAB</td>
+                                <td>C</td>
+                                <td>1 (6 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Germany</td>
+                                <td>DEU</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Ghana</td>
+                                <td>GHA</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Gibraltar</td>
+                                <td>GIB</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Greece</td>
+                                <td>GRC</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Greenland</td>
+                                <td>GRL</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Guadeloupe</td>
+                                <td>GLP</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Guam</td>
+                                <td>GUM</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Guatemala</td>
+                                <td>GTM</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Guernsey</td>
+                                <td>GGY</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Heard Island and McDonald Islands</td>
+                                <td>HMD</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Holy See</td>
+                                <td>VAT</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Honduras</td>
+                                <td>HND</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Hungary</td>
+                                <td>HUN</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Iceland</td>
+                                <td>ISL</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <td class="country_name">India</td>
+                                <td>IND</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Indonesia</td>
+                                <td>IDN</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Ireland</td>
+                                <td>IRL</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Isle of Man</td>
+                                <td>IMN</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Israel</td>
+                                <td>ISR</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Italy</td>
+                                <td>ITA</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Jamaica</td>
+                                <td>JAM</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Japan</td>
+                                <td>JPN</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Jersey</td>
+                                <td>JEY</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Jordan</td>
+                                <td>JOR</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Kazakhstan</td>
+                                <td>KAZ</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Kenya</td>
+                                <td>KEN</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Korea, Republic of</td>
+                                <td>KOR</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Kuwait</td>
+                                <td>KWT</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Lao People’s Democratic Republic</td>
+                                <td>LAO</td>
+                                <td>C</td>
+                                <td>1 (6 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Latvia</td>
+                                <td>LVA</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Lesotho</td>
+                                <td>LSO</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Liechtenstein</td>
+                                <td>LIE</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="font-size:8.5px;text-align:left">ECIC 807 1/4/2021</p>
+
+                <div style="margin-top:850px;"></div>
+                <div class="left_table">
+                    <table border="1" style="width: 100%;" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr class="part2">
+                                <td align="center">
+                                    <b>COUNTRY/ MARKET</b>
+                                </td>
+                                <td align="center">
+                                    <b>CODE</b>
+                                </td>
+                                <td align="center">
+                                    <b>GROUP</b>
+                                </td>
+                                <td align="center">
+                                    <b>SPECIAL
+                                        <br />CONDITIONS</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Lithuania</td>
+                                <td>LTU</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                                <tr>
+                                    <td class="country_name">Luxembourg</td>
+                                    <td>LUX</td>
+                                    <td>A</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Macao</td>
+                                    <td>MAC</td>
+                                    <td>A</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Malaysia</td>
+                                    <td>MYS</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Maldives</td>
+                                    <td>MDV</td>
+                                    <td>C</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Malta</td>
+                                    <td>MLT</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Martinique</td>
+                                    <td>MTQ</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Mauritius</td>
+                                    <td>MUS</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Mayotte</td>
+                                    <td>MYT</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Mexico</td>
+                                    <td>MEX</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Monaco</td>
+                                    <td>MCO</td>
+                                    <td>A</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Mongolia</td>
+                                    <td>MNG</td>
+                                    <td>C</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Montserrat</td>
+                                    <td>MSR</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Morocco</td>
+                                    <td>MAR</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Myanmar</td>
+                                    <td>MMR</td>
+                                    <td>C</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Namibia</td>
+                                    <td>NAM</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Nepal</td>
+                                    <td>NPL</td>
+                                    <td>C</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Netherlands</td>
+                                    <td>NLD</td>
+                                    <td>A</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">New Caledonia</td>
+                                    <td>NCL</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">New Zealand</td>
+                                    <td>NZL</td>
+                                    <td>A</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Niger</td>
+                                    <td>NER</td>
+                                    <td>C</td>
+                                    <td>1 (9 months), 2, 3</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Nigeria</td>
+                                    <td>NGA</td>
+                                    <td>C</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Niue</td>
+                                    <td>NIU</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Norfolk Island</td>
+                                    <td>NFK</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Northern Mariana Islands</td>
+                                    <td>MNP</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Norway</td>
+                                    <td>NOR</td>
+                                    <td>A</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Oman</td>
+                                    <td>OMN</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Pakistan</td>
+                                    <td>PAK</td>
+                                    <td>C</td>
+                                    <td>1 (6 months), 2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Panama</td>
+                                    <td>PAN</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Papua NewGuinea</td>
+                                    <td>PNG</td>
+                                    <td>C</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Paraguay</td>
+                                    <td>PRY</td>
+                                    <td>C</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Peru</td>
+                                    <td>PER</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Philippines</td>
+                                    <td>PHL</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Pitcairn</td>
+                                    <td>PCN</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Poland</td>
+                                    <td>POL</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Portugal</td>
+                                    <td>PRT</td>
+                                    <td>A</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Puerto Rico</td>
+                                    <td>PRI</td>
+                                    <td>B</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Qatar</td>
+                                    <td>QAT</td>
+                                    <td>A</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Reunion</td>
+                                    <td>REU</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Romania</td>
+                                    <td>ROU</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Russian Federation</td>
+                                    <td>RUS</td>
+                                    <td>B</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Saint Barthelemy</td>
+                                    <td>BLM</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="country_name">Saint Helena, Ascension and Tristan Da Cunha</td>
+                                    <td>SHN</td>
+                                    <td>B</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="right_table">
+                    <table border="1" style="width: 100%;" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr class="part2">
+                                <td align="center">
+                                    <b>COUNTRY/ MARKET</b>
+                                </td>
+                                <td align="center">
+                                    <b>CODE</b>
+                                </td>
+                                <td align="center">
+                                    <b>GROUP</b>
+                                </td>
+                                <td align="center">
+                                    <b>SPECIAL
+                                        <br />CONDITIONS</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Saint Lucia</td>
+                                <td>CLA</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Saint Martin (French Part)</td>
+                                <td>MAF</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Saint Pierre and Miquelon</td>
+                                <td>SPM</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Saint Vincent and the Grenadines</td>
+                                <td>VCT</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Samoa</td>
+                                <td>WSM</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">San Marino</td>
+                                <td>SMR</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Sao Tome and Principe</td>
+                                <td>STP</td>
+                                <td>C</td>
+                                <td>1 (9 months), 2, 3</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Saudi Arabia</td>
+                                <td>SAU</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Serbia</td>
+                                <td>SRB</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Senegal</td>
+                                <td>SEN</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Seychelles</td>
+                                <td>SYC</td>
+                                <td>C</td>
+                                <td>1 (9 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Singapore</td>
+                                <td>SGP</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Sint Maarten (Dutch Part)</td>
+                                <td>SXM</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Slovakia</td>
+                                <td>SVK</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Slovenia</td>
+                                <td>SVN</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Solomon Islands</td>
+                                <td>SLB</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">South Africa</td>
+                                <td>ZAF</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">South Georgia and the South Sandwich Islands</td>
+                                <td>SGS</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Spain</td>
+                                <td>ESP</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Sri Lanka</td>
+                                <td>LKA</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Suriname</td>
+                                <td>SUR</td>
+                                <td>C</td>
+                                <td>1 (9 months), 2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Svalbard and Jan Mayen</td>
+                                <td>SJM</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Sweden</td>
+                                <td>SWE</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Switzerland</td>
+                                <td>CHE</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Taiwan</td>
+                                <td>TWN</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Thailand</td>
+                                <td>THA</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Togo</td>
+                                <td>TGO</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Tokelau</td>
+                                <td>TLK</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Tonga</td>
+                                <td>TON</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Trinidad and Tobago</td>
+                                <td>TTO</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Tunisia</td>
+                                <td>TUN</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Turkey</td>
+                                <td>TUR</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Turks and Caicos Islands</td>
+                                <td>TCA</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">United Arab Emirates</td>
+                                <td>ARE</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">United Kingdom</td>
+                                <td>GBR</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">United States of America</td>
+                                <td>USA</td>
+                                <td>A</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Uruguay</td>
+                                <td>URY</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Vanuatu</td>
+                                <td>VUT</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Vietnam</td>
+                                <td>VNM</td>
+                                <td>C</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Virgin Islands, British</td>
+                                <td>VGB</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Virgin Islands, U.S.</td>
+                                <td>VIR</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="country_name">Wallis and Futuna</td>
+                                <td>WLF</td>
+                                <td>B</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="notes">
+                <p>
+                    <u>Notes :</u>
+                </p>
+                <p>
+
+                    <p class="notes_para">1. SPECIAL CONDITION 1 indicates an extension of the date of loss specified in Sub-clause 62.4 from 4
+                        months to the number of months shown in the brackets for such countries/markets.</p>
+                    <p class="notes_para">2. SPECIAL CONDITION 2 indicates that notwithstanding anything contained in Sub-clause 3.3, the Policyholder
+                        must apply for a specific Endorsement from ECIC.</p>
+                    <p class="notes_para">3. SPECIAL CONDITION 3 indicates that cover is only provided under the payment term of irrevocable letter
+                        of credit (ILC).</p>
+                    <p class="notes_para">4. Please inform ECIC if the Policyholder has any insurable shipments made to countries/markets other
+                        than those listed in Schedule II. ECIC may add such countries/markets and their respective premium
+                        rates to Schedule II or may exclude them from cover.
+                    </p>
+                    <p class="notes_para">5. This Schedule II (Part 2) takes effect from 1 April 2021 and is valid until it is superseded.</p>
+                </p>
+            </div> -->
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!Policy_Type == 'SBP'}">
+            <div class="header">
+                <!-- <header style="padding-top:10px;"> -->
+                    <img src="{!$Resource.ECIC_logo}" width="300" height="50" alt="logo" />
+                    
+                <!-- </header> -->
+            </div>
+            <h3 class="heading">
+                <u><span>SMALL BUSINESS POLICY (SBP) - SCHEDULE II (PART 1)</span></u>
+            </h3>
+            
+            <div class="policy_number">
+                <span class="title">Policy Number:</span>
+                <span>{!Policy_Number}</span>
+            </div>
+            <div class="issue_date">
+                <span class="title">Issue Date:</span>
+                <!-- <apex:outputText styleClass="output_date" value="{0,date,MMMM d ',' yyyy}">
+                    <apex:param value="{!Policy_Issue_Date}" />
+                </apex:outputText> -->
+                {!scheduleTwoIssueDate}
+            </div>
+            <div class="effective_date">
+                <span class="title">Effective Date:</span>
+                <!-- <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                    <apex:param value="{!Policy_Schedule}" />
+                </apex:outputText> -->
+                {!scheduleTwoEffectiveDate}
+            </div>
+            
+            <div class="para">
+                <p>The Policyholder must pay premium within 14 days from the date of an invoice in accordance with Clause 11
+                    of the SBP and the following terms:
+                </p>
+            </div>
+            <div class="table">
+                <p style="font-size:13.33px;font-weight:bold;color:#000080;text-decoration:underline;">Premium Rates Table [Clause 11]</p>
+                <table border="1" cellspacing="0" cellpadding="0">
+                    <tbody>
+                        <tr style="height: 47px;" class="table_head">
+                            <td style="width: 16.6667%; height: 89px;text-align: center;" rowspan="3">Buyer's Country/Market Group Specified in Part2
+                            </td>
+                            <td style="width: 83.3335%; height: 47px; text-align: center;" colspan="5">
+                                <span>Premium Rates Per HKD100
+                                </span>
+                            </td>
+                        </tr>
+                        <tr style="height: 21px;" class="table_head">
+                            <td style="width: 16.6667%; height: 42px; text-align: center;" rowspan="2">DP</td>
+                            <td style="width: 66.6668%; height: 21px; text-align: center;" colspan="4">DA and OA - Period of credit
+                            </td>
+                        </tr>
+                        <tr style="height: 21px;" class="table_head">
+                            <td style="text-align: center;">up to 30 days</td>
+                            <td style="text-align: center;">31-60 days</td>
+                            <td style="text-align: center;">61-90 days</td>
+                            <td style="text-align: center;">91-180 days</td>
+                        </tr>
+                        <tr style="height: 21px;">
+                            <td class="bottom_td table_head" style="text-align: center;">
+                                <strong>A</strong>
+                            </td>
+                            <td class="text-align: center;">{!DP}</td>
+                            <td class="text-align: center;">{!DA_OA_0_30}</td>
+                            <td class="text-align: center;">{!DA_OA_31_60}</td>
+                            <td class="text-align: center;">{!DA_OA_61_90}</td>
+                            <td class="text-align: center;">{!DA_OA_91_120}</td>
+                        </tr>
+                        <tr style="height: 21px;">
+                            <td class="table_head bottom_td" style="text-align: center;">
+                                <strong>B/C</strong>
+                            </td>
+                            <td class="text-align: center;">{!DP_NonA}</td>
+                            <td class="text-align: center;">{!DA_OA_0_30_NonA}</td>
+                            <td class="text-align: center;">{!DA_OA_31_60_NonA}</td>
+                            <td class="text-align: center;">{!DA_OA_61_90_NonA}</td>
+                            <td class="text-align: center;">{!DA_OA_91_120_NonA}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table">
+                <p style="font-size:13.33px;font-weight:bold;color:#000080;text-decoration:underline;">Premium Rates For Countries/Markets In Addition To Those Listed In Part 2</p>
+                <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                    <tbody>
+                        <tr class="table_head">
+                            <td style="text-align:center;" rowspan="3">Buyer’s Country/Market</td>
+                            <td style="text-align:center;" rowspan="3">Code</td>
+                            <td style="text-align:center;" colspan="5">Premium Rates Per HKD100</td>
+                            <td style="text-align:center;" rowspan="3">Special Conditions</td>
+                        </tr>
+                        <tr class="table_head">
+                            <td style="text-align:center;" rowspan="2">DP</td>
+                            <td style="text-align:center;" colspan="4">DA and OA - Period of Credit</td>
+                        </tr>
+                        <tr class="table_head">
+                            <td style="text-align:center;">Up to 30 days</td>
+                            <td style="text-align:center;">31-60 days</td>
+                            <td style="text-align:center;">61-90 days</td>
+                            <td style="text-align:center;">91-180 days</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">*</td>
+                            <td style="text-align:center;">*</td>
+                            <td style="text-align:center;">*</td>
+                            <td style="text-align:center;">*</td>
+                            <td style="text-align:center;">*</td>
+                            <td style="text-align:center;">*</td>
+                            <td style="text-align:center;">*</td>
+                            <td style="text-align:center;">*</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="shipment_code">
+                <p style="font-size:13.33px;font-weight:bold;color:#000080;text-decoration:underline;">Countries/Markets of Shipment [Clause 70]</p>
+                <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                    <tbody>
+                        <tr style="height:50px;" class="table_head">
+                            <td style="text-align:center">Countries/Markets of Shipment</td>
+                            <td style="text-align:center">Code</td>
+                        </tr>
+                        <apex:repeat value="{!wrapSbpClause70CountryList}" var="clause70Country" id="clause70CountryId">
+                            <tr>
+                                <td class="country_name">{!clause70Country.name}</td>
+                                <td>{!clause70Country.code}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </div>
+            <div class="notes_para_sbp">
+                <p>
+                    <u>Note:</u>
+                    Please inform HKECIC if the Policyholder has any insurable
+                    <b>shipments</b> made
+                    <br/> from a
+                    <b>country</b>/market of
+                    <b>shipments</b> other than those listed in Schedule II.
+                    <br/> HKECIC may add such
+                    <b>country</b>/market of shipment to Schedule II or may exclude them from cover.</p>
+
+            </div>
+            <!-- <p style="font-size:8px;margin-top:150px;">
+                <small>COMPANY_ADDRESS»</small>
+            </p> -->
+            <div class="empty_sbp"></div>
+            <!-- <img src="{!$Resource.ECIC_CL_LOGO}" width="300" height="50" alt="logo" /> -->
+            <!-- <p style="font-size:13.33px;font-weight:bold;text-decoration:underline;text-align:center;">SCHEDULE II (PART 2)</p> -->
+            <h3 class="heading">
+                <u><span>SCHEDULE II (PART 2)</span></u>
+            </h3>
+            <div style="font-size:10px;font-weight:bold;padding-bottom:10px;">
+                <p>
+                    <u>Country/Market Group [Sub-clause 3.3]</u>
+                </p>
+            </div>
+            <!-- Left table -->
+            <div class="left_table">
+                <table border="1" style="width: 100%;" cellspacing="0" cellpadding="0">
+                    <tbody>
+                        <tr class="part2">
+                            <td align="center"><b>COUNTRY/ MARKET</b></td>
+                            <td align="center"><b>CODE</b></td>
+                            <td align="center"><b>GROUP</b></td>
+                            <td align="center"><b>SPECIAL<br/>CONDITIONS</b></td>
+                        </tr>
+                        <apex:repeat value="{!leftCountryList}" var="countryLeft" id="theRepeatRightCountry">
+                            <tr>
+                                <td class="country_name">{!countryLeft.name}</td>
+                                <td>{!countryLeft.code}</td>
+                                <td>{!countryLeft.countryGroup}</td>
+                                <td>{!countryLeft.condition}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Right Table -->
+            <div class="right_table">
+                <table border="1" style="width: 100%;" cellspacing="0" cellpadding="0">
+                    <tbody>
+                        <tr class="part2">
+                            <td align="center"><b>COUNTRY/ MARKET</b></td>
+                            <td align="center"><b>CODE</b></td>
+                            <td align="center"><b>GROUP</b></td>
+                            <td align="center"><b>SPECIAL<br />CONDITIONS</b></td>
+                        </tr>
+                       
+                        <apex:repeat value="{!rightCountryList}" var="countryRight" id="theRepeatLeftCountry">
+                            <tr>
+                                <td class="country_name">{!countryRight.name}</td>
+                                <td>{!countryRight.code}</td>
+                                <td>{!countryRight.countryGroup}</td>
+                                <td>{!countryRight.condition}</td>
+                            </tr>
+                        </apex:repeat>
+                       
+                    </tbody>
+                </table>
+            </div>
+            <!-- <div style="margin-top:850px;"></div> -->
+            
+            <div class="notes">
+                <p>
+                    <u>Notes :</u>
+                </p>
+                <p>
+
+                    <p class="notes_para">1. SPECIAL CONDITION 1 indicates an extension of the date of loss specified in Sub-clause 62.4 from 4
+                        months to the number of months shown in the brackets for such countries/markets.</p>
+                    <p class="notes_para">2. SPECIAL CONDITION 2 indicates that notwithstanding anything contained in Sub-clause 3.3, the Policyholder
+                        must apply for a specific Endorsement from ECIC.</p>
+                    <p class="notes_para">3. SPECIAL CONDITION 3 indicates that cover is only provided under the payment term of irrevocable letter
+                        of credit (ILC).
+                    </p>
+                    <p class="notes_para">4. Please inform ECIC if the Policyholder has any insurable shipments made to countries/markets other
+                        than those listed in Schedule II. ECIC may add such countries/markets and their respective premium
+                        rates to Schedule II or may exclude them from cover.
+                    </p>
+                    <p class="notes_para">5. This Schedule II (Part 2) takes effect from 1 April 2021 and is valid until it is superseded.</p>
+                </p>
+            </div>
+
+        </apex:outputPanel>
+        <div class="footer">
+            <p align="right">Page<span class="pagenumber" /> of <span class="pagecount" />&nbsp;&nbsp;</p> 
+
+            <!-- <div class="company_addr">
+                <p align="right">Page<span class="pagenumber" /> of <span class="pagecount" />&nbsp;&nbsp;</p> 
+
+            </div> -->
+        </div>
+        <div style="page-break-after:auto;" />
+        <div style="page-break-before:auto;" />
+    </body>
+</apex:page>

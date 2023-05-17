@@ -1,0 +1,68 @@
+<apex:page controller="policyCMSDocumentController" 
+    standardStylesheets="true" 
+    showHeader="false"
+    renderAs="PDF">
+    <apex:stylesheet value="{!$Resource.PolicyScheduleFour}" />
+<!-- <apex:page showHeader="false" sidebar="false" renderAs="PDF">
+    <apex:includeLightning />  
+    <div id="LightningComponentid" />   
+    <script>
+        $Lightning.use("c:AppToLinkLwcToVF", function() {
+        $Lightning.createComponent("c:policyCmsContentTermAndCondition",
+          { 
+              'policy-number':'PL-000000002',
+              'product-title':'OMBP',
+              'policy-product-name':'OMBPP'
+          },
+          "LightningComponentid",
+          function(cmp) {
+             console.log('LWC Salesforce driller added in VF page');
+          });
+    });
+    </script> -->
+    <head>
+        <style>
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-left: .5in;
+                margin-right: .5in;
+                margin-bottom: 150px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+            
+            div.header {
+                position: running(header);
+            }
+            div.footer {     
+                /* padding: 1px; */
+                /* bottom:0; */
+                position: running(footer);
+            }
+            .pagenumber:before {
+                content: counter(page);
+            }
+            .pagecount:before {
+                content: counter(pages);
+            }
+            .company_addr{
+                float: left;
+                font-size: 8.5px;
+                color: #000;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Term
+        </div>
+        <apex:outputText value="{!policyTermHeaderContent}" escape="false" />
+       
+    </body>
+</apex:page>

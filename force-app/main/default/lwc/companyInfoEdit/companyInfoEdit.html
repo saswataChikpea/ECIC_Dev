@@ -1,0 +1,159 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class=" inner-container">
+            
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_11-of-12 slds-medium-size--5-of-6 slds-size--2-of-2"><p class="p1">Company Information</p></div>
+                <div class="slds-size_1-of-12">
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" title="Close" onclick={closeModal}></lightning-icon>
+                </div>
+            </div>
+            
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Registered_Company_Name}<span style="color:red">*</span><span style="color:red;font-size:xx-small;vertical-align: text-top;"> #</span></p>
+                    <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                            onchange={handleCompanyName} disabled={companyinfo.Is_Under_Review__c} value={company_name}></lightning-input>
+                            <hr class="hr2"/>
+                            <p class="p1" style="padding-top: 4%;">{label.Registered_Company_Address}<span style="color:red">*</span><span style="color:red;font-size:xx-small;vertical-align: text-top;"> #</span></p>
+                            <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                                onchange={handleRegAddressLine1} disabled={companyinfo.Is_Under_Review__c} value={reg_address_line1}></lightning-input>
+                            <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                                onchange={handleRegAddressLine2} disabled={companyinfo.Is_Under_Review__c} value={reg_address_line2}></lightning-input>
+                            <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                                onchange={handleRegAddressLine3} disabled={companyinfo.Is_Under_Review__c} value={reg_address_line3}></lightning-input>
+                            <p class="p1" style="padding-top: 4%;">{label.Registered_Territory}<span style="color:red;font-size:xx-small;vertical-align: text-top;"> #</span></p>
+                            <lightning-combobox
+                                value={reg_territory_value}
+                                placeholder="Select Territory"
+                                options={territory_options}
+                                variant="label-hidden"
+                                onchange={handleTerrytoryChange}
+                                class="input1"
+                                disabled={companyinfo.Is_Under_Review__c}
+                            >                                
+                            </lightning-combobox>
+                            <p class="p1" style="padding-top: 4%;">{label.Registered_District}<span style="color:red;font-size:xx-small;vertical-align: text-top;"> #</span></p>
+                            <lightning-combobox
+                                value={reg_district_value}
+                                placeholder="Select District"
+                                options={registeredDistrictOptions}
+                                variant="label-hidden"
+                                onchange={handleDistrictChange}
+                                class="input1"
+                                disabled={companyinfo.Is_Under_Review__c}
+                            >                                
+                            </lightning-combobox>
+                            <p class="p1" style="margin-top: 2%;padding-top:4%;">{label.CP_Effective_Date}<span style="color:red">*</span></p>
+                    <lightning-input type="date" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                    onchange={handleEffectiveDate} disabled={companyinfo.Is_Under_Review__c} value="" min={min_effective_date}></lightning-input>
+                            <hr class="hr2"/>
+                            <p class="p1" style="margin-top: 2%;padding-top:4%;">{label.Office_Telephone_No}<span style="color:red">*</span></p>
+                    <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                        onchange={handleTelNo} value={tel_no}></lightning-input>
+                        <p class="p1" style="padding-top: 4%;">{label.Goods_Services}<span style="color:red">*</span></p>
+                    <lightning-combobox
+                        value={goods_value}
+                        placeholder={label.Select_Goods_or_Services}
+                        options={goods_options}
+                        variant="label-hidden"
+                        onchange={handleGoodChange}
+                        class="input1"
+                    >                                
+                    </lightning-combobox>
+                            <p class="p1" style="padding-top: 4%;">{label.Upload_BR_Certificate_to_confirm}</p>
+                            <lightning-file-upload
+                                record-id={acc_id}
+                                accept={acceptedFormats}
+                                name="fileUploader"
+                                onuploadfinished={handleUploadFinished}
+                                multiple>
+                            </lightning-file-upload>
+                            <p class="p5" style="padding-top: 2%;">{document_name}</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Business_Registration_Number}<span style="color:red">*</span></p>
+                    <lightning-input type="counter" maxlength="8" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                     onchange={handleRegNo} value={reg_no} disabled></lightning-input>
+                     <!-- <p class="p5" style="padding-top: 2%;">{reg_no}&nbsp;</p> -->
+                            <hr class="hr2"/>
+                                <p class="p1" style="padding-top: 4%;">{label.Correspondence_Company_Address}<span style="color:red">*</span></p>
+                                <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                                    onchange={handleCorsAddressLine1} value={cor_address_line1}></lightning-input>
+                                <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                                    onchange={handleCorsAddressLine2} value={cor_address_line2}></lightning-input>
+                                <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                                    onchange={handleCorsAddressLine3} value={cor_address_line3}></lightning-input>
+                                <p class="p1" style="padding-top: 4%;">{label.Correspondence_Territory}</p>
+                                <lightning-combobox
+                                    value={cor_territory_value}
+                                    placeholder="Select Territory"
+                                    options={territory_options}
+                                    variant="label-hidden"
+                                    onchange={handleCorsTerrytoryChange}
+                                    class="input1"
+                                >                                
+                                </lightning-combobox>
+                                <p class="p1" style="padding-top: 4%;">{label.Correspondence_District}</p>
+                                
+                                <lightning-combobox
+                                    value={cor_district_value}
+                                    placeholder="Select District"
+                                    options={correspondenceDistrictOptions}
+                                    variant="label-hidden"
+                                    onchange={handleCorsDistrictChange}
+                                    class="input1"
+                                >                                
+                                </lightning-combobox>
+                                <hr class="hr2"/>
+                    <p class="p1" style="padding-top: 4%;">{label.Legal_Type}<span style="color:red">*</span></p>
+                    <lightning-combobox
+                        value={legal_value}
+                        placeholder={label.Select_Legal_Type}
+                        options={legal_options}
+                        variant="label-hidden"
+                        onchange={handleLegalChange}
+                        class="input1"
+                        style="margin-top: 2%;"
+                    >                                
+                    </lightning-combobox>
+                    
+                    <p class="p1" style="padding-top: 6%;">Mobile Number<span style="color:red">*</span></p>
+                        <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                            onchange={handleMobileNo} value={mob_no}></lightning-input>
+                    
+                    <p class="p1" style="padding-top: 4%;">{label.Language_Of_Correspondence}</p>
+                    <!-- <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden" class="input1"
+                        onchange={handleLanguage} value={language_correspondence}></lightning-input> -->
+                    <lightning-combobox
+                        value={language_correspondence}
+                        placeholder="Select Language of Correspondence"
+                        options={language_option}
+                        variant="label-hidden"
+                        onchange={handleLanguage}
+                        class="input1"
+                        style="margin-top: 2%;"
+                    >                                
+                    </lightning-combobox>
+                    <lightning-input style="padding-top: 4%;" type="checkbox" label={label.Bank_account}
+                        checked={bank_acc} disabled
+                        onchange={handleBankAcc}></lightning-input>
+                </div>
+            </div>
+            <template if:true={show_confirmation}>
+                <p style="text-align: center; color:red;padding-top:1%;padding-bottom:1%;">{label.request_is_being_processed}</p>
+                <button style="color: rgb(107, 70, 70);background-color:rgb(216, 38, 38);border-radius:10px;margin-left:40%;"
+                class="slds-button slds-button_neutral" onclick={closeModal}>{label.OK}</button>    
+            </template>
+            <template if:false={show_confirmation}>
+                <button style="color: white;background-color:rgb(216, 38, 38);border-radius:10px;margin-left:40%;"
+                class="slds-button slds-button_neutral" onclick={handleUpdate}>{label.Update}</button>    
+            </template>
+            <p class="p5" style="padding-top: 2%;"><span style="color:red">*</span>&nbsp;Required field</p>
+    <p class="p5" style="padding-top: 2%;"><span style="color:red;font-size:xx-small;vertical-align: text-top;"> #</span>&nbsp;BR upload required</p>
+            
+        </div>
+    </section>
+    
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

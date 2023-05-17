@@ -1,0 +1,108 @@
+.card {
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    margin: 0px 8px 0px;
+    width: calc(33.3333% - 40px);
+    /* 1/3 minus the margins (20+20) */
+    padding: 10px;
+    text-align: center;
+    color: #f00;
+    float: left;
+  }
+.text_align_center{
+    text-align: center;
+}
+.avatar_custom_dim{
+    height: 4rem;
+    width: 4rem;
+}
+.product_card_container{
+    padding: 50px;
+}
+.table_container{
+    padding: 0 50px 50px 50px;
+}
+.table_container table{
+    border: 1px solid #dddddd;
+}
+.table_container table td{
+    padding: 15px 0;
+}
+.table_container table th{
+    padding: 15px 0;
+}
+.th_style_c{
+    background-color: #fff;
+    border: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(221, 219, 218));
+    border-top: none;
+}
+.td_border{
+    border: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(221, 219, 218))
+}
+.custom_border{
+    border-top: none;
+    border-bottom: none;
+    border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(221, 219, 218));
+    border-right: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(221, 219, 218));
+}
+.red_bold{
+    color: red;
+    font-weight: bold;
+}
+.ibanner_img{
+    width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+.banner_img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.mt_2{
+    margin-top: 2rem;
+}
+.item_center{
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+.display_flex{
+    display: flex;
+}
+
+.round_div{
+        border-radius: 50%;
+        behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+        width: 100px;
+        height: 100px;
+        background: yellow;
+}
+.card1 {
+    border-radius: 10px;
+    margin: .5rem;
+    /* width: calc(33.3333% - 40px); */
+    /* 1/3 minus the margins (20+20) */
+    width: 200px;
+    height: 120px;
+    text-align: center;
+  
+    /* --sds-c-badge-border-radius: 5px solid red; */
+  }
+.get-quote{
+    font-weight: bold;
+    color: #fff;
+    background-color: red;
+    border-radius: 15px;
+    padding: .2rem 1rem; 
+    cursor: pointer;
+}
+.back_button{
+	font-weight: bold;
+	color: #fff;
+	background-color: rgb(140, 152, 206);
+	border-radius: 15px;
+	padding: 0 .5rem;
+}

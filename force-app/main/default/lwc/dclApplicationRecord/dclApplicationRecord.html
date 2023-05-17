@@ -1,0 +1,296 @@
+<template>
+    <div class="container">
+        <p class="p8" style="margin-left:2%;margin-bottom:1%;">{label.Discretionary_Credit_Limit_Record}</p>
+        <div class="inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Company_Name}</p>
+                    <p class="p5">{account_name}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Number}</p>
+                    <p class="p5">{policy_no}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Type}</p>
+                    <p class="p5">{policy_type}</p>
+                </div>
+            </div>
+        </div>
+        <div class="inner-container" style="margin-top: 2%;">
+            <p class="p1">{label.Search_Discretionary_Credit_Limit_Record}</p>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%;padding-left:1%; padding-top:5px;">
+                    <p>{label.Buyer_Code}</p>
+                    <lightning-input type="text" label="" variant="label-hidden" value={search_buyer_code} onchange={handleBuyerCode}></lightning-input>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%;padding-left:1%; padding-top:5px;">
+                    <p>{label.Buyer_Name}</p>
+                    <lightning-input type="text" label="" variant="label-hidden" value={search_buyer_name} onchange={handleBuyerName}></lightning-input>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:5px;">
+                    <p>{label.Status}</p>
+                    <div class=" input1">
+                        <!-- <select class="slds-select" data-item=10 onchange={handleStatusChange}>
+                            <option value="">Select</option>
+                            <template for:each={StatusList} for:item="item">
+                                <option key={item.key}  value={item.key}>{item.value}</option>
+                            </template>
+                        </select> -->
+                        <lightning-combobox value={search_status} placeholder="Select" 
+                            options={StatusList} variant="label-hidden"
+                            onchange={handleStatusChange} class="input1">
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:5px;">
+                    <p>{label.Credit_Limit_Issue_Date_from_to}</p>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-large-size_5-of-12">
+                            <lightning-input type="date" value={search_from_date} name="input1" variant="label-hidden"
+                                onchange={handleEffectiveDateFrom}></lightning-input>
+                        </div>
+                        <span class="span1">&nbsp;{label.to}&nbsp;</span>
+                        <div class="slds-large-size_5-of-12">
+                            <lightning-input type="date" value={search_to_date} name="input1" variant="label-hidden"
+                                onchange={handleEffectiveDateTo}></lightning-input>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-top:2%;">
+                    <lightning-button variant="destructive" label={label.Search} title="Search" onclick={handleSearch}
+                        class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button variant="destructive" label={label.Clear_Filters} title="Clear Filters" onclick={handleClearFilter}
+                        class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </div>
+        </div>
+        <!--888888-->
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style=" padding-top:2%;">
+                    <p class="p1">{label.Discretionary_Credit_Limit_Record}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%;  padding-top:2%;">
+                    <p class="p4" style="text-align:left">
+                        <lightning-icon style="padding-right:7%" icon-name="utility:slider" alternative-text="Connected"
+                            size="small">
+                        </lightning-icon>
+                        {label.Ordered_by}
+                    </p>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="padding-top:2%;">
+                    <p><span onclick={handleApplicationDateSort} class={application_text_class}>{label.Application_Date_CL} </span><span style="padding-left: 4%;">|</span><span
+                            style="padding-left: 4%;" onclick={handleEffectiveDateSort} class={effective_date_text_class}>{label.Credit_Limit_Issue_Date}</span></p>
+                    <!-- </div>                
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="padding-right: 1%;  padding-top:2%;"> -->
+                    <!-- <p>CL effective/Issue Date</p> -->
+                </div>
+            </div>
+            <div class="steps">
+                <div class="slds-grid slds-wrap slds-grid_align-center">
+                    <template for:each={steps} for:item="step">
+                        <div class="slds-col ml_1" key={step.id}>
+                            <div class="slds-grid slds-grid_vertical align_center">
+                                <div class="slds-grid  align_center" style="align-self: center;">
+                                    <div class="step">
+                                        {step.name}
+                                    </div>
+                                </div>
+                                <span class="step_title">{step.des}</span>
+                                <!-- <div class="slds-var-m-top_small" style="color: rgb(127, 127, 127);"> -->
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-wrap">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:2%;">
+                    <p class="p5">{label.Buyer_Name}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:2%;">
+                    <p class="p5">{label.CA_Ref_No}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:2%;">
+                    <p class="p5">{label.Status}</p>
+                </div>
+                
+            </div>
+            <template if:true={show_checkbox_spinner}>
+                <div class="spinne-div">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </template>
+            <template if:false={show_checkbox_spinner}>
+            <template if:false={show_cl_record}>
+                <div  class="slds-grid slds-wrap" style="margin-top: 1%;">
+                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="padding-left: 1%;">
+                        &nbsp;
+                    </div>
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="padding-left: 1%;">
+                        <p class="p5">{label.No_record_found}</p>
+                    </div>
+                </div>
+            </template>
+            <template for:each={clRecord} for:item="clr">
+                <!-- <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 2%;"> -->
+                <!-- <div class="slds-large-size_12-of-11 slds-medium-size--6-of-6 slds-size--2-of-2"> -->
+                <div key={clr.Id}>
+                    <!-- <div class="section_head" id={clr.Id} onclick={expandHandler}> -->
+                    <div key={clr.Id} class="section_head slds-grid slds-wrap" id={clr.Id} onclick={expandHandler}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{clr.Buyer_Name__c}</p>
+                        </div>
+                        <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{clr.Legacy_Ref_No__c}</p>
+                        </div>
+                        <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{clr.CL_Status__c}</p>
+                        </div>
+                        <!-- <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                            <div class="slds-progress-bar slds-progress-bar_circular" style="margin-top: 2%;"
+                                aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" role="progressbar">
+                                <span class={clr.class}>
+                                    <span class="slds-assistive-text">Progress: 40%</span>
+                                </span>
+                            </div>
+                        </div> -->
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={clr.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <!-- <p class="p4" style="text-align:left"><span>{clr.Buyer_Name__c}</span>
+                                    <span>{clr.CL_No__c}</span>
+                                    <span>{clr.CL_Status__c}</span>
+                                </p> -->
+
+                    <!-- </div> -->
+                    <div class="section_container" if:true={clr.isSectionOpen}>
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Buyer_Name}</p>
+                                <p class="p2">{clr.Buyer_Name__c}&nbsp;</p>
+                            </div>
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Reference_Number}</p>
+                                <p class="p2">{clr.Legacy_Ref_No__c}&nbsp;</p>
+                            </div>
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Status}</p>
+                                <p class="p2">{clr.CL_Status__c}&nbsp;</p>
+                            </div>
+
+                            
+                        </div>
+
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Buyer_Code}</p>
+                                <p class="p2">{clr.Buyer_Code__c}&nbsp;</p>
+                            </div>
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Application_Date_CL}</p>
+                                <p class="p2">{clr.Application_Date__c}&nbsp;</p>
+                            </div>
+
+                            
+                        </div>
+
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Buyer_Address}</p>
+                                <p class="p7">{clr.Buyer_Address_Line_1__c}&nbsp;</p>
+                                <p class="p7">{clr.Buyer_Address_Line_2__c}&nbsp;</p>
+                                <p class="p7">{clr.Buyer_Address_Line_3__c}&nbsp;</p>
+                                <p class="p2">{clr.Buyer_Address_Line_4__c}&nbsp;</p>
+                            </div>
+
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Application_Completion_Date} </p>
+                                <p class="p2">{clr.Expiry_Date__c}&nbsp;</p>
+                            </div>
+                            
+                        </div>
+                        
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                &nbsp;
+                            </div>
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Cancellation_Date} </p>
+                                <p class="p2">&nbsp;</p>
+                            </div>
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                &nbsp;
+                            </div>
+                        </div>
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                &nbsp;
+                            </div>
+                             <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <template if:true={clr.is_cancelable}>
+                                    <button class="slds-button slds-button_neutral btn2" data-id={clr.Id} onclick={handleOpenDCLCancel}>
+                                    {label.Cancel_Discretionary_Credit_Limit}</button>
+                                </template>
+                                <template if:true={clr.is_amend}>
+                                    <button class="slds-button slds-button_neutral btn2" data-id={clr.Id} onclick={openAmendDCLModal}>
+                                       {label.Update_Buyer_Name_and_or_Address}
+                                    </button>
+                                </template>
+                                <!--<button class="slds-button slds-button_neutral btn2" onclick={openF2FModal}>Accept
+                                    Indication</button> -->
+                            </div> 
+                        </div>
+                        
+
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div> -->
+                </div>
+            </template>
+        </template>
+        </div>
+        <!--888888-->
+    </div>
+    <div if:true={show_amend_dcl}>
+        <c-cl-amend-d-c-l dcldetail={dcl_info} ondisplayamenddclchange={handleDisplayamenddclmodal}>
+        </c-cl-amend-d-c-l>
+    </div>
+    <div if:true={dispaly_cancel_modal}>
+        <c-dcl-cancel dcldetail={dcl_info} ondisplaycancelchange={handleDisplayCancelmodal}>
+        </c-dcl-cancel>
+    </div>
+</template>

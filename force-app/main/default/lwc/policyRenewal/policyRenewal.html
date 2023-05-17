@@ -1,0 +1,390 @@
+<template>
+    
+    <div class="card_body">
+        <div class="slds-card">
+            <lightning-card class="slds-text-align_center">
+                <slot name="title" class="widthExpanded slds-text-heading_small black_bold">
+                    <div>Revise offer</div>
+                </slot>
+                <template if:false={isProductSbp}>
+                    <div class="slds-grid slds-wrap slds-grid_align-space mt_1">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <div class="slds-grid slds-grid_align-center mt_1">
+                                <span class="center_vertical bold" style="margin-right: 1rem;">
+                                    Final Premium Rate on {premium_rate_on}
+                                </span>
+                                <div class="section_value" style="margin:0">
+                                    <span>{finalPremiumRate}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={isProductSbp}>
+                    <div class="slds-grid mt_1">
+                        <div class=" section_container" style="width: 80%; margin: 0 auto; text-align: center;">
+                            <h2 class="bold" style="margin:0 auto;">
+                                Final Premium Rates on DE
+                            </h2>
+                            <div class="slds-grid slds-wrap slds-grid_align-space  " style="margin-top: 1rem;">
+                                <div class="slds-col slds-medium-size_1-of-6 ">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">Country </span>
+                                        <span class="premiumValue">Grade A</span>
+                                        <span class="premiumValue">Grade B/C</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">DP </span>
+                                        <span class="premiumValue">{sbpPriceRate.DP_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DP_NonA}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">DA/OA 0-30</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_0_30_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_0_30_NonA}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">DA/OA 31-60 </span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_31_60_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_31_60_NonA}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">DA/OA 61-90 </span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_61_90_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_61_90_NonA}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">DA/OA 91-120 </span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_91_180_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_91_180_NonA}%</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <br/>
+                <div class="mt_1 ">
+                    <div class="mb_2">
+                        <div class="slds-grid slds-wrap slds-grid_align-space section_container">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <div class="slds-grid slds-grid_vertical align_center">
+                                    <template if:true={isProductOmbp}>
+                                        <span class="bold">Indemnity Ratio</span>
+                                        <lightning-combobox 
+                                            class="section_dropdown" 
+                                            name="Indemnity_Ratio__c"
+                                            label="Status" 
+                                            value="0" 
+                                            variant="label-hidden" 
+                                            readonly=""
+                                            options={indemnityRatioOptions} 
+                                            onchange={handleQChange}
+                                            placeholder="Select an option">
+                                        </lightning-combobox>
+                                    </template>
+
+
+                                    <template if:false={isProductOmbp}>
+                                        <div class="slds-grid slds-grid_vertical align_center">
+                                            <span class="bold">Indemnity Ratio</span>
+                                            <lightning-combobox 
+                                                class="section_dropdown" 
+                                                name="Indemnity_Ratio__c"
+                                                label="Status" 
+                                                value={indemnityRatio} 
+                                                variant="label-hidden"
+                                                options={indemnityRatioOptions} 
+                                                onchange={handleQChange}
+                                                placeholder="Select an option">
+                                            </lightning-combobox>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class={showNQLClass}>
+                                <template if:false={isProductOmbp}>
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">First Loss (non-qualify loss for
+                                            each claim)</span>
+    
+                                        <lightning-combobox 
+                                            class="section_dropdown" 
+                                            name="NQL__c" 
+                                            label="Status"
+                                            value={nQL} 
+                                            variant="label-hidden" 
+                                            options={NQLOptions} 
+                                            onchange={handleQChange}
+                                            placeholder="Select an option">
+                                        </lightning-combobox>
+                                    </div>
+                                </template>
+                                
+                            </div>
+                            <div class={showExclutionsClass}>
+                                <template if:false={isProductOmbp}>
+                                    <template if:false={isProductSup}>
+                                        <div class="slds-grid slds-grid_vertical align_center">
+                                            <div class="slds-grid slds-grid_vertical align_center">
+                                                <span class="bold">Exclusion</span>
+                                                <div class="slds-grid" style="margin-top: .5rem;">
+                                                    
+                                                    <template for:each={exclusionOptions} for:item="option">
+                                                        <div class="slds-form-element" key={option.dataId}>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-checkbox">
+                                                                    <input 
+                                                                        type="checkbox" 
+                                                                        name="Exclusions__c"
+                                                                        checked={option.isChecked} 
+                                                                        data-id={option.dataId}
+                                                                        onchange={handleCheckboxChange} 
+                                                                        id={option.dataId} />
+                                                                    <label 
+                                                                        class="slds-checkbox__label" 
+                                                                        for={option.dataId}>
+                                                                        <span class="slds-checkbox_faux">&nbsp;</span>
+                                                                        <span
+                                                                            class="slds-form-element__label">{option.label}</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    
+                                </template>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid_align-center mt_1">
+                    <!-- <button onclick={goToSchedule} class="slds-button back_button"><span>Back</span></button> -->
+                    <button onclick={saveDynmaicPrice} class="slds-button next_button">Save</button>
+                </div>
+            </lightning-card>
+            
+            <!--lightning-card class="slds-text-align_center">
+                <slot name="title" class="widthExpanded slds-text-heading_small black_bold">
+                    <div>Revise offer</div>
+                </slot>
+                <template if:false={isProductSbp}>
+                    <div class="slds-grid slds-wrap slds-grid_align-space mt_1">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <div class="slds-grid slds-grid_align-center mt_1">
+                                <span class="center_vertical black_bold" style="margin-right: 1rem;">
+                                    Final Premium Rate on {premium_rate_on}
+                                </span>
+                                <div class="section_value_black" style="margin:0">
+                                    <span>{finalPremiumRate}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={isProductSbp}>
+                    <div class="slds-grid slds-wrap slds-grid_align-space mt_1">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 section_container"
+                            style="display: flex;flex-direction: column;">
+                            <h2 class="black_bold " style="margin:0 auto;"><strong>
+                                    Final Premium Rates on DE
+                                </strong></h2>
+                            <div class="slds-grid slds-wrap slds-grid_align-space  " style="margin-top: 1rem;">
+                                <div class="slds-col slds-medium-size_1-of-4 ">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="black_bold">Pre-shipment </span>
+                                        <span class="premiumValue_black"> {sbpPriceRate.Pre_Shipment}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-4">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="black_bold">DP </span>
+                                        <span class="premiumValue_black">{sbpPriceRate.DP}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-4">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="black_bold">OA 1-60 </span>
+    
+                                        <span class="premiumValue_black">{sbpPriceRate.OA1_60}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-4">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="black_bold">OA 61-120 </span>
+    
+                                        <span class="premiumValue_black">{sbpPriceRate.OA61_120}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                </template>
+                <br>
+
+                <div class="mt_1 ">
+                    <div class="mb_2">
+                        <div class="slds-grid slds-wrap slds-grid_align-space section_container">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <div class="slds-grid slds-grid_vertical align_center">
+                                    <span class="red_bold">Indemnity Ratio</span>
+                                    <template if:true={isProductOmbp}>
+                                       <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-slider">
+                                                    <input 
+                                                        type="range" 
+                                                        disabled=""
+                                                        onchange={onDragMethod} 
+                                                        id="slider-id-01" 
+                                                        class="slds-slider__range" 
+                                                        min="0" max="90" step="10" 
+                                                        value={actualIdemnityRatio} />
+                                                    <span class="slds-slider__value" aria-hidden="true">{idemnityRatio}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:false={isProductOmbp}>
+                                        <span>Premium Reduction:</span>
+                                        <span class="bottom_section_value slds-align_absolute-center"> -{actualIdemnityRatio}%</span>
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-slider">
+                                                    <template if:true={isProductSbp}>
+                                                        <input 
+                                                            type="range" 
+                                                            onchange={onDragMethod} 
+                                                            id="slider-id-02" 
+                                                            class="slds-slider__range" 
+                                                            min="0" max="90" step="10" 
+                                                            value={indemnityRatio} />
+                                                        <span class="slds-slider__value" aria-hidden="true">{indemnityRatio}</span>
+                                                    </template>
+                                                    <template if:true={isProductSup}>
+                                                        <input 
+                                                            type="range" 
+                                                            onchange={onDragMethod} 
+                                                            id="slider-id-03" 
+                                                            class="slds-slider__range" 
+                                                            min="0" max="80" step="10" 
+                                                            value={indemnityRatio} />
+                                                        <span class="slds-slider__value" aria-hidden="true">{indemnityRatio}</span>
+                                                    </template>
+                                                    
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </template>
+                                </div>
+                            </div>
+                            <div class={showNQLClass}>
+                                <div class="slds-grid slds-grid_vertical align_center">
+                                    <span class="red_bold">First Loss (non-qualify loss for
+                                        each claim)</span>
+                                    <span>Premium Reduction:</span>
+                                    <span class="bottom_section_value slds-align_absolute-center">-{actualNqlValue}%</span>
+                                    <table class="slds-align_absolute-center">
+                                        <tr>
+                                            <td>
+                                                <span class="slds-radio">
+                                                    <input type="radio" onchange={handelNQL} id="radio-0" name="radio-0" checked={isNqlCheckedZero} />
+                                                    <label class="slds-radio__label" for="radio-0">
+                                                        <span class="slds-radio_faux"></span>
+                                                        <span class="slds-form-element__label">0</span>
+                                                    </label>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="slds-radio">
+                                                    <input type="radio" onchange={handelNQL} id="radio-10"  name="radio-10" checked={isNqlCheckedTen} />
+                                                    <label class="slds-radio__label" for="radio-10">
+                                                        <span class="slds-radio_faux"></span>
+                                                        <span class="slds-form-element__label">10000</span>
+                                                    </label>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="slds-radio">
+                                                    <input type="radio" onchange={handelNQL} id="radio-30"  name="radio-30" checked={isNqlCheckedThrity} />
+                                                    <label class="slds-radio__label" for="radio-30">
+                                                        <span class="slds-radio_faux"></span>
+                                                        <span class="slds-form-element__label">30000</span>
+                                                    </label>
+                                                </span>
+                                            </td>
+                                            <template if:true={isProductSbp}>
+                                                <td>
+                                                    <span class="slds-radio">
+                                                        <input type="radio" onchange={handelNQL} id="radio-50" name="radio-50" checked={isNqlCheckedFifty} />
+                                                        <label class="slds-radio__label" for="radio-50">
+                                                            <span class="slds-radio_faux"></span>
+                                                            <span class="slds-form-element__label">50000</span>
+                                                        </label>
+                                                    </span>
+                                                </td>
+                                            </template>
+                                            
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class={showExclutionsClass}>
+                                <div class="slds-grid slds-grid_vertical align_center">
+                                    <span class="red_bold">Exclusion</span>
+                                    <span>Premium Reduction:</span>
+                                    <span class="bottom_section_value slds-align_absolute-center">-{exclusion}%</span>
+                                    <div class="slds-grid slds-grid_align-center mt_1">
+                                        
+                                        <lightning-input 
+                                            type="checkbox" 
+                                            label="Country Risks" 
+                                            value="5"
+                                            onchange={handleExclusion}
+                                            name="countryRisks">
+                                        </lightning-input>
+                                        
+                                        <lightning-input 
+                                            type="checkbox" 
+                                            label="Repudiation Risks" 
+                                            value="5"
+                                            onchange={handleExclusion}
+                                            name="repudiationRisks">
+                                        </lightning-input>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-grid_align-center mt_1">
+                        <button onclick={goToSchedule} class="slds-button back_button"><span>Back</span></button>
+                        <button onclick={saveDynmaicPrice} class="slds-button next_button">Revise</button>
+                    </div>
+                </div>
+            </lightning-card-->
+            
+        </div>
+    </div>
+</template>

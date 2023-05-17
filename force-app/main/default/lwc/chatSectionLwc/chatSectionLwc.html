@@ -1,0 +1,23 @@
+<!-- Not in use  -->
+
+<template>
+	<lightning-card title="Chat Bot AI" icon-name="utility:user">
+	  <div class="chat-section">
+		<div class="messages">
+		  <template for:each={messages} for:item="message">
+			<div key={message.id} class="message">
+			  <div class="message-content">{message.content}</div>
+			  <div class="message-metadata">
+				<span class="message-sender">{message.sender}</span>
+				<span class="message-timestamp">{message.timestamp}</span>
+			  </div>
+			</div>
+		  </template>
+		</div>
+		<div class="input-section">
+		  <input type="text" value={messageInput} oninput={handleInputChange} placeholder="Type your message" />
+		  <button onclick={handleSendMessage}>Send</button>
+		</div>
+	  </div>
+	</lightning-card>
+  </template>

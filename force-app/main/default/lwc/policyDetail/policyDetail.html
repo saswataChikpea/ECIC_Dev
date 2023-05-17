@@ -1,0 +1,630 @@
+<template>
+    <template if:true={isLoading}>
+        <div class="exampleHolder">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+   
+        <div class="slds-clearfix">
+            <div class="slds-float_right">
+               <!-- <lightning-button-group>
+                    <template if:true={isPolicyHolderAllowedToTerminatePolicy}>
+                        <lightning-button-stateful 
+                            selected={terminateButtonStatefulState} 
+                            icon-name-when-on="utility:check"
+                            label-when-off="Terminate"
+                            label-when-on="Terminate"
+                            onclick={handleTerminate}>
+                        </lightning-button-stateful>
+                    </template>
+                    <lightning-button-stateful 
+                        selected={policyRenewalButtonStatefulState} 
+                        label-when-off="Policy Renewal"
+                        label-when-on="Policy Renewal"
+                        icon-name-when-on="utility:check"
+                        onclick={handlePolicyRenewal}>
+                    </lightning-button-stateful>
+                    <lightning-button-stateful 
+                        selected={scheduleButtonStatefulState} 
+                        icon-name-when-on="utility:check"
+                        label-when-off="Schedule"
+                        label-when-on="Schedule"
+                        onclick={handleSchedule}>
+                    </lightning-button-stateful>
+                    <lightning-button-stateful 
+                        selected={endorsementButtonStatefulState} 
+                        label-when-off="Endorsement"
+                        label-when-on="Endorsement"
+                        icon-name-when-on="utility:check"
+                        onclick={handleEndorsement}>
+                    </lightning-button-stateful>
+                    <lightning-button-stateful 
+                        selected={laButtonStatefulState} 
+                        icon-name-when-on="utility:check"
+                        label-when-off="LV"
+                        label-when-on="LV"
+                        onclick={handleLV}>
+                    </lightning-button-stateful>
+                    
+                </lightning-button-group>-->
+                <lightning-button-group>
+                    <template if:true={isPolicyHolderAllowedToTerminatePolicy}>
+                        <lightning-button label={label.Terminate_Policy} onclick={handleTerminate}></lightning-button>
+                    </template>
+                    <lightning-button label={label.Renew_Policy} onclick={handlePolicyRenewal}></lightning-button>
+                    <lightning-button label={label.Schedule} onclick={handleSchedule}> </lightning-button>
+                    <lightning-button label={label.Endorsement} onclick={handleEndorsement}> </lightning-button>
+                    <lightning-button label={label.LV} onclick={handleLV}> </lightning-button>
+                </lightning-button-group>
+            </div>
+        </div>
+    <br/>
+    <lightning-card>
+       
+         <div class="slds-grid slds-wrap">
+                <div class="slds-size_1-of-8  slds-medium-size_2-of-6 slds-large-size_2-of-12">
+                    <p class="p1">{label.Company_Name}</p>
+                    <p class="p5">{companyName}</p>
+                </div>
+                <div class="slds-size_1-of-8  slds-medium-size_2-of-8 slds-large-size_2-of-12">
+                    <p class="p1">{label.Login_Account}</p>
+                    <p class="p5">{logged_in_user}</p>
+                </div>
+                <div class="slds-size_1-of-8  slds-medium-size_2-of-8 slds-large-size_2-of-12">
+                    <p class="p1">{label.Policy_Number}</p>
+                    <p class="p5">{policyNumber}</p>
+                </div>
+        </div>
+    </lightning-card>
+    <br/>
+    <template if:true={showScheduleSection}>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_2-of-3">
+                <lightning-card>
+                    <lightning-tabset variant="scoped">
+                        <lightning-tab key={loadCover} label={label.Cover} value="Cover" onactive={handleActive}>
+
+                            <template if:true={loadCover}>
+                                <c-policy-cover 
+                                is-sbp={isProductSBP} 
+                                is-sup={isProductSUP}
+                                is-ombp={isProductOMBP} 
+                                product-name={currentPolicyName}
+                                issue-date={issueDate}
+                                policy-holder-name={policyHolderName}
+                                policy-holder-reg-add={policyHolderRegAdd}>
+                            </c-policy-cover>
+                            </template>
+                            
+                        </lightning-tab>
+                        
+                        <template if:true={isShowScheduleOne}>
+                            <lightning-tab label={dynamicSheduleOne} key={isShowScheduleOne}  value="Schedule_1" onactive={handleActive}>
+                                <lightning-card theme="slds-theme_shade">
+                                    <table>
+                                        <tr>
+                                            <td><b>{label.Policyholder_name}</b> <br>
+                                                {policyHolderName}</td>
+                                            <td><b>{label.Policyholder_Address}</b><br>
+                                               <p>
+                                                <!-- <lightning-formatted-text value={currentPolicyHolderAddress} ></lightning-formatted-text> -->
+                                                <template if:true={Registered_Address_Line_1}>
+                                                    {Registered_Address_Line_1}<br>
+                                                </template>
+                                                <template if:true={Registered_Address_Line_2}>
+                                                    {Registered_Address_Line_2}<br>
+                                                </template>
+                                                <template if:true={Registered_Address_Line_3}>
+                                                    {Registered_Address_Line_3}<br>
+                                                </template>
+                                                <template if:true={Registered_District}>
+                                                    {Registered_District}<br>
+                                                </template>
+                                                <template if:true={Registered_Territory}>
+                                                    {Registered_Territory}<br>
+                                                </template>
+                                            </p>
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                    <hr>
+                                    <table>
+                                        <tr>
+                                            <td><b>{label.Commencement_Date}</b> <br> 
+                                                <!--lightning-formatted-date-time value={commencementDate}></lightning-formatted-date-time-->
+                                                {commencementDate}
+                                            </td>
+                                            <td>
+                                                <div if:false={isProductSUP}>
+                                                    <b>{label.Issue_Date_of_1st_Credit_Limit}</b> <br>
+                                                    {issueDateOfFirstCL}
+                                                </div>
+                                            </td>
+                                            
+                                           
+                                            <td><b>{label.This_schedule_takes_effect_from}</b> <br>
+                                                <!--lightning-formatted-date-time value={commencementDate}></lightning-formatted-date-time-->
+                                                {commencementDate}
+
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                    <hr>
+                                    <table>
+                                        <tr>
+                                            <td><b>{label.Maximum_Liability}</b> <br>
+                                                HKD &nbsp;
+                                             <lightning-formatted-number value={maximumLiabilty}></lightning-formatted-number>
+                                            </td>
+                                            <td><b>{label.Percentage_of_Indemnity}</b><br>
+                                                <p>{percentageOfIndmenity}%</p>
+                                            </td>
+                                            
+                                            <td>
+                                                <template if:false={isProductOMBP}>
+                                                    <b>{label.Policy_period} </b><br>
+                                                    <p>{policyPeriod}</p>
+                                                </template>
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                    <hr>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <template if:false={isProductOMBP}>
+                                                    <b>{label.Policy_deposit}</b> 
+                                                    <br>
+                                                    <p>HKD&nbsp; <lightning-formatted-number value={policyDeposit}></lightning-formatted-number></p>
+                                               
+                                                </template>
+                                           </td>
+                                            <td>
+                                                <template if:false={isProductOMBP}>
+                                                    <b>{label.Policy_fee}</b><br>
+                                                    <p>HKD&nbsp; <lightning-formatted-number value={policyFee}></lightning-formatted-number></p>
+                                              
+                                                </template>
+                                           </td>
+                                            <td><b>{label.Maximum_credit_period}</b><br>
+                                                <p>{maxCreditPeriod}</p>
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                    <hr>
+                                    <template if:false={isProductOMBP}>
+                                        <table>
+                                            <tr>
+                                                
+                                                    <td>
+                                                        <template if:false={isProductSUP}>
+                                                            <b>{label.Amount_referred_to_in_Sub_clauses_1_2_and_69_2}</b> 
+                                                            <br>
+                                                            HKD <lightning-formatted-number value={amt_ref_in_sab_clause}></lightning-formatted-number></p>
+                                                       
+                                                   
+                                                        </template>
+                                                    
+                                                    
+                                                </td>
+                                                
+                                                <td><b>{label.Non_qualifying_loss_amount}</b><br>
+                                                    <p>HKD&nbsp; <lightning-formatted-number value={nonQualifyingLossAmt}></lightning-formatted-number></p>
+                                                        </p>
+                                                </td>
+                                               
+                                                    <td>
+                                                        <template if:false={isProductSUP}>
+                                                        <b>{label.Exclusion_of_risk}</b> 
+                                                        <br>
+                                                        <p>{exclusionRisk}</p>
+                                                    </template>
+                                                    </td>
+                                                
+                                               
+                                            </tr>
+                                        </table>
+                                        <hr>
+                                    </template>
+                                    <template if:true={isProductOMBP}>
+                                        <b>{label.Countries_Markets_of_Shipments_Clause}</b>
+                                        <table  border="1" style="border-collapse: collapse; width: 100%;">
+                                            <!--<tr>
+                                                <td>
+                                                    <b>{label.Countries_Markets_of_Shipments_Clause}</b>
+                                                    <br>
+                                                    <template for:each={OMBPclauseCountryList} for:item="country">
+                                                        <tr key={country.code}>
+                                                            <td style="width: 50%;">{country.name}</td>
+                                                            <td style="width: 50%;">{country.code}</td>
+                                                        </tr>
+                                                    </template>
+    
+                                                </td>
+                                            </tr>-->
+                                            <thead>
+
+                                                <tr class="table_head ">
+                                                    <th style="width: 50%;  height: 65px; text-align: center; ">{label.Country_Market_of_Shipment}</th>
+                                                    <th style="width: 50%;   height: 65px;text-align: center;">{label.Code}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={OMBPclauseCountryList} for:item="country">
+                                                    <tr key={country.code}>
+                                                        <td style="width: 50%;">{country.name}</td>
+                                                        <td style="width: 50%;">{country.code}</td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </template>
+                                    
+                                    <template if:true={isProductOMBP}>
+                                        <hr>
+                                    <table class="red">
+                                        <tr>
+                                            <td>
+                                                <!--c-cms-content-term-and-condition-cover is-pol-sch1-remarks={isPolicySchedule1Remarks}></c-cms-content-term-and-condition-cover-->
+                                                <div  style="font-family: Montserrat; font-size: 10px;">
+                                                    {label.Remark_The_Maximum_amount_shall_not_exceed_each_12_month}
+                                                </div>
+                                                
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    </template>
+                                    
+                                    
+                                </lightning-card>
+                                
+                            
+                            </lightning-tab>
+                        </template>
+                        <template if:true={isShowScheduleTwo}>
+                            <lightning-tab label={label.Schedule2} key={isShowScheduleTwo}  value="Schedule_2" onactive={handleActive}>
+                                <c-policy-schedule-two 
+                                    is-sbp={isProductSBP} 
+                                    is-sup={isProductSUP} 
+                                    product-name={currentPolicyName}
+                                    product-id={isProductId}
+                                    policy-id={currentPolicyID}
+                                    policy-comm-date={policyCommenceDate}
+                                    map-data-pass-to-schedule={mapDataPassToSchedule}>
+                                </c-policy-schedule-two>
+                            </lightning-tab>
+                        </template>
+                        <template if:true={isShowScheduleThree}>
+                            <lightning-tab label={label.Schedule3} key={isShowScheduleThree}  value="Schedule_3" onactive={handleActive}>
+                                <c-policy-schedule-three 
+                                    is-sbp={isProductSBP} 
+                                    is-sup={isProductSUP} 
+                                    is-ombp={isProductOMBP}
+                                    product-name={currentPolicyName}
+                                    policy-comm-date={policyCommenceDate}
+                                    map-data-pass-to-schedule={mapDataPassToSchedule}>
+                                </c-policy-schedule-three>
+
+                            </lightning-tab>
+                        </template>
+                        <template if:true={isShowScheduleFour} >
+                            <lightning-tab label={label.Schedule4} key={isShowScheduleFour}  value="Schedule_4" onactive={handleActive}>
+                                <c-policy-schedule-four
+                                    is-sup={isProductSUP} 
+                                    product-name={currentPolicyName}
+                                    policy-comm-date={policyCommenceDate}
+                                    map-data-pass-to-schedule={mapDataPassToSchedule}>
+                                </c-policy-schedule-four>
+                            </lightning-tab>
+                        </template>
+                        
+                    </lightning-tabset>
+                    <p slot="footer" align="right">
+                        <lightning-button 
+                            variant="destructive" 
+                            label={label.Download_PDF} 
+                            onclick={downloadPdf}
+                            slot="actions">
+                        </lightning-button>
+                    </p>
+                </lightning-card>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                <lightning-card theme="slds-theme_shade" title={label.Schedule_Record}>
+                    <lightning-datatable
+                        key-field="id"
+                        hide-checkbox-column
+                        data={allSchedule}
+                        columns={scheduleColumns}>
+                    </lightning-datatable>
+                </lightning-card>
+            </div>
+        </div>
+        
+    </template>
+    <template if:true={showEndorsement}>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_2-of-3">
+                <lightning-card>
+                    <lightning-tabset variant="scoped">
+                        <template for:each={allEndorsement} for:item="endorsement">
+                            <lightning-tab key={endorsement.id} label={endorsement.type} value={endorsement.vfPageUrl} onactive={handleActive}>
+                                <div class="slds-box slds-theme_default">
+                                    <iframe src={endorsement.vfPageUrl} height="700px" width="700px"></iframe>
+                                    <!-- <iframe src={endorsement.vfPageUrl}></iframe>  -->
+                                </div>
+                            </lightning-tab>
+                        </template>
+                    </lightning-tabset>
+                    
+                    <p slot="footer" align="center">
+                        <lightning-button 
+                            variant="destructive" 
+                            label={label.Download_PDF} 
+                            onclick={downloadPdf}
+                            slot="actions">
+                        </lightning-button>
+                    </p>
+                </lightning-card>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                <lightning-card theme="slds-theme_shade" title="Endorsement Record">
+                    <lightning-datatable
+                        key-field="id"
+                        hide-checkbox-column
+                        data={allEndorsement}
+                        columns={endorsementColumns}>
+                    </lightning-datatable>
+                </lightning-card>
+            </div>
+        </div>
+        
+    </template>
+    <template if:true={showLV}>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_2-of-3">
+                <lightning-card>
+                    <lightning-tabset variant="scoped">
+                        <lightning-tab label={label.LV_1}>
+                            LV 1 Content !
+                        </lightning-tab>
+                        <lightning-tab label={label.LV_2}>
+                            LV 2 Content !
+                        </lightning-tab>
+                    </lightning-tabset>
+                    <p slot="footer" align="center">
+                        <lightning-button 
+                            variant="destructive" 
+                            label={label.Download_PDF} 
+                            onclick={downloadPdf}
+                            slot="actions">
+                        </lightning-button>
+                    </p>
+                </lightning-card>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                <lightning-card theme="slds-theme_shade" title="LV Record">
+                    <lightning-datatable
+                        key-field="id"
+                        hide-checkbox-column
+                        data={allLV}
+                        columns={lvColumns}>
+                    </lightning-datatable>
+                </lightning-card>
+            </div>
+        </div>
+        
+    </template>
+    <template if:true={showPolicyRenewalSection}>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_2-of-3">
+                <lightning-card>
+                    <lightning-tabset variant="scoped">
+                        <lightning-tab label={label.Acceptance}>
+                           <table>
+                               <tr>
+                                   <td>
+
+                                        <span class="redWithUnderLine"><u>{label.Acceptance_of_Policy_Renewal}</u></span><br>
+                                        {label.Please_confirm_your_understanding_and_acceptance_of_the_terms_and_conditions_of}<br>
+                                        {label.the_Schedules_and_any_endorsements_on_or_before} <br>
+                                        <lightning-button 
+                                                variant="destructive" 
+                                                label={label.Accept} 
+                                                onclick={acceptPolicyRenewal}>
+                                        </lightning-button>
+                                        <hr/>
+                                    </td>
+                               </tr>
+                               <tr> 
+                                   <td>
+                                    <span class="redWithUnderLine"><u>{label.Variation_of_Cover}</u></span><br>
+                                {label.Choice_of_optional_cover_to_better_suit_your_needs}<br>
+                                {label.By_Selecting_different_options_the_renewal_offer_may_be_revised} <br>
+                                <lightning-button 
+                                     variant="destructive" 
+                                     label={label.Revise_Offer} 
+                                     onclick={reviseOffer}>
+                                </lightning-button>
+                                <hr/>
+                               </td>
+                                
+                            </tr>
+                            <tr> <td>
+                                {label.If_you_have_any_queries_please_contact_SME_team_at_2732_9988_or_via} 
+                                <lightning-formatted-email value="ec-reach@hkecic.com" ></lightning-formatted-email>
+                                
+
+                            </td>
+                            </tr>
+                           </table>
+                        </lightning-tab>
+                        <template if:true={isProductSBP}>
+                            <lightning-tab label={label.Auto_Renewal} value="Auto_Renewal" onactive={handleActive}>
+                                
+                                <div class="slds-grid slds-wrap mb_1">
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-2 bold">
+                                        <span>{label.Please_Select_the_mode_of_renewal_for_your_policy}</span>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-2 ">
+                                        <lightning-combobox 
+                                             
+                                            disabled={isEnablePolicyRenewal}
+                                            name="renewalMode" 
+                                            value={renewalMode}
+                                            placeholder="-Select-" 
+                                            options={renewalModeList} 
+                                            variant="label-hidden"
+                                            onchange={handlePolicyRenewalModeChange} 
+                                            class="input1 validValue renewalMode">
+                                        </lightning-combobox>
+                                    </div>
+                                </div>
+                            </lightning-tab>
+                        </template>
+                    </lightning-tabset>
+                    
+                </lightning-card>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                
+            </div>
+        </div>
+        
+    </template>
+    <template if:true={showReviseSection}>
+        <c-policy-renewal 
+            is-product-ombp={isProductOMBP} 
+            is-product-sbp={isProductSBP} 
+            is-product-sup={isProductSUP}
+            policy-sfdc-id={currentPolicyID}
+            selected-product-id={isProductId}>
+        </c-policy-renewal>
+    </template>
+    <template if:true={policyTerminationPopUp}>
+
+        <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                    </lightning-spinner>
+                </template>
+            <header class="slds-modal__header slds-modal__header_empty"></header>
+            <div class="slds-modal__content slds-p-around_small slds-scrollable" id="modal-content-id-2">
+                <lightning-card title="Policy Termination">
+                    <table>
+                        <tr>
+                            <td>
+                                <lightning-input 
+                                    type="checkbox" 
+                                    label={label.This_Policy_is_terminated_with_immediate_effect_All_credit_limit_s_expire} 
+                                    name="policyTerminationCheckBox">
+                                </lightning-input><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <lightning-combobox
+                                    required
+                                    dropdown-alignment="auto"
+                                    name="progress"
+                                    label={label.Reason_for_Termination}
+                                    value={reasonForTermination}
+                                    placeholder="Select"
+                                    options={options}
+                                    onchange={handleReasonForChange} >
+                                </lightning-combobox> 
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                            </td>
+                        </tr>
+                        <!--tr>
+                            <td>
+                                <lightning-input required type="text" label="Enter your passowrd to confirm"></lightning-input>
+                                <br>
+                            </td>
+                        </tr-->
+                    </table>
+                </lightning-card>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning-button variant="Neutral" label={label.Cancel} onclick={policyPopCancel}></lightning-button>
+                <lightning-button variant="destructive" label={label.Confirm} onclick={policyTerminationConfirm}></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={showPhEndorsement}>
+        <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                    </lightning-spinner>
+                </template>
+                <header class="slds-modal__header slds-modal__header_empty"></header>
+                <div class="slds-modal__content slds-var-p-around_small slds-scrollable" id="modal-content-id-3">
+                    <lightning-card title="Related Endorsements">
+                        <table class="slds-table slds-box slds-box_x-small  slds-table_cell-buffer slds-table_bordered slds-table_col-bordered ">
+                            <thead class="">
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">Name</th>
+                                    <th class="" scope="col">Endorsement</th>
+                                    <th class="" scope="col">Buyer Name</th>
+                                    <th class="" scope="col">Buyer Country</th>
+                                    <th class="" scope="col">Buyer Code</th>
+                                    <th class="" scope="col">Carry Forward To Next Policy Year</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={allEndorsement} for:item="key">
+                                    <tr key={key.Id}>
+                                        <td>{key.name}</td>
+                                        <td>{key.type}</td>
+                                        <td>{key.buyerName}</td>
+                                        <td>{key.buyerCountry}</td>
+                                        <td>{key.buyerCode}</td>
+                                        <td>
+                                            <lightning-input 
+                                                onchange={removeFromNextYear} 
+                                                type="checkbox" 
+                                                checked={key.isCarryForwardToNextYear}
+                                                value={key.Id}
+                                                name='carryForwardEndorsement'>
+                                            </lightning-input>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </lightning-card>
+                </div>
+                <footer class="slds-modal__footer">
+                    <!-- <lightning-button variant="Neutral" label='Save' onclick={removeEndorsment}></lightning-button> -->
+                    <lightning-button variant="destructive" label='Cancel' onclick={endorsementPopUpCancel}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

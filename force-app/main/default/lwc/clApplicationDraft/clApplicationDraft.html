@@ -1,0 +1,96 @@
+<template>
+    <div if:true={loading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>Please Wait
+    </div>
+    <div if:false={loading}>
+        <div class="container">
+            <p class="p8" style="margin-left:2%;margin-bottom:1%;">{label.Credit_Limit_Application_Draft_Record}</p>
+            <div class="inner-container">
+                <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">{label.Company_Name}</p>
+                        <p class="p5">{policydetail.Exporter__r.Name}</p>
+                    </div>
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">{label.Policy_Number}</p>
+                        <p class="p5">{policydetail.Name}</p>
+                    </div>
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">{label.Policy_Type}</p>
+                        <p class="p5">{policydetail.Product__r.Name}</p>
+                    </div>
+                    <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <p class="p1">{label.Free_Credit_Check_Facility_Balance}</p>
+                        <p class="p5"><span onclick={handleCreditCheckFacility}>{policydetail.Available_Credit_Check__c}
+                                (<a href="javascript:void(0)">{label.Details}</a>)</span></p>
+                    </div>
+
+                    
+                </div>
+            </div>
+            <div class="inner-container" style="margin-top: 2%;">
+                <div class="slds-scrollable_x" style="height: 10rem; overflow-y:auto">
+                    <template if:true={cla_list}>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                            style="border-top: none;width:96%;">
+                            <thead>
+                                <tr style="height:45px">
+                                    <th style="width:20%">
+                                        <div class="slds-truncate">{label.Application_Date_CL}</div>
+                                    </th>
+                                    <th style="width:20%">
+                                        <div class="slds-truncate">{label.Buyer_Code}</div>
+                                    </th>
+                                    <th style="width:20%">
+                                        <div class="slds-truncate">{label.Buyer_Name}</div>
+                                    </th>
+                                    
+                                </tr>
+                            </thead>
+                            <!-- <tbody> -->
+                            <template for:each={cla_list} for:item="cla">
+                                <tr key={cla.Id} style="height:45px">
+                                    <td>
+                                        <div class="slds-truncate">{cla.Application_Date__c}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate">{cla.Buyer_Code__c}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate">{cla.Buyer_Name__c}</div>
+                                    </td>
+                                    <td>
+                                        <lightning-icon style="padding-left: 5%;" data-id={cla.Id}
+                                        onclick={handleEdit} icon-name="utility:edit" size="xx-small"
+                                        class="slds-current-color" alternative-text="Edit" title="Edit">
+                                        </lightning-icon>
+                                    </td>
+                                    <td>
+                                        <lightning-icon style="padding-left: 5%;" data-id={cla.Id}
+                                        onclick={handleDelete} icon-name="utility:delete" size="xx-small"
+                                        class="slds-current-color" alternative-text="Delete" title="Delete">
+                                        </lightning-icon>
+                                    </td>
+                                    
+                                </tr>
+                            </template>
+                            <!-- </tbody> -->
+                        </table>
+                    </template>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <lightning-button variant="destructive" label={label.New_Credit_Limit_Application} title="New Credit Limit Application"
+                        class="slds-m-left_x-small" onclick={handleNewCLA}></lightning-button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div if:true={showCheckFacilityModal}>
+        <c-cl-check-facility policydetail={policydetail} ondisplayclfacilitychange={handleDisplayccfmodal}></c-cl-check-facility>
+    </div>
+</template>

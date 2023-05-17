@@ -1,0 +1,40 @@
+.body_div {
+    width: 80vw;
+    background-color: white;
+    padding: 2rem;
+    margin: 0 auto;
+}
+
+.text-body {
+    margin-top: 2rem;
+    padding: 2rem;
+    text-align: center;
+    border: 1px dotted;
+    color: red;
+    font-size: 1.5em;
+    align-items: center;
+}
+
+.input_small_c {
+    border: 1px solid #e1d8d8;
+    border-radius: 50px;
+    padding-left: 0.75rem;
+}
+
+.red_bold {
+    color: red;
+    font-weight: bold;
+}
+
+.mt_1 {
+    margin-top: 1rem;
+}
+
+.next_button {
+    margin-top: 2rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: red;
+    border-radius: 15px;
+    padding: 0 1rem;
+}

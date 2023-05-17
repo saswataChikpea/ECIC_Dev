@@ -1,0 +1,713 @@
+<!-- <apex:page controller="PolicyDocument_Pdf_controller" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false"
+    readOnly="true" renderAs="{!renderAs}" sidebar="false" showHeader="false"> -->
+    <apex:page controller="PolicyDocument_Pdf_controller" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false"
+    readOnly="true" renderAs="PDF" sidebar="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.EN}" />
+
+    <head>
+        <style>
+            @media print {
+                .noprint {
+                    display: none;
+                }
+            }
+
+            body {
+                font-family: "Arial", sans-serif;
+                font-style: normal;
+            }
+
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-bottom: 50px;
+                margin-left: 20px;
+                margin-right: 20px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+
+            div.header {
+                margin: 0px;
+                padding: 0px;
+                position: running(header);
+            }
+
+            div.footer {
+                display: block;
+                padding: 0px;
+                position: running(footer);
+            }
+
+            .pagenumber:before {
+                content: counter(page);
+            }
+
+            .pagecount:before {
+                content: counter(pages);
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="header">
+            <apex:image value="{!$Resource.ECIC_logo}" width="300px" height="50px" />
+            <div class="heading" align="center">
+                PRE-SHIPMENT ENDORSEMENT
+                <br/> (ENDORSEMENT NO. EN49A)
+                <br/>
+            </div>
+        </div>
+        <div class="footer" align="center" style="color:#000000;font-size:12px;padding-right:40px;">
+            <div class="page_no">Page
+                <span class="pagenumber" /> of
+                <span class="pagecount" />
+            </div>
+            <div class="c_address">COMPANY_ADDRESS</div>
+        </div>
+        <div>
+            <div class="page_1">
+
+                <div>
+                    <p class="schedule">THE SCHEDULE</p>
+                    <p class="confedential">CONFIDENTIAL</p>
+                    <p class="issue_date">
+                        <span>Issue Date:</span>
+                        <apex:outputText styleClass="output_date" value="{0, date, yyyy-MM-dd}">
+                            <apex:param value="{!Endorsement_Issue_Date}" />
+                        </apex:outputText>
+                    </p>
+                </div>
+                <div class="table_1">
+                    <table>
+                        <tr>
+                            <td class="title">1.&nbsp;Policyholder’s name &amp; address</td>
+                            <td class="colon">:</td>
+                        </tr>
+                        <tr>
+                            <td class="p_value">{!Policy_Holder_Name}</td> <br/>
+                        </tr>
+                        <tr>
+                            <td class="p_value">
+                                {!Registered_Address_Line_1} <br/> 
+                                {!Registered_Address_Line_2} <br/>
+                                {!Registered_Address_Line_3} <br/>
+                                {!Registered_District} <br/>
+                                {!Registered_Territory}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">2.&nbsp;Policy number</td>
+                            <td class="colon">:</td>
+                            <td class="value">{!Policy_Number}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">3.&nbsp;This Endorsement takes effect from</td>
+                            <td class="colon">:</td>
+                            <td class="value">
+                                <apex:outputText value="{0, date, yyyy-MM-dd}">
+                                    <apex:param value="{!Endorsement_Eff_Date}" />
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">4.&nbsp;Table&nbsp;:</td>
+                        </tr>
+                    </table>
+                    <table class="table_2" border="1" cellpadding="0" cellspacing="0" width="80%">
+                        <tr style="height:60px;" class="thead">
+                            <td>
+                                Names and Countries of buyers (Code)
+                            </td>
+                            <td style="width:60%;text-align:center;">
+                                Description of Goods
+                            </td>
+                        </tr>
+                        <tr style="height:100px;" class="tbody">
+                            <td style="width:40%;margin-top: 0%;">{!Buyer_Name} <br/> {!Buyer_Address} <br/> {!Buyer_Country} </td>
+                            <td style="width:60%;margin-top: 0%;">{!Description_of_Goods}</td>
+                        </tr>
+                    </table>
+                    <div class="hkecic">
+                        <p>Hong Kong Export Credit Insurance Corporation</p>
+                    </div>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_2">
+
+                <div class="block">
+                    <span class="block_heading">NATURE OF ENDORSEMENT</span>
+                    <p class="block_body">
+                        1. This Endorsement extends to insure the Policyholder against losses arising from
+                        <b>insurable contract</b> and resulted directly from any of the events specified in Clause 4 of this
+                        Endorsement which occurs after the
+                        <b>insurable contract</b>
+                        is made but before
+                        <b>shipment</b>. This Endorsement applies only to the
+                        <b>insurable contract</b>s made between the Policyholder and the overseas buyer(s) specified in the
+                        Schedule to this Endorsement.
+                    </p>
+                    <p class="block_body">
+                        2. The terms and conditions of the Policy apply equally to this Endorsement except to the extent that they are varied, deleted
+                        or added. For the purpose of this Endorsement, where the context admits:
+                        <p class="sub_1">
+                            (a)
+                            <b>“Claim payment”</b> means the payment to be made by HKECIC to the Policyholder as specified in
+                            Clause 18 of this Endorsement.
+                        </p>
+                        <p class="sub_1">
+                            (b)
+                            <b>“Contract price”</b> means the sum payable for goods to be shipped under the
+                            <b>insurable contract</b>, including any insurance, freight or other charges payable by the Policyholder
+                            on behalf of the buyer and any interest charges payable by the buyer for credit facilities provided
+                            by the Policyholder.
+                        </p>
+                        <p class="sub_1">
+                            (c)
+                            <b>“Costs of work in progress”</b> means the costs incurred by the Policyholder in procuring the
+                            goods required under the insurable contract before
+                            <b>shipment</b>, which include the following where applicable:
+                        </p>
+                        <p class="sub_2">
+                            (i) the amount of costs of direct wages and materials necessarily and solely incurred by the Policyholder for the production
+                            of the goods required under the
+                            <b>insurable contract</b>; and/or
+                        </p>
+                        <p class="sub_2">
+                            (ii) in relation to goods required under the
+                            <b>insurable contract</b> being acquired by the Policyholder by way of purchase from a third party,
+                            the amount the Policyholder is liable to pay to the third party for the goods required under
+                            the
+                            <b>insurable contract</b>;
+                        </p>
+                        <p class="sub_1">
+                            up to but not exceeding the
+                            <b>contract price</b> and must be evidenced by documentary proof to the reasonable satisfaction
+                            of HKECIC.
+                        </p>
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_3">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        <p class="sub_1">
+                            <b>“Date of loss”</b> means the date on which all the raw materials, work-in-progress and/or finished
+                            goods in relation to the insurable contract concerned not accepted by the buyer or in the possession
+                            or control of the Policyholder, if any, have been resold or disposed of by the Policyholder,
+                            or the date set out in the following (i) to (iii), whichever is the later:
+                        </p>
+                        <p class="sub_2">
+                            (i) the date on which the first event of
+                            <b>insolvency</b> occurs where the
+                            <b>event of loss</b> is specified in Clause 4(a) of this Endorsement;
+                        </p>
+                        <p class="sub_2">
+                            (ii) four months after the date of payment of local currency deposit or four months after the
+                            <b>due date</b>, whichever is the later where the
+                            <b>event of loss</b> is specified in Clause 4(c) of this Endorsement. If the buyer is prohibited
+                            from making the deposit, four months after the
+                            <b>due date</b>; or
+                        </p>
+                        <p class="sub_2">
+                            (iii) in the
+                            <b>events of loss</b> specified in Clauses 4(d), 4(e), 4(f) and 4(g) of this Endorsement, four months
+                            after the occurrence of the event.
+                        </p>
+                        <p class="sub_2">
+                            In case where the
+                            <b>event of loss</b> is specified in Clause 4(b) of this Endorsement, the date on which the raw
+                            materials, work-in-progress and/or finished goods in relation to the
+                            <b>insurable contract</b> concerned not accepted by the buyer or in the possession or control of
+                            the Policyholder, if any, have been resold or disposed of by the Policyholder.
+                        </p>
+                        <p class="sub_1">
+                            (e)
+                            <b>“Pre-shipment limit”</b> means the maximum
+                            <b>amount of loss</b> HKECIC may be liable to the Policyholder in respect of a buyer in relation
+                            to loss arising before
+                            <b>shipment</b>.
+                        </p>
+                    </p>
+                    <p class="block_body">
+                        3. For the purpose of this Endorsement, all references to the following terms in the Policy shall be adopted as follows:
+                        <p class="sub_1">
+                            (a) all references to
+                            <b>“gross invoice value”</b> in the Policy shall be deemed as references to the
+                            <b>contract price</b>, save as to Clause 71 of the Policy and except otherwise provided for in this
+                            Endorsement;
+                        </p>
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_4">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        <p class="sub_1">
+                            (b) all references to
+                            <b>“credit limit”</b> in the Policy shall be deemed as references to the
+                            <b>pre-shipment limit</b>, save as to Clause 39 of the Policy and except otherwise provided for
+                            in this Endorsement;
+                        </p>
+                        <p class="sub_1">
+                            (c) all references to
+                            <b>“shipment”</b> shall be deemed as references to the
+                            <b>insurable contract</b>, save as to Clauses 2, 4, 17.5, 18.3, 39, 40, 71 and 77 of the Policy
+                            and except otherwise provided for in this Endorsement.
+                        </p>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">THE COVER</span>
+                    <p class="block_body">
+                        4. The
+                        <b>events of loss</b> covered under this Endorsement are:
+                        <p class="sub_1">
+                            (a) the
+                            <b>insolvency</b> of the buyer;
+                        </p>
+                        <p class="sub_1">
+                            (b) the repudiation of the
+                            <b>insurable contract</b> by the buyer before
+                            <b>shipment</b>;
+                        </p>
+                        <p class="sub_1">
+                            (c) the operation of an
+                            <b>applicable law or regulation</b> of the buyer’s
+                            <b>country</b> which, beyond the control of both the Policyholder and the buyer, prevents or restricts
+                            the transfer of payment to Hong Kong but only if the buyer has paid the equivalent amount payable
+                            in local currency into a bank account with an irrevocable instruction for transfer to the Policyholder,
+                            to the extent the law allows;
+                        </p>
+                        <p class="sub_1">
+                            (d) the imposition of an
+                            <b>applicable law or regulation</b> by the buyer's
+                            <b>country</b> which, beyond the control of both the Policyholder and the buyer, prevents the import
+                            of the goods into the buyer's
+                            <b>country</b>;
+                        </p>
+                        <p class="sub_1">
+                            (e) the cancellation of a previously issued authority to import goods by the buyer's
+                            <b>country</b> which is beyond the control of both the Policyholder and the buyer and without any
+                            fault of either of them;
+                        </p>
+                        <p class="sub_1">
+                            (f) a general moratorium decreed by the buyer’s
+                            <b>country</b> or by a third
+                            <b>country</b> through which the payment must be effected; and
+                        </p>
+                        <p class="sub_1">
+                            (g) the occurrence of war, revolution or riot, or any natural disaster in the buyer's
+                            <b>country</b> which in whole or in part prevents performance of the
+                            <b>insurable contract</b>.
+                        </p>
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_5">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        <p class="sub_1">
+                            For the sake of clarity, the
+                            <b>events of loss</b> covered under the Policy shall be varied and replaced by Clause 4 of this
+                            Endorsement.
+                        </p>
+                        <p class="sub_2"></p>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">ADDITIONAL CONDITIONS</span>
+                    <p class="block_body">
+                        The additional conditions to this Endorsement are:
+                        <p class="sub_1">
+                            5. The Policyholder must
+                            <b>export</b> the goods within a period of six months from the date of
+                            <b>insurable contract</b> unless otherwise agreed by HKECIC in writing.
+                        </p>
+                        <p class="sub_1">
+                            6. If the
+                            <b>insurable contract</b> is made on terms different from Clause 3 of the Policy, the Policyholder
+                            must inform HKECIC in writing within 21 days after the
+                            <b>insurable contract</b> is made, and HKECIC shall advise the Policyholder whether such
+                            <b>insurable contract</b> shall be covered or excluded.
+                        </p>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">PRE-SHIPMENT LIMIT</span>
+                    <p class="block_body">
+                        <p class="sub_1">
+                            7. (a) The Policyholder must have a
+                            <b>pre-shipment limit</b> approved by HKECIC for each buyer and the
+                            <b>pre-shipment limit</b> may contain additional conditions of cover forming part of the Policy.
+                        </p>
+                        <p class="sub_1">
+                            (b) HKECIC may cancel or vary any provision of the Policy in writing including the
+                            <b>pre-shipment limit</b> on any buyer or the cover on any
+                            <b>country</b>. Any such cancellation or variation shall only apply to
+                            <b>insurable contract</b>s made on or after the effective date specified in HKECIC’s notice.
+                        </p>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">
+                        <b>amount of loss</b>
+                    </span>
+                    <p class="block_body">
+                        8. For the purpose of this Endorsement,
+                        <b>“Amount of loss”</b> means:
+                        <p class="sub_1">
+                            (a) in relation to loss arising before
+                            <b>shipment</b>, the
+                            <b>contract price</b> multiplied by a figure which is equal to the proportion of costs of work in
+                            progress incurred by the Policyholder at the date of
+                            <b>claim payment</b> bears to the amount of total costs of direct wages and materials necessarily
+                            and solely required for the performance of the
+                            <b>insurable contract</b> by the Policyholder, less the following where applicable:
+                        </p>
+                    </p>
+                </div>
+            </div>
+            <div class="page_6">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        <p class="sub_2">
+                            (i) any
+                            <b>contract price</b> including any deposit payable under the
+                            <b>insurable contract</b> which has been paid;
+                        </p>
+                        <p class="sub_2">
+                            (ii) any expense or interest saved by the Policyholder due to non-fulfilment of the
+                            <b>insurable contract</b>;
+                        </p>
+                        <p class="sub_2">
+                            (iii) any counter-claim or set-off which can be used by the buyer to reduce the
+                            <b>contract price</b>;
+                        </p>
+                        <p class="sub_2">
+                            (iv) any reduction of payment mutually agreed between the Policyholder and the buyer;
+                        </p>
+                        <p class="sub_2">
+                            (v) any sum the Policyholder has received from the realisation of any security, and / or the amount or value mutually agreed
+                            between the Policyholder and HKECIC in respect of any enforceable security held by the Policyholder
+                            which can be used by the Policyholder;
+
+                        </p>
+                        <p class="sub_2">
+                            (vi) any amount mutually agreed between the Policyholder and HKECIC; and/or
+                        </p>
+                        <p class="sub_2">
+                            (vii) any sum the Policyholder has received from any source including the resale of any raw materials, work-in-progress and
+                            finished goods.
+
+                        </p>
+                        <p class="sub_1">
+                            (b) in relation to loss arising before
+                            <b>shipment</b> and where the Policyholder does not produce or manufacture the goods required under
+                            the
+                            <b>insurable contract</b> and the goods are acquired by the Policyholder by way of purchase from
+                            a third party, the
+                            <b>contract price</b> multiplied by a figure which is equal to the proportion of costs of work in
+                            progress the Policyholder is liable to pay at the date of
+                            <b>claim payment</b> bears to the price of the goods agreed to be paid by the Policyholder to the
+                            third party had the contract between the Policyholder and the third party been performed, less
+                            the following where applicable:
+                        </p>
+
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_7">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        <!-- <p class="sub_1"></p> -->
+                        <p class="sub_2">
+                            (i) any
+                            <b>contract price</b> including any deposit payable under the
+                            <b>insurable contract</b> which has been paid;
+                        </p>
+                        <p class="sub_2">
+                            (ii) any expense or interest saved by the Policyholder due to non-fulfilment of the
+                            <b>insurable contract</b>;
+                        </p>
+                        <p class="sub_2">
+                            (iii) any counter-claim or set-off which can be used by the buyer to reduce the
+                            <b>contract price</b>;
+
+                        </p>
+                        <p class="sub_2">
+                            (iv) any reduction of payment mutually agreed between the Policyholder and the buyer;
+
+                        </p>
+                        <p class="sub_2">
+                            (v) any sum the Policyholder has received from the realisation of any security, and / or the amount or value mutually agreed
+                            between the Policyholder and HKECIC in respect of any enforceable security held by the Policyholder
+                            which can be used by the Policyholder;
+                        </p>
+                        <p class="sub_2">
+                            (vi) any amount mutually agreed between the Policyholder and HKECIC; and/or
+                        </p>
+                        <p class="sub_2">
+                            (vii) any sum the Policyholder has received from any source including the resale of any raw materials, work-in-progress and
+                            finished goods.
+                        </p>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">DECLARATIONS AND PREMIUMS</span>
+                    <p class="block_body">
+                        <p class="sub_1">
+                            9. The Policy requires the Policyholder to declare all
+                            <b>insurable contract</b>s concluded with all buyers specified in the Schedule to this Endorsement.
+                            The Policyholder must declare to HKECIC in the form specified by HKECIC (or in such other form
+                            acceptable to HKECIC):
+                        </p>
+                        <p class="sub_2" style="background-color:yellow;">
+                            9.1 the
+                            <b>contract price</b> of the goods contracted within 21 days from the date of the
+                            <b>insurable contract</b>; or
+                        </p>
+                        <p class="sub_2" style="background-color:yellow;">
+                            9.2 for each of the buyers within 15 days of the following month the aggregate amount of the
+                            <b>contract price</b> of the goods contracted in the
+                        </p>
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_8">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        <span class="sub_1" style="background-color:yellow">
+                            preceding month.
+                        </span>
+                    </p>
+                    <span class="block_body" style="background-color:yellow;color:red;">
+                        (to be confirmed)
+                    </span>
+                </div>
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        10. The Policyholder must pay premium within 14 days from the date of invoice issued by HKECIC showing the premium payable
+                        for
+                        <b>insurable contract</b>s declared. Premium is calculated on the
+                        <b>contract price</b> of goods at the appropriate rates specified in the Schedule to this Endorsement
+                        which may be amended from time to time by HKECIC.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading"></span>
+                    11. HKECIC has the right to change any premium rate applicable to
+                    <b>insurable contract</b>s from time to time by giving the Policyholder prior written notice. In the case
+                    where HKECIC increases the premium rate, the Policyholder may within 14 days from the date of such notice
+                    inform HKECIC in writing to exclude from cover all (but not part) of the insurable contracts made on
+                    or after the effective date of the increase of the premium rate.
+                </div>
+                <div class="block">
+                    <span class="block_heading">NOTIFICATION OF LIKELY LOSS</span>
+                    <p class="block_body">
+                        12. When the Policyholder becomes aware of the occurrence of any
+                        <b>event of loss</b>, or any event likely to cause loss, or that the buyer is or appears to be unable
+                        to pay debts incurred in the ordinary course of business as and when they fall due, or the buyer
+                        is or appears to be unable to pay the deposit or requests to lower the deposit requirement after
+                        <b>insurable contract</b> has been made, the Policyholder must promptly and in any event within five
+                        <b>business days</b> of such event inform HKECIC.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">ACTIONS AND EXPENSES FOR PREVENTING OR MINIMISING LOSSES</span>
+                    <p class="block_body">
+                        13. The Policyholder must act as if uninsured and promptly take all reasonable and practicable measures and all practicable
+                        actions required by HKECIC to prevent or minimise losses at all times. Such measures or actions include,
+                        but are not limited to the appointment of debt collectors, the institution of legal proceedings against
+                        the buyer or any guarantor of the buyer and the exercise of any rights in respect of any security
+                        held by the Policyholder, and the resale or disposal of the raw materials purchased and the work-in-progress
+                        carried out for the purpose of the
+                        <b>insurable contract</b>s and the goods sold under the
+                        <b>insurable contract</b>s. In case of
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_9">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        resale or disposal as mentioned, the Policyholder must obtain HKECIC’s prior written approval before action.
+                    </p>
+                </div>
+                <div style="margin-top:20%;"></div>
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        14. On the condition that the Policyholder has obtained HKECIC’s prior written approval for incurring any legal costs or
+                        other charges for the purpose of preventing or minimising losses, HKECIC shall reimburse the Policyholder
+                        for any such unrecovered legal costs or other charges as follows:
+                        <table width="70%" border="1" cellspacing="0" cellpadding="0" style="margin:5%;">
+                            <tr>
+                                <td style="width:20%;text-align:center;">
+                                    Unrecovered legal costs and other charges
+                                </td>
+                                <td style="width:20%;text-align:center;">
+                                    x
+                                </td>
+                                <td style="width:20%;text-align:center;">
+                                    The lower of the total amount of
+                                    <b>contract price</b> and/or
+                                    <b>
+                                        <b>gross invoice value</b>
+                                    </b> or
+                                    <b>pre-shipment limit</b> and/or credit limit
+                                    <br/> ______________________________
+                                    <br/> Total indebtedness owed by the buyer to the Policyholders
+                                </td>
+                                <td style="width:20%;text-align:center;">
+                                    x
+                                </td>
+                                <td style="width:20%;text-align:center;">
+                                    <b>
+                                        <b>Percentage of indemnity</b>
+                                    </b>
+                                </td>
+                            </tr>
+                        </table>
+                        The appointment of any loss adjuster and the sharing of its related costs, expenses or fees incurred are specified in Clause
+                        15 of this Endorsement.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading"></span>
+                    15. HKECIC shall reimburse the Policyholder half of any costs, expenses, fees and charges incurred for the purpose of appointing
+                    any loss adjuster or person mutually agreed to be appointed to determine the fact and/or the extent of
+                    the loss and/or the steps to be taken to mitigate such loss.
+                </div>
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        16. HKECIC shall make the reimbursement specified in Clause 14 and/or Clause 15 of this Endorsement at the time of claim
+                        payment. If no
+                        <b>claim payment</b> becomes payable, HKECIC shall make the reimbursement after the unpaid contract
+                        price and/or
+                        <b>
+                            <b>gross invoice value</b>
+                        </b> is settled.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">EXCLUSIONS</span>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_10">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        17. For the purpose of this Endorsement, Clauses 17.1, 17.2 and 17.5 of the Policy shall be deleted in their entirety and
+                        replaced by the following:
+                        <p class="sub_1">
+                            “17.1 the Policyholder has not held a valid
+                            <b>pre-shipment limit</b> for the buyer concerned;
+                        </p>
+                        <p class="sub_1">
+                            17.2 the Policyholder has failed to declare any
+                            <b>insurable contract</b>s in relation to this Endorsement in accordance with Clause 9 of this Endorsement
+                            or make declarations as required under any other policies it has entered with HKECIC;”
+                        </p>
+                        The remainder of Clause 17 shall remain unchanged.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">CALCULATION OF LOSS AND CLAIM PAYMENT</span>
+                    <p class="block_body">
+                        18. In relation to loss arising before
+                        <b>shipment</b>, HKECIC shall pay to the Policyholder the LESSER of:
+                        <p class="sub_1">
+                            18.1 the
+                            <b>amount of loss</b> multiplied by the
+                            <b>Percentage of indemnity</b>; or
+                        </p>
+                        <p class="sub_1">
+                            18.2 the
+                            <b>pre-shipment limit</b> multiplied by the
+                            <b>Percentage of indemnity</b>.
+                        </p>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">ALLOCATION OF MONEY RECEIVED</span>
+                    <p class="block_body">
+                        19. Unless otherwise agreed by HKECIC, any payment, whether or not relating to the
+                        <b>insurable contract</b>s, received after cancellation of the
+                        <b>pre-shipment limit</b> and/or the credit limit by HKECIC on any buyer shall be deemed to reduce the
+                        costs of work in progress which have been incurred and/or the outstanding amount which has fallen
+                        due first even though the buyer may have indicated that the payment was in settlement of an outstanding
+                        amount falling due at some later date or
+                        <b>costs of work in progress</b>incurred or even such payment was not in respect of the insurable contracts.
+                    </p>
+                    <p class="block_body">
+                        20. Unless otherwise agreed by HKECIC in writing, the date and amount of
+                        <b>costs of work in progress</b>incurred specified in Clause 8 and Clause 19 of this Endorsement must
+                        be calculated in accordance with generally accepted accounting principles in Hong Kong.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">CONVERSION OF FOREIGN CURRENCIES</span>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_11">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        21. For calculating premium and any claim, any
+                        <b>contract price</b> in the approved foreign currency shall be converted into Hong Kong Dollar at the
+                        <b>specified exchanged rate</b> on the date of the
+                        <b>insurable contract</b>.
+                    </p>
+                    <p class="block_body">
+                        Notes : (i) Terms in
+                        <b>bold</b> are as defined in the Policy or in this Endorsement.
+                        <br/>
+                        <span style="margin-left:7%;">
+                            (ii) This Endorsement with its Schedule constitutes part of the Policy.
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</apex:page>

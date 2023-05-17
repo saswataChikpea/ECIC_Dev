@@ -1,0 +1,477 @@
+<template>
+    <c-onboarding-progress active-index="4"></c-onboarding-progress>
+    <!-- <c-onboarding-terms-and-conditions></c-onboarding-terms-and-conditions> -->
+    <div class="card_body">
+        <div class="slds-card default_padding">
+            <div class="slds-grid slds-grid_align-center margin-top-2">
+                <span style="font-size: 1.5rem;">Please confirm all the details provided to create a
+                    proposal</span>
+            </div>
+            <template for:each={questionList} for:item="section">
+                <div key={section.sectionId}>
+                    <div class="slds-grid slds section_head" id={section.sectionId} onclick={expandHandler}>
+                        <h2>{section.sectionLabel}</h2>
+                        <!-- <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="upload" title="upload">
+                            </lightning-icon>
+                        </div> -->
+                    </div>
+                    <template if:false={section.isSectionC}>
+                        <div class="section_container">
+                            <template for:each={section.questions} for:item="ques">
+
+                                <div key={ques.Display_Sequence} class="slds-grid slds-wrap mb_1">
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 bold">
+                                        <span>{ques.Question}</span>
+                                    </div>
+                                    <template if:true={ques.isText}>
+                                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <input type="text" class="slds-input input_small_c" name={ques.Name}
+                                                required disabled={ques.readOnly} value={ques.Value}
+                                                onchange={handleQChange} />
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isCurrency}>
+                                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <!-- <lightning-input type="number" class="input_small_c1" label="dsf"
+                                                variant="label-hidden" name={ques.Name} required={ques.isRequired}
+                                                formatter="currency" format-fraction-digits="0" disabled={ques.readOnly}
+                                                value={ques.Value}>
+                                            </lightning-input> -->
+                                            <c-custom-currency name={ques.Name} value={ques.Value} data-id={ques.Name}
+                                                eventname="change" onchange={handleCurrencyChange}
+                                                disabled={ques.readOnly}>
+                                            </c-custom-currency>
+                                            <div data-id={ques.Name} class="slds-form-element__help color_red">
+                                                {ques.errMsg}</div>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isPickList}>
+                                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <lightning-combobox class="input_small_c1" name={ques.Name}
+                                                value={ques.Value} readonly={ques.readOnly} variant="label-hidden"
+                                                placeholder="--Select--" options={ques.options}
+                                                onchange={handleQChange}>
+                                            </lightning-combobox>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isGoodsAndService}>
+                                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <lightning-combobox class="input_small_c1" name={ques.Name}
+                                                value={ques.Value} data-id={ques.Name} readonly={ques.readOnly}
+                                                variant="label-hidden" placeholder="--Select--"
+                                                options={goodsServiceOptions} onchange={handleQChange}>
+                                            </lightning-combobox>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isLegalType}>
+                                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <lightning-combobox class="input_small_c1" name={ques.Name}
+                                                value={ques.Value} data-id={ques.Name} readonly={ques.readOnly}
+                                                variant="label-hidden" placeholder="--Select--"
+                                                options={companyLegalTypeOptions} onchange={handleQChange}>
+                                            </lightning-combobox>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isRadio}>
+                                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <c-custom-radio eventname="handleradiochange" btnname={ques.Name}
+                                                isdisabled={ques.readOnly} options={ques.options}
+                                                onhandleradiochange={handleQRadioChange}>
+                                            </c-custom-radio>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isDate}>
+                                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <lightning-input type="date" name={ques.Name} variant="label-hidden"
+                                                value={ques.Value} disabled label="Enter a Date">
+                                            </lightning-input>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isUpload}>
+                                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <!-- <lightning-file-upload label=" " name={ques.Name} accept={acceptedFormats}
+                                                record-id={myRecordId} onuploadfinished={handleUploadFinished} multiple>
+                                            </lightning-file-upload> -->
+
+
+                                            <div class="slds-m-around_medium">
+                                                <lightning-input type="file"
+                                                    accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf"
+                                                    variant="label-hidden" label="Attachment" onchange={openfileUpload}>
+                                                </lightning-input>
+                                            </div>
+                                            <template if:true={fileData}>
+                                                <p>{fileData.filename}</p>
+                                            </template>
+                                            <lightning-button variant="brand" label="submit" title="Submit"
+                                                onclick={handleClick} class="slds-m-left_x-small">
+                                            </lightning-button>
+
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isAddress}>
+                                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <div class="slds-grid slds-wrap">
+                                                <input type="text" name={ques.Name} data-id="address_line_1"
+                                                    value={ques.address.address_line_1} disabled
+                                                    class="slds-input input_small_c address_line"
+                                                    placeholder="Address Line 1" onchange={handleAddressChange} />
+                                                <input type="text" name={ques.Name} data-id="address_line_2"
+                                                    value={ques.address.address_line_2} disabled
+                                                    class="slds-input input_small_c address_line"
+                                                    placeholder="Address Line 2" onchange={handleAddressChange} />
+                                                <input type="text" name={ques.Name} data-id="address_line_3"
+                                                    value={ques.address.address_line_3} disabled
+                                                    class="slds-input input_small_c address_line"
+                                                    placeholder="Address Line 3" onchange={handleAddressChange} />
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isCheckbox}>
+                                        <div class="slds-size_1-of-1 slds-large-size_1-of-2"
+                                            style="margin-bottom: .6rem;">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <span class="slds-checkbox slds-checkbox_standalone">
+                                                        <input type="checkbox" name={ques.Name} id={ques.Name}
+                                                            value={ques.Value} disabled checked={ques.isChecked} />
+                                                        <span class="slds-checkbox_faux"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isExclusion}>
+                                        <template for:each={exclusionOptions} for:item="option">
+                                            <div class="slds-form-element" key={option.dataId}>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-checkbox">
+                                                        <input type="checkbox" name="Exclusions__c"
+                                                            disabled={ques.readOnly} checked={option.isChecked}
+                                                            data-id={option.dataId} id={option.dataId} />
+                                                        <label class="slds-checkbox__label" for={option.dataId}>
+                                                            <span class="slds-checkbox_faux">&nbsp;</span>
+                                                            <span class="slds-form-element__label">{option.label}</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                    </template>
+                                    <template if:true={ques.isSlider}>
+                                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-slider">
+                                                        <input type="range" name={ques.Name} id={ques.Name}
+                                                            onchange={handleQChange} max={ques.Max} min={ques.Min}
+                                                            step={ques.Step} class="slds-slider__range"
+                                                            disabled={ques.readOnly} value={ques.Value} />
+                                                        <span class="slds-slider__value"
+                                                            aria-hidden="true">HKD&nbsp;{ques.formattedValue}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isCountryMarketOfShipment}>
+                                        <div class="countryMarketContainer">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10%;">
+                                                            No.
+                                                        </th>
+                                                        <th>
+                                                            <p class="p1">Country / market of shipment</p>
+                                                        </th>
+                                                        <th>
+                                                            <p class="p1">% of country / market of shipment</p>
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                <template for:each={countryMarket_Shipment} for:item="item"
+                                                    for:index="indx">
+                                                    <tr key={item.key}>
+                                                        <td>
+                                                            <input type="text" data-id={item.no} name={item.no} readonly
+                                                                class="slds-input input_small_c" value={item.no} />
+
+                                                        </td>
+                                                        <td>
+                                                            <lightning-combobox name={item.country} disabled
+                                                                value={item.country} variant="label-hidden"
+                                                                placeholder="--Select--"
+                                                                data-countrymarketfor={ques.Name} data-id={item.key}
+                                                                onchange={handleCountryMarketChange}
+                                                                options={countryOptions}>
+                                                            </lightning-combobox>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" data-id={item.key}
+                                                                data-countrymarketfor={ques.Name}
+                                                                value={item.percentage} name={item.percentage} disabled
+                                                                class="slds-input input_small_c"
+                                                                onchange={handleCountryPercentageChange} />
+                                                        </td>
+
+                                                    </tr>
+                                                </template>
+
+                                            </table>
+
+
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isDestinationCountryMarket}>
+                                        <div class="countryMarketContainer">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10%;">
+                                                            No.
+                                                        </th>
+                                                        <th>
+                                                            <p class="p1">Country / market of shipment</p>
+                                                        </th>
+                                                        <th>
+                                                            <p class="p1">% of country / market of shipment</p>
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                <template for:each={countryMarket_Destination} for:item="item"
+                                                    for:index="indx">
+                                                    <tr key={item.key}>
+                                                        <td>
+                                                            <input type="text" data-id={item.no} name={item.no} readonly
+                                                                class="slds-input input_small_c" value={item.no} />
+
+                                                        </td>
+                                                        <td>
+                                                            <lightning-combobox name={item.country} disabled
+                                                                value={item.country} variant="label-hidden"
+                                                                placeholder="--Select--"
+                                                                data-countrymarketfor={ques.Name} data-id={item.key}
+                                                                onchange={handleCountryMarketChange}
+                                                                options={countryOptions}>
+                                                            </lightning-combobox>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" data-id={item.key}
+                                                                data-countrymarketfor={ques.Name}
+                                                                value={item.percentage} name={item.percentage} disabled
+                                                                class="slds-input input_small_c"
+                                                                onchange={handleCountryPercentageChange} />
+                                                        </td>
+
+                                                    </tr>
+                                                </template>
+
+                                            </table>
+
+
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isCountryMarketOfOrigin}>
+                                        <div class="countryMarketContainer">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10%;">
+                                                            No.
+                                                        </th>
+                                                        <th>
+                                                            <p class="p1">Country / market of shipment</p>
+                                                        </th>
+                                                        <th>
+                                                            <p class="p1">% of country / market of shipment</p>
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                <template for:each={countryMarket_Origin} for:item="item"
+                                                    for:index="indx">
+                                                    <tr key={item.key}>
+                                                        <td>
+                                                            <input type="text" data-id={item.no} name={item.no} readonly
+                                                                class="slds-input input_small_c" value={item.no} />
+
+                                                        </td>
+                                                        <td>
+                                                            <lightning-combobox name={item.country} disabled
+                                                                value={item.country} variant="label-hidden"
+                                                                placeholder="--Select--"
+                                                                data-countrymarketfor={ques.Name} data-id={item.key}
+                                                                onchange={handleCountryMarketChange}
+                                                                options={countryOptions}>
+                                                            </lightning-combobox>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" data-id={item.key}
+                                                                data-countrymarketfor={ques.Name}
+                                                                value={item.percentage} name={item.percentage} disabled
+                                                                class="slds-input input_small_c"
+                                                                onchange={handleCountryPercentageChange} />
+                                                        </td>
+
+                                                    </tr>
+                                                </template>
+
+                                            </table>
+
+
+                                        </div>
+                                    </template>
+                                    <template if:true={ques.isAddBuyer}>
+                                        <div style="width: 100%;">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <p class="p1">Buyer name</p>
+                                                        </th>
+                                                        <th>
+                                                            <p class="p1">Buyer address</p>
+                                                        </th>
+                                                        <th>
+                                                            <p class="p1">Buyer country</p>
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                <template for:each={buyers} for:item="benf" for:index="indx">
+                                                    <tr key={benf.key}>
+                                                        <td>
+                                                            <template if:true={benf.editable}>
+                                                                <input type="text" data-id={benf.key} name={benf.name}
+                                                                    value={benf.name} class="slds-input input_small_c"
+                                                                    disabled />
+                                                            </template>
+                                                            <template if:false={benf.editable}>
+                                                                <input type="text" data-id={benf.key} name={benf.name}
+                                                                    disabled value={benf.name}
+                                                                    class="slds-input input_small_c" />
+                                                            </template>
+                                                        </td>
+                                                        <td>
+                                                            <template if:true={benf.editable}>
+                                                                <input type="text" data-id={benf.key} disabled
+                                                                    value={benf.address} name={benf.address}
+                                                                    class="slds-input input_small_c"
+                                                                    onchange={handleBuyerAddress} />
+                                                            </template>
+                                                            <template if:false={benf.editable}>
+                                                                <input type="text" data-id={benf.key}
+                                                                    name={benf.address} disabled value={benf.address}
+                                                                    class="slds-input input_small_c"
+                                                                    onchange={handleBuyerAddress} />
+                                                            </template>
+
+                                                        </td>
+                                                        <td>
+                                                            <lightning-combobox name={benf.country}
+                                                                variant="label-hidden" placeholder="--Select--"
+                                                                value={benf.country} readonly=""
+                                                                options={countryOptions}>
+                                                            </lightning-combobox>
+
+                                                        </td>
+
+
+                                                    </tr>
+                                                </template>
+                                            </table>
+                                            <!-- <lightning-icon icon-name="utility:add" variant="success"
+                                                style="color:rgb(18, 163, 13);margin-top:4%; margin-bottom:3%;margin-left:13%;"
+                                                alternative-text="Add" size="xx-small" title="xx-small size"
+                                                onclick={addBuyerRow}>
+                                            </lightning-icon> -->
+                                            <br />
+                                            <template if:true={show_buyer_save_btn}>
+                                                <button
+                                                    style="color: white;background-color:rgb(126, 121, 121);border-radius:10px;"
+                                                    class="slds-button slds-button_neutral"
+                                                    onclick={handleBuyerSave}>Save</button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:true={section.isSectionC}>
+                        <div class="section_container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <p class="p1">Type</p>
+                                        </th>
+                                        <th>
+                                            <p class="p1">Name</p>
+                                        </th>
+                                        <th style="padding-left: 1%;">
+                                            <p>&nbsp;</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <template for:each={benificiary_owners} for:item="benf" for:index="indx">
+                                    <tr key={benf.key}>
+                                        <td>
+                                            <lightning-combobox name={benf.name} disabled variant="label-hidden"
+                                                value={benf.type} placeholder="--Select--" options={benificiaryOptions}>
+                                            </lightning-combobox>
+
+                                        </td>
+                                        <td>
+
+                                            <!-- <lightning-input data-id={benf.key} variant="label-hidden" style="padding-top:2%"
+                                type="text" onchange={handleBenName}></lightning-input> -->
+                                            <input type="text" data-id={benf.key} name={benf.name} value={benf.name}
+                                                disabled class="slds-input input_small_c" />
+
+
+                                        </td>
+                                        <td if:false={section.readOnly}>
+                                            &nbsp;&nbsp;<lightning-icon icon-name="utility:ban" variant="Error"
+                                                style="color:red; cursor:pointer" alternative-text="Remove"
+                                                size="xx-small" title="xx-small size" data-id={benf.key}
+                                                onclick={removeRow}>
+                                            </lightning-icon>
+
+                                        </td>
+                                    </tr>
+                                </template>
+                            </table>
+                            <lightning-icon if:false={section.readOnly} icon-name="utility:add" variant="success"
+                                style="color:rgb(18, 163, 13);margin-top:4%; margin-bottom:3%;margin-left:13%;"
+                                alternative-text="Add" size="xx-small" title="xx-small size" onclick={addRow}>
+                            </lightning-icon>
+                            <br />
+                            <template if:true={show_save_btn}>
+                                <button style="color: white;background-color:rgb(126, 121, 121);border-radius:10px;"
+                                    class="slds-button slds-button_neutral" onclick={handleSave}>Save</button>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+        </div>
+
+        <div class="slds-grid slds-grid_align-center margin-top-2">
+            <button onclick={showPrevious} class="slds-button back_button"><span>Back</span>
+            </button>
+            <button if:false={isReviseQuote} onclick={showOnboardingTermsAndConditions}
+                class="slds-button next_button">Confirm</button>
+            <button if:true={isReviseQuote} onclick={callReviseQuotation} class="slds-button next_button">Revise
+                Quotation</button>
+        </div>
+    </div>
+
+</template>

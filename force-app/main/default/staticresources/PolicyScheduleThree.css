@@ -1,0 +1,68 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+.heading{
+    color: #000080;
+    font-size: 16.5px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+    margin: 20px;
+}
+.policy_number{
+    float: left;
+    width: 50%;
+}
+.issue_date{
+    margin-left: 400px;
+}
+.effective_date{
+    margin-left: 400px;
+}
+.output_date{
+    margin-left: 20px;
+}
+.title{
+    font-weight: bold;
+    color: #000080;
+    font-size: 13.33px;
+    padding: 20px;
+    margin-bottom: 5px;
+}
+.sub_heading{
+    text-decoration: underline;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+}
+.para{
+    font-size: 15px;
+    margin-left: 20px;
+}
+.footer{
+    margin-top: 350px;
+    margin-left: 25px;
+}
+.footer_text{
+    font-size: 8.5px;
+}
+.para_sbp{
+    font-size: 15px;
+    margin-left: 30px;
+}
+.sub_para_sbp{
+    font-size: 15px;
+    margin-left: 30px;
+}
+.footer_text_sbp{
+    font-size: 8.5px;
+    margin-top: 100px;
+    margin-left: 25px;
+}
+.title_sbp{
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    font-size: 13.33px;
+    padding: 20px;
+    margin-bottom: 5px;
+}

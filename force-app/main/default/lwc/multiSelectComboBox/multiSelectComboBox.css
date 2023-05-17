@@ -1,0 +1,45 @@
+.verticalAlign {
+    cursor: pointer;
+    padding: 0px 5px !important;
+}
+
+.slds-dropdown {
+    padding: 0px !important;
+}
+
+.recordListBox {
+    margin-top: 0px !important;
+    overflow-y: scroll;
+    /* scrollbar-width: 0px !important; */
+    scrollbar-color: #f8f8f8 !important;
+    scrollbar-width: none !important;
+}
+
+.slds-listbox li {
+    padding: .45rem 0.7rem !important;
+    display: flex;
+}
+
+.inputBox input {
+    padding-left: 10px;
+}
+
+.eachItem:hover {
+    background-color: #F1F1F1;
+    cursor: pointer;
+}
+
+/* For Scrolling */
+
+::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* ::-webkit-scrollbar-track {
+    display: none !important;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.4);
+} */

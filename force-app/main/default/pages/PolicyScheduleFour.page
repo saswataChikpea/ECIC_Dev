@@ -1,0 +1,219 @@
+<apex:page controller="PolicyDocument_Pdf_controller" 
+    sidebar="false" 
+    showHeader="false" 
+    standardStylesheets="false"
+    applyBodyTag="false"
+    renderAs="PDF">
+    <apex:stylesheet value="{!$Resource.PolicyScheduleFour}" />
+    <head>
+        <style>
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-left: .5in;
+                margin-right: .5in;
+                margin-bottom: 150px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+            
+            div.header {
+                position: running(header);
+            }
+            div.footer {     
+                /* padding: 1px; */
+                /* bottom:0; */
+                position: running(footer);
+            }
+            .pagenumber:before {
+                content: counter(page);
+            }
+            .pagecount:before {
+                content: counter(pages);
+            }
+            .company_addr{
+                float: left;
+                font-size: 8.5px;
+                color: #000;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <img src="{!$Resource.ECIC_logo}" width="300" height="50" alt="logo" />
+            <div class="heading">
+                <span>SELF-UNDERWRITTEN POLICY (SUP) - SCHEDULE IV</span>
+            </div>
+        </div>
+        <apex:outputPanel rendered="{!Policy_Type == 'SUP'}">
+            
+            <div class="policy_number">
+                <span class="title">Policy Number:</span>
+                <span>{!Policy_Number}</span>
+            </div>
+            <div class="issue_date">
+                <span class="title">Issue Date:</span>
+                <!-- <apex:outputText styleClass="output_date" value="{0,date,MMMM d ',' yyyy}">
+                    <apex:param value="{!Policy_Issue_Date}" />
+                </apex:outputText> -->
+                {!scheduleFourIssueDate}
+            </div>
+            <div class="effective_date">
+                <span class="title">Effective Date:</span>
+                <!-- <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                    <apex:param value="{!Policy_Schedule}" />
+                </apex:outputText> -->
+                {!scheduleFourEffectiveDate}
+            </div>
+            <div class="inner_heading">
+                <p class="sub_heading">Discretionary <b>credit limit</b> Amount Table</p>
+            </div>
+            <div class="table">
+                <table style="border-collapse: collapse; width: 100%;" border="1" cellspacing="0" cellpadding="0">
+                    <tbody>
+                        <tr>
+                            <td>Discretionary
+                                <b>credit limit</b> amount (HKD)</td>
+                            <td>Reference paragraph</td>
+                        </tr>
+                        <tr>
+                            <td>HKD 400,000</td>
+                            <td>3 to 4</td>
+                        </tr>
+                        <tr>
+                            <td>HKD 400,001 to HKD 800,000</td>
+                            <td>5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="para">
+                <p>1. This Schedule IVsets out the range of discretionary
+                    <b>credit limit</b>s which the Policyholder may choose from and set as the
+                    <b>credit limit</b> for each of its selected buyers upon
+                    <span style="color:red">HKECIC</span>'s acceptance of its discretionary
+                    <b>credit limit</b> application for such buyers respectively.</p>
+            </div>
+            <div class="para">
+                2. The Policyholder may submit to
+                <span style="color:red">HKECIC</span> a discretionary
+                <b>credit limit</b> application and set a
+                <b>credit limit</b>for its selected buyer respectively based on trade experience and/or reports from credit
+                information agencies in accordance with the terms and conditions in this Schedule IV, except in the following
+                circumstances:
+                <div class="sub_para">
+                    <p>2.1 the Policyholder has submitted a
+                        <b>credit limit</b> application or a discretionary
+                        <b>credit limit</b> application for the buyer which is being processed by
+                        <span style="color:red">HKECIC</span>;</p>
+
+                    <p>2.2
+                        <span style="color:red">HKECIC</span> has indicated that the discretionary
+                        <b>credit limit</b> application submitted by the Policyholder for the buyer is not accepted;
+                    </p>
+
+                    <p>2.3 the Policyholder holds a valid
+                        <b>credit limit</b> for the buyer or its
+                        <b>credit limit</b> application for that buyer was not approved by
+                        <span style="color:red">HKECIC</span>;</p>
+
+                    <p>2.4
+                        <span style="color:red">HKECIC</span> has cancelled the
+                        <b>credit limit</b>of the buyer; or</p>
+
+                    <p>2.5 the buyer was once
+                        <b> insolvent</b> or is currently
+                        <b> insolvent</b> or the buyer fails to pay the Policyholder any sums within 60 days from the
+                        <b>due date(s)</b>.</p>
+                </div>
+            </div>
+            <div class="para">
+                <p>3. Once a discretionary
+                    <b>credit limit</b> application is accepted by
+                    <span style="color:red">HKECIC</span>, the Policyholder may set a
+                    <b>credit limit</b> for the buyer up to HKD 400,000, provided always that all of the following conditions
+                    are met:</p>
+                <div class="sub_para">
+                    <p>3.1 the Policyholder has previously traded with the buyer in the preceding 12 months prior to the date
+                        of
+                        <b>shipment</b> and has written evidence of payment received in full from the buyer in respect of those
+                        trade transactions, which were all settled within 60 days from the
+                        <b>due date(s)</b>; and</p>
+                    <p>3.2. the Policyholder is unaware of any information or event from any sources that in the reasonable
+                        opinion of a prudent and careful uninsured may be adverse and/or negative with regard to the buyer’s
+                        creditworthiness.
+                    </p>
+                </div>
+            </div>
+            <!-- <p style="font-size:11px;text-align:left;margin-top:0%;">
+                <small>«COMPANY_ADDRESS»</small>
+            </p> -->
+            <!-- <div class="logo">
+                <img src="{!$Resource.ECIC_logo}" width="300" height="50" alt="logo" />
+            </div>
+            <div class="heading">
+                <span>SELF-UNDERWRITTEN POLICY (SUP) - SCHEDULE IV</span>
+            </div> -->
+            <div class="para">
+                <p>4. If the Policyholder has not traded with the buyer in the preceding 12 months prior to the date of
+                    <b>shipment</b>, it may still set a
+                    <b>credit limit</b> for the buyer up to HKD 400,000 once its discretionary
+                    <b>credit limit</b> application for that buyer is accepted by
+                    <span style="color:red">HKECIC</span>, provided always that the Policyholder has obtained a written report from a credit information
+                    agency within 12 months prior to the date of
+                    <b>shipment</b> which in the reasonable opinion of a prudent and careful uninsured, reveals no information
+                    that may be adverse and/or negative with regard to the buyer’s creditworthiness, including but not limited
+                    to the following:</p>
+                <div class="sub_para">
+                    <p>4.1 the buyer was once
+                        <b> insolvent</b> or is currently
+                        <b> insolvent</b>;</p>
+                    <p>4.2. there are any legal proceedings against the buyer;</p>
+                    <p>4.3. the buyer has late payment records of 90 days beyond payment terms;</p>
+                    <p>4.4. the buyer has any bad debts or there are debt collection recordsin respect of the buyer; and / or</p>
+                    <p>4.5. thecredit information agency declines to recommend any
+                        <b>credit limit</b> for the buyer.</p>
+                </div>
+            </div>
+            <div class="para">
+                <p>
+                    5. The Policyholder may set a
+                    <b>credit limit</b>for the buyer in the range from HKD 400,001 to HKD 800,000 B once its discretionary
+                    <b>credit limit</b> application for that buyer is accepted by
+                    <span style="color:red">HKECIC</span>, provided always that all the conditions set out in sub-clauses 3.1 and 3.2 above are met
+                    and the Policyholder has obtained a written report from a credit information agency within 12 months
+                    prior to the date of
+                    <b>shipment</b> which in the reasonable opinion of a prudent and careful uninsured, reveals no information
+                    that may be adverse and/or negative with regard to the buyer’s creditworthiness, including but not limited
+                    to those set out in sub-clauses 4.1 to 4.5 above.
+                </p>
+            </div>
+            <!-- <p style="font-size:11px;text-align:left;margin-top:50%;">
+                <small>«COMPANY_ADDRESS»</small>
+            </p> -->
+        </apex:outputPanel>
+        <div class="footer">
+           
+            <p>
+                <span style="color:red;font-size:10px;">ECIC 950 1/3/2016</span>
+                <p>
+                    <small class="footer_text">
+                        2/F., Tower 1, South Seas Centre, 75 Mody Road, Tsimshatsui East, Kowloon, Hong Kong
+                        <br/> Tel : 2732 9988 Fax : 2722 6277 E-mail : ec-reach@hkecic.com
+                        <br/> EC-Reach portal :
+                        <a href="www.ec-reach.com.hk">www.ec-reach.com.hk</a>
+                    </small>
+                </p>
+            </p>
+            <p align="right">Page<span class="pagenumber" /> of <span class="pagecount" /></p> 
+        </div>
+        <div style="page-break-after:auto;" />
+        <div style="page-break-before:auto;" />
+    </body>
+
+</apex:page>

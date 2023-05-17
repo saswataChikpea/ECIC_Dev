@@ -1,0 +1,12 @@
+<template>
+    <template if:true={dclApplication}>
+        <c-dcl-application onhandlepagechange={handleChange}></c-dcl-application>
+        <!-- <c-dcl-application-record clrid={dcl_id} onhandlepagechange={handleChange}></c-dcl-application-record> -->
+    </template>
+    <template if:true={dclRecords}>
+        <c-dcl-application-record clrid={dcl_id} onhandlepagechange={handleChange}></c-dcl-application-record>
+    </template>
+    <template if:true={RedirectdclRecord}>
+        <c-dcl-application-record clrid={dcl_id} onhandlepagechange={handleChange}></c-dcl-application-record>
+    </template>
+</template>

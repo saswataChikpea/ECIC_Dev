@@ -1,0 +1,265 @@
+<apex:page standardController="Credit_Limit_Application__c" extensions="CLAPdfController" applyBodyTag="false" sidebar="false" showHeader="false" renderAs="pdf" >
+    <apex:stylesheet value="{!$Resource.policyDetailOMBPCover}" />
+    <!-- Doc no: U006 -->
+    <head>
+        <style>
+            .outer-div{
+                margin-top: 2%;
+                margin-bottom: 2%;
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+            .outer-broder-div{
+                border-color: black;
+                border-style: solid;
+                border-width: thin;                
+            }
+            .s1{
+                color: rgb(146, 146, 231);
+                font-size: 14px;
+                font-weight: bold;
+                text-decoration: underline;
+            }
+            .s2{
+                float:right;
+            }
+            .s3{
+                margin-left: 3%;
+            }
+            .table1{
+                width:100%;
+            }
+            .table2{
+                width:100%;
+                vertical-align: top;
+            }
+            .p1{
+                color: rgb(5, 5, 143);
+                font-size: 13px;
+                margin-left: 3%;
+                font-weight: bold;
+            }
+            .p2{
+                color: rgb(5, 5, 143);
+                font-size: 11px;
+                margin-left: 3%;
+            }
+            .p3{
+                color: rgb(5, 5, 143);
+                font-size: 12px;
+                margin-left: 3%;
+                font-weight: bold;
+            }
+            .p4{
+                margin-left: 0;
+            }
+            .p5{
+                margin-left: 63%;
+            }
+            .p6{
+                color: rgb(5, 5, 143);
+                font-size: 13px;
+                margin-left: 2%;
+                font-weight: bold;
+            }
+            .p7{
+                color: rgb(5, 5, 143);
+                font-size: 11px;
+                margin-left: 2%;
+            }
+            .p8{
+                font-size: 13px;
+                text-align: center;
+            }
+            .td1{
+                width: 55%;
+                border-right-color: black;
+                border-right-style: solid;
+                border-right-width: thin;
+            }
+            .td2{
+                width: 70%;
+            }
+            .td3{
+                border-left-color: black;
+                border-left-style: solid;
+                border-left-width: thin;
+                border-top-color: black;
+                border-top-style: solid;
+                border-top-width: thin;
+            }
+            .td4{
+                width: 50%;
+                border-top-color: black;
+                border-top-style: solid;
+                border-top-width: thin;
+            }
+            .td5{
+                border-top-color: black;
+                border-top-style: solid;
+                border-top-width: thin;
+                width: 55%;
+                border-right-color: black;
+                border-right-style: solid;
+                border-right-width: thin;
+            }
+            .td6{
+                border-top-color: black;
+                border-top-style: solid;
+                border-top-width: thin;
+                vertical-align: top;
+            }
+            .td7{
+                border-bottom-color: black;
+                border-bottom-style: solid;
+                border-bottom-width: thin;
+                border-left-color: black;
+                border-left-style: solid;
+                border-left-width: thin;
+            }
+            .td8{
+                border-bottom-color: black;
+                border-bottom-style: solid;
+                border-bottom-width: thin;
+                width: 50%;                
+            }
+            .td9{
+                border-top-color: black;
+                border-top-style: solid;
+                border-top-width: thin;
+                vertical-align: top;
+                width: 100%;
+            }
+            .td10{
+                width:4%;
+                vertical-align: top;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="outer-div">
+            <div>
+                <span class="s1">CREDIT LIMIT</span>
+                <span class="s1 s2">CONFIDENTIAL</span>                
+            </div>
+            <div class="outer-broder-div">
+                <table class="table1">
+                    <tr>
+                        <td class="td1">
+                            <p class="p1">Policyholder's name and address</p>
+                            <p class="p2">{!account_Name}&nbsp;</p>
+                            <p class="p2">{!account_Registered_Address_Line_1}&nbsp;</p>
+                            <p class="p2">{!account_Registered_Address_Line_2}&nbsp;</p>
+                            <p class="p2">{!account_Registered_Address_Line_3}&nbsp;</p>
+                            <p class="p2">{!account_Registered_District} , {!account_Registered_Territory}&nbsp;</p>
+                            <table class="table1">
+                                <tr>
+                                    <td class="td2">
+                                        &nbsp;
+                                    </td>
+                                    <td class="td3">
+                                        <p class="p3">Policy no.</p>
+                                        <p class="p2">{!Policy_Legacy_Customer_Number}&nbsp;</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                           <span class="ecic_logo s3">
+                                <img src="{!$Resource.ECIC_logo}" width="300" height="50" alt="ecic_logo" />
+                            </span>        
+                            <p class="p2">
+                                2/F. Tower 1, South Seas Centre, 75 Mady Road,Tsimshatsul East, Kowloon, Hong Kong.
+                            </p>
+                            <p class="p2">
+                                <span>Tel : 2732 9988</span>&nbsp;&nbsp;<span>Fax: 2722 6277</span>&nbsp;&nbsp;<span>Email : info@hkecic.com</span>
+                            </p>
+                            <p class="p2">
+                                <span>EC-link website : www.ec-link.com.hk</span>
+                            </p>
+                            <p class="p2">&nbsp;</p>
+                            <table class="table1">
+                                <tr>
+                                    <td class="td4">
+                                        &nbsp;
+                                    </td>
+                                    <td class="td3">
+                                        <p class="p3">Credit Limit no.</p>
+                                        <p class="p2">&nbsp;</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td5">
+                            <p class="p1">Approved buyer's name and address</p>
+                            <p class="p2">{!Buyer_Name}</p>
+                            <p class="p2">{!Buyer_Address_Line_1}&nbsp;</p>
+                            <p class="p2">{!Buyer_Address_Line_2}&nbsp;</p>
+                            <p class="p2">{!Buyer_Address_Line_3}&nbsp;</p>
+                            <p class="p2">{!Buyer_Address_Line_4}&nbsp;</p>
+                            <table class="table1">
+                                <tr>
+                                    <td class="td2">
+                                        &nbsp;
+                                    </td>
+                                    <td class="td3">
+                                        <p class="p3">Buyer code no.</p>
+                                        <p class="p2">{!Buyer_Code}&nbsp;</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="td6">
+                            <table class="table2">
+                                <tr>
+                                    <td class="td8">
+                                        <p class="p3">Credit Limit application date</p>
+                                        <p class="p2">
+                                            <apex:outputText value="{0, DATE, yyyy'/'MM'/'dd}">
+                                                <apex:param value="{!application_date}" />
+                                            </apex:outputText>
+                                        </p>
+                                    </td>
+                                    <td class="td7">
+                                        <p class="p3">Credit Limit date</p>
+                                        <p class="p2">&nbsp;</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="p3">Credit Limit amount</p>
+                                        <p class="p2">&nbsp;</p>
+                                    </td>
+                                    <td>
+                                        <p class="p3">Terms of payment</p>
+                                        <p class="p2">{!Payment_Term_Type} {!Payment_Term_Days} days</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td6" colspan="2">
+                            <p class="p6" ><u>IMPORTANT NOTES:</u></p>
+                            <p class="p7">(1) &nbsp;&nbsp;You shall ensure that the approved name of the buyer in the credit limit matches exactly the name of the buyer in the insurable contract. A slight variation in the name of a company can mean another separate legal entity. You shall apply for a separate credit limit on each of the separate legal entity.</p>
+                            <p class="p7">(2) &nbsp;&nbsp;Any variation from previous credit limit on the buyer simply reflects changes in the amount of loss HKECIC may be liable for in respect of the buyer. No adverse inference on any person shall be drawn on the amount of credit limit imposed or any variation or cancellation of the same.</p>
+                            <p class="p7">(3) &nbsp;&nbsp;Please observe Clause 54 of the Policy for the Confidentiality requirement.</p>
+                            <p class="p7">(4) &nbsp;&nbsp;HKECIC shall not be liable for any damage and injury resulting from any adverse inference drawn from the variation of the credit limit on the buyer.</p>
+                            <p class="p7">(5) &nbsp;&nbsp;The credit limit is automatically cancelled without further notice on the day when there is any amount which remains unpaid by the buyer for more than 30 days from the due date or the buyer becomes insolvent.</p>
+                            
+                        </td>
+                        <tr>
+                            <td class="td6" colspan="2">
+                                <p class="p7"><!--CL Condition-->&nbsp;</p>
+                                <p class="p8">***E N D***</p>
+                            </td>
+                        </tr>
+                    </tr>
+                </table>
+                
+            </div>
+        </div>
+    </body>    
+</apex:page>

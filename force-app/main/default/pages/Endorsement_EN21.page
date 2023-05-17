@@ -1,0 +1,327 @@
+<apex:page controller="PolicyDocument_Pdf_controller" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false"
+    readOnly="true" renderAs="PDF" sidebar="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.EN}" />
+
+    <head>
+        <style>
+            @media print {
+                .noprint {
+                    display: none;
+                }
+            }
+
+            body {
+                font-family: "Arial", sans-serif;
+                font-style: normal;
+            }
+
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-bottom: 50px;
+                margin-left: 20px;
+                margin-right: 20px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+
+            div.header {
+                margin: 0px;
+                padding: 0px;
+                position: running(header);
+            }
+
+            div.footer {
+                display: block;
+                padding: 0px;
+                position: running(footer);
+            }
+
+            .pagenumber:before {
+                content: counter(page);
+            }
+
+            .pagecount:before {
+                content: counter(pages);
+            }
+        </style>
+    </head>
+    <div class="header">
+        <apex:image value="{!$Resource.ECIC_logo}" width="300" height="50" />
+        <div class="heading">
+            HAND-CARRIAGE OF GOODS ENDORSEMENT
+            <br/>(ENDORSEMENT NO. EN21)
+        </div>
+    </div>
+    <div class="footer" align="center">
+        <div class="page_no">Page
+            <span class="pagenumber" /> of
+            <span class="pagecount" />
+        </div>
+        <div class="c_address">COMPANY_ADDRESS</div>
+    </div>
+    <div>
+
+        <div class="page_1">
+            <div class="body">
+                <div>
+                    <p class="schedule">THE SCHEDULE</p>
+                    <p class="confedential">CONFIDENTIAL</p>
+                    <p class="issue_date">
+                        <span>Issue Date:</span>
+                        <apex:outputText styleClass="output_date" value="{0, date, yyyy-MM-dd}">
+                            <apex:param value="{!Endorsement_Issue_Date}" />
+                        </apex:outputText>
+                    </p>
+                </div>
+                <div class="table_1">
+                    <table>
+                        <tr>
+                            <td class="title">1.&nbsp;Policyholder’s name &amp; address</td>
+                            <td class="colon">:</td>
+                        </tr>
+                        <tr>
+                            <td class="p_value">{!Policy_Holder_Name}</td> <br/>
+                        </tr>
+                        <tr>
+                            <td class="p_value">
+                                {!Registered_Address_Line_1} <br/> 
+                                {!Registered_Address_Line_2} <br/>
+                                {!Registered_Address_Line_3} <br/>
+                                {!Registered_District} <br/>
+                                {!Registered_Territory}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">2.&nbsp;Policy number</td>
+                            <td class="colon">:</td>
+                            <td class="value">{!Policy_Number}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">3.&nbsp;This Endorsement takes effect from</td>
+                            <td class="colon">:</td>
+                            <td class="value">
+                                <apex:outputText value="{0, date, yyyy-MM-dd}">
+                                    <apex:param value="{!Endorsement_Eff_Date}" />
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">4.&nbsp;Table&nbsp;:</td>
+                        </tr>
+                    </table>
+                    <table class="table_2" border="1" cellpadding="0" cellspacing="0" width="80%">
+                        <tr style="height:60px;">
+                            <td class="thead">
+                                Name and address of the buyer (code)
+                            </td>
+                        </tr>
+                        <tr class="tbody">
+                            <td>{!Buyer_Name} <br/>{!Buyer_Address}</td>
+                        </tr>
+                    </table>
+                    <div class="hkecic">
+                        <p>Hong Kong Export Credit Insurance Corporation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="page-break-after:always;" />
+        <div style="page-break-before:always;" />
+        <div class="page_2">
+            <div class="body">
+                <div class="block">
+                    <span class="block_heading">NATURE OF ENDORSEMENT</span>
+                    <p class="block_body">1.&nbsp;This Endorsement extends to insure contracts of sale in respect of goods
+                        <br/> hand-carried and delivered to an overseas buyer by the Policyholder or its
+                        <br/> agent under contracts of sale entered between the Policyholder and an
+                        <br/> overseas buyer specified in the Schedule to this Endorsement.
+                        <br/>
+                    </p>
+                    <p class="block_body">2.&nbsp;The terms and conditions of the Policy apply equally to this Endorsement
+                        <br/> except to the extent that they are varied or added. Where the context admits,
+                        <br/>
+                        <b>“Shipment“</b> in the Policy includes hand-carrying and delivery of goods to
+                        <br/> the buyer by the Policyholder or its agent and
+                        <b>“Gross invoice value”</b> in the
+                        <br/> Policy includes sum payable at the date of delivery.
+                        <br/>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">THE COVER</span>
+                    <p class="block_body">
+                        3.&nbsp;
+                    </p>
+                    <p class="block_body">
+                        (a)&nbsp; the
+                        <b>insolvency</b> of the buyer;
+                    </p>
+                    <p class="block_body">
+                        (b)&nbsp;the failure of the buyer to pay for goods accepted by it within four
+                        <br/> months after the
+                        <b>due date;</b>
+                    </p>
+                    <p class="block_body">
+                        (c)&nbsp;the operation of an
+                        <b>applicable law or regulation</b> of the buyer’s
+                        <b>country</b>
+                        <br/> which, beyond the control of both the Policyholder and the buyer,
+                        <br/> prevents or restricts the transfer of payment to Hong Kong but only if the
+                        <br/> buyer has paid the equivalent amount payable in local currency into a
+                        <br/> bank account with an irrevocable instruction for transfer to the
+                        <br/> Policyholder, to the extent the law allows;
+                    </p>
+                    <p class="block_body">
+                        (d)&nbsp;a general moratorium decreed by the buyer’s
+                        <b>country</b> or by a third
+                        <br/>
+                        <b>country</b> through which the payment must be effected; and
+                    </p>
+                    <p class="block_body">
+                        (e)&nbsp;the occurrence of war, revolution or riot, or any natural disaster in the
+                        <br/> buyer’s
+                        <b>country</b> which in whole or in part prevents performance of the
+                        <br/>
+                        <b>insurable contract.</b>
+                    </p>
+                    <p class="block_body">
+                        <span>Notes:</span>
+                        <p> (i)&nbsp;Terms in bold are as defined in the Policy.</p>
+                        <p> (ii)&nbsp;This Endorsement with its Schedule constitutes part of the Policy.</p>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div>
+        <div class="page_1">
+            <div class="body">
+                <div>
+                    <p class="schedule">THE SCHEDULE</p>
+                    <p class="confedential">CONFIDENTIAL</p>
+                    <p class="issue_date">
+                        <span>Issue Date:</span>
+                        <apex:outputText styleClass="output_date" value="{0, date, yyyy-MM-dd}">
+                            <apex:param value="{!Endorsement_Issue_Date}" />
+                        </apex:outputText>
+                    </p>
+                </div>
+                <div class="table_1">
+                    <table>
+                        <tr>
+                            <td class="title">1.&nbsp;Policyholder’s name &amp; address</td>
+                            <td class="colon">:</td>
+                        </tr>
+                        <tr>
+                            <td class="p_value">{!Policy_Holder_Name}</td>
+                        </tr>
+                        <tr>
+                            <td class="p_value">{!Policy_Holder_Address}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">2.&nbsp;Policy number</td>
+                            <td class="colon">:</td>
+                            <td class="value">{!Policy_Number}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">3.&nbsp;This Endorsement takes effect from</td>
+                            <td class="colon">:</td>
+                            <td class="value">
+                                <apex:outputText value="{0, date, yyyy-MM-dd}">
+                                    <apex:param value="{!Endorsement_Eff_Date}" />
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">4.&nbsp;Table&nbsp;:</td>
+                        </tr>
+                    </table>
+                    <table class="table_2" border="1" cellpadding="0" cellspacing="0" width="80%">
+                        <tr style="height:60px;">
+                            <td class="thead">
+                                Name and address of the buyer (code)
+                            </td>
+                        </tr>
+                        <tr class="tbody">
+                            <td>«CODE_1»</td>
+                        </tr>
+                    </table>
+                    <div class="hkecic">
+                        <p>Hong Kong Export Credit Insurance Corporation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page_2">
+            <div class="body">
+                <div class="block">
+                    <span class="block_heading">NATURE OF ENDORSEMENT</span>
+                    <p class="block_body">1.&nbsp;This Endorsement extends to insure contracts of sale in respect of goods
+                        <br/> hand-carried and delivered to an overseas buyer by the Policyholder or its
+                        <br/> agent under contracts of sale entered between the Policyholder and an
+                        <br/> overseas buyer specified in the Schedule to this Endorsement.
+                        <br/>
+                    </p>
+                    <p class="block_body">2.&nbsp;The terms and conditions of the Policy apply equally to this Endorsement
+                        <br/> except to the extent that they are varied or added. Where the context admits,
+                        <br/>
+                        <b>“Shipment“</b> in the Policy includes hand-carrying and delivery of goods to
+                        <br/> the buyer by the Policyholder or its agent and
+                        <b>“Gross invoice value”</b> in the
+                        <br/> Policy includes sum payable at the date of delivery.
+                        <br/>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">THE COVER</span>
+                    <p class="block_body">
+                        3.&nbsp;
+                    </p>
+                    <p class="block_body">
+                        (a)&nbsp; the
+                        <b>insolvency</b> of the buyer;
+                    </p>
+                    <p class="block_body">
+                        (b)&nbsp;the failure of the buyer to pay for goods accepted by it within four
+                        <br/> months after the
+                        <b>due date;</b>
+                    </p>
+                    <p class="block_body">
+                        (c)&nbsp;the operation of an
+                        <b>applicable law or regulation</b> of the buyer’s
+                        <b>country</b>
+                        <br/> which, beyond the control of both the Policyholder and the buyer,
+                        <br/> prevents or restricts the transfer of payment to Hong Kong but only if the
+                        <br/> buyer has paid the equivalent amount payable in local currency into a
+                        <br/> bank account with an irrevocable instruction for transfer to the
+                        <br/> Policyholder, to the extent the law allows;
+                    </p>
+                    <p class="block_body">
+                        (d)&nbsp;a general moratorium decreed by the buyer’s
+                        <b>country</b> or by a third
+                        <br/>
+                        <b>country</b> through which the payment must be effected; and
+                    </p>
+                    <p class="block_body">
+                        (e)&nbsp;the occurrence of war, revolution or riot, or any natural disaster in the
+                        <br/> buyer’s
+                        <b>country</b> which in whole or in part prevents performance of the
+                        <br/>
+                        <b>insurable contract.</b>
+                    </p>
+                    <p class="block_body">
+                        <span>Notes:</span>
+                        <p> (i)&nbsp;Terms in bold are as defined in the Policy.</p>
+                        <p> (ii)&nbsp;This Endorsement with its Schedule constitutes part of the Policy.</p>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</apex:page>

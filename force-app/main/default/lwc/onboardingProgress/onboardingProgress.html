@@ -1,0 +1,24 @@
+<template>
+    <div class="steps">
+        <div class="slds-grid slds-wrap slds-grid_align-center">
+            <template for:each={steps} for:item="step">
+                <div class="slds-col ml_1" key={step.Id}>
+                    <div class="slds-grid slds-grid_vertical align_center">
+                        <div class="slds-grid  align_center">
+                            <!-- <span class="dot-span">.......</span>
+                            <span class="dot-span-small">....</span> -->
+                            <div class={step.class_step}>
+                                {step.step_number}
+                            </div>
+                            <!-- <span class="dot-span-small">....</span>
+                            <span class="dot-span">.......</span> -->
+                        </div>
+                        <span class="step_title">{step.step_title}</span>
+                        <!-- <div class="slds-var-m-top_small" style="color: rgb(127, 127, 127);"> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

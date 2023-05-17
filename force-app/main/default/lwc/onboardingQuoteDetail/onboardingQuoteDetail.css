@@ -1,0 +1,65 @@
+.card_body {
+    background: #fff;
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.default_padding {
+    padding: 1rem;
+    width: 80vw;
+}
+
+.section_head {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    padding: .5rem 0 .5rem 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.section_head_sm {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    padding: .3rem .3rem .3rem 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.section_container {
+    padding: 1rem;
+    border: 1px solid #ece5e5;
+    border-radius: 10px;
+    margin-top: .5rem;
+}
+
+.mb_1 {
+    margin-bottom: 1rem;
+}
+
+.mt_1 {
+    margin-top: 1rem;
+}
+
+.back_button {
+    font-weight: bold;
+    color: #fff;
+    background-color: rgb(140, 152, 206);
+    border-radius: 5px;
+    padding: 0 2rem;
+    margin-right: 1rem;
+}
+
+.next_button {
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 0 2rem;
+}
+
+.input_small_c {
+    --sds-c-input-radius-border: 50px;
+}

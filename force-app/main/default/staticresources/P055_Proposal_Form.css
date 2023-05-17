@@ -1,0 +1,136 @@
+.firstTable>table{
+    border: 1px solid black; 
+    width:50%;
+    float:left; 
+    height: 180px;
+}
+td{
+    font-size: 10px;
+}
+tr{
+    height: 20px;
+}
+.secondTable>table{
+    border: 1px solid black;
+    width: 50%;
+    float: right;
+    height: 140px;
+    border-collapse: collapse;
+}
+.secondTable>table>tr>td>img{
+    display: block;
+    margin: 10px auto;
+    
+}
+.formBody>p{
+    float: left;
+    width: 100%;
+    font-size: 12px;
+    margin: 60px 5px;
+}
+.commencementOfCover>.blockHeading{
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.commencementOfCover>.title{
+    float: left;
+    /* width: 50%; */
+    margin-left: 30px;
+    font-size: 13px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+.commencementOfCover>.table>table{
+    float: right;
+    width: 50%;
+    border: 1px solid black;
+    font-size: 13px;
+    border-collapse: collapse;
+    margin-bottom: 50px;
+}
+.commencementOfCover>.table>table>tr>td{
+    text-align: center;
+}
+.exportTurnOver>.blockHeading{
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.exportTurnOver>.title{
+    float: left;
+    width: 100%;
+    font-size: 13px;
+    margin-bottom: 15px;
+    margin-left: 13px;
+}
+.exportTurnOver>.table>table{
+    border: 1px solid black;
+    float: left;
+    width: 100%;
+    border-collapse: collapse;
+}
+.buyerProfileToBeCovered>.blockHeading{
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    font-weight: bold;
+}
+.buyerProfileToBeCovered>.table>table{
+    border: 1px solid black;
+    float: left;
+    width: 100%;
+    border-collapse: collapse;
+}
+.overduePaymentsEncountered>.blockHeading{
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    font-weight: bold;
+
+}
+.overduePaymentsEncountered>.table>table{
+    border: 1px solid black;
+    float: left;
+    width: 100%;
+    border-collapse: collapse;
+}
+.rowBorder{
+    border-top: thin solid;
+    border-right: thin solid;
+    border-bottom: thin solid;
+    border-left: thin solid;
+    font-weight: bold;
+    text-align: center;
+}
+.topRow{
+    border-top: thin solid;
+    /* border-right: thin solid; */
+    /* border-bottom: thin solid; */
+    border-left: thin solid;
+    padding-left: 5px;
+}
+.bottomRow{
+    /* border-top: thin solid; */
+    border-right: thin solid;
+    /* border-bottom: thin solid; */
+    border-left: thin solid;
+    padding-left: 5px;
+}
+.c_address{
+    font-size: 12px;
+    text-align: left;
+    float: left;
+    width: 46.5%;
+    color: gray;
+}
+.page_no{
+    font-size: 12px;
+    text-align: left;
+    float: left;
+    color: gray;
+}

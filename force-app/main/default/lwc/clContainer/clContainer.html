@@ -1,0 +1,38 @@
+<template>
+    <template if:true={showApplynewOMBP}>
+        <c-cl-applynew-o-m-b-p policyinfo={policyInfo} onhandlepagechange={handleChange}></c-cl-applynew-o-m-b-p>
+    </template>
+    <template if:true={showApplynewSBP}>
+        <c-cl-applynew-s-b-p policyinfo={policyInfo} onhandlepagechange={handleChange}></c-cl-applynew-s-b-p>
+    </template>
+    <template if:true={showApplynewSUP}>
+        <c-cl-applynew-s-u-p policyinfo={policyInfo} onhandlepagechange={handleChange}></c-cl-applynew-s-u-p>
+    </template>
+    <template if:true={showApplicationRecord}>
+        <c-cl-application-record onhandlepagechange={handleChange}></c-cl-application-record>
+    </template>
+    <template if:true={redirectApplicationRecord}>
+        <c-cl-application-record clrid={clId} onhandlepagechange={handleChange}></c-cl-application-record>
+    </template>
+    <template if:true={showCLApplicationConfirmation}>
+        <c-cl-application-confirmation policydetail={policyInfo} clconfirmationdata={cl_fields} onhandlepagechange={handleChange}></c-cl-application-confirmation>
+    </template>
+    <template if:true={showCLApplicationConfirmationSBP}>
+        <c-cl-application-confirmation-s-b-p policydetail={policyInfo} clconfirmationdata={cl_fields} onhandlepagechange={handleChange}></c-cl-application-confirmation-s-b-p>
+    </template>
+    <template if:true={showCLApplicationConfirmationSUP}>
+        <c-cl-application-confirmation-s-u-p policydetail={policyInfo} clconfirmationdata={cl_fields} onhandlepagechange={handleChange}></c-cl-application-confirmation-s-u-p>
+    </template>
+    <template if:true={showAmmendSBP}>
+        <c-cl-ammend-s-b-p policydetail={policyInfo} cla_id={claId}  onhandlepagechange={handleChange}></c-cl-ammend-s-b-p>
+    </template>
+    <template if:true={showAmmendSUP}>
+        <c-cl-ammend-s-u-p policydetail={policyInfo} cla_id={claId}  onhandlepagechange={handleChange}></c-cl-ammend-s-u-p>
+    </template>
+    <template if:true={showApplicationDraft}>
+        <c-cl-application-draft policydetail={policyInfo}  onhandlepagechange={handleChange}></c-cl-application-draft>
+    </template>
+    <!-- <template if:true={dashBoard}>
+        <c-dash-board  ></c-dash-board>
+    </template> -->
+</template>

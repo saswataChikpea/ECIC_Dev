@@ -1,0 +1,198 @@
+<template>
+    <template if:true={showBackButton}>
+        <div class="slds-clearfix">
+            <div class="slds-float_right">
+                <lightning-button variant="base" label="Back" title="Back" onclick={handleBack} class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+    </template>
+    
+    <lightning-card>
+       
+        <div class="slds-grid slds-wrap">
+               <div class="slds-size_1-of-5  slds-medium-size_2-of-8 slds-large-size_2-of-12">
+                   <p class="p1">Company Name</p>
+                   <p class="p5">{companyName}</p>
+               </div>
+               <div class="slds-size_1-of-5 slds-medium-size_2-of-8 slds-large-size_2-of-12">
+                   <p class="p1">Login Account</p>
+                   <p class="p5">{logged_in_user}</p>
+               </div>
+               <div class="slds-size_1-of-5  slds-medium-size_2-of-8 slds-large-size_2-of-12">
+                   <p class="p1">Policy Number</p>
+                   <p class="p5">{policyNumber}</p>
+               </div>
+               <div class="slds-size_1-of-5  slds-medium-size_2-of-8 slds-large-size_2-of-12">
+                   <template if:true={showCreateLAButton}>
+                        <div class="slds-clearfix">
+                            <div class="slds-float_right">
+                                <button onclick={handleCreateLAForm} class="slds-button next_button">Create LA Form</button>
+        
+                            </div>
+                        </div>
+                   </template>
+               </div>
+       </div>
+   </lightning-card>
+   <br/>
+   <template if:true={createLaForm}>
+    <!--div class="slds-clearfix">
+        <div class="slds-float_left">
+            <lightning-button-group>
+                <lightning-button-stateful 
+                    selected={wholePolicyButtonStatefulState} 
+                    icon-name-when-on="utility:check"
+                    label-when-off="Whole Policy"
+                    label-when-on="Whole Policy"
+                    onclick={handleWholePolicy}>
+                </lightning-button-stateful>
+                <lightning-button-stateful 
+                    selected={specificBuyerButtonStatefulState} 
+                    label-when-off="Specific Buyer"
+                    label-when-on="Specific Buyer"
+                    icon-name-when-on="utility:check"
+                    onclick={handleSpecificBuyer}>
+                </lightning-button-stateful>
+            </lightning-button-group>
+        </div>
+    </div-->
+    <br/>
+    <article class="slds-card">
+        <div class="slds-align_absolute-center">
+            <!--lightning-card -->
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                    </lightning-spinner>
+                </template>
+                <div class="section_container slds-card__body">
+                    <span class="letterOfAuthority">Letter of Authority</span><br/><br/>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2 black_bold">
+                            <span>Policyholder Name<span class="red">*</span>: </span>
+                        </div>
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input onblur={handlePHName} value={policyHolderName} name="ph_name" required variant="label-hidden" type="text"></lightning-input>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-grid slds-wrap margin_top_1">
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2 black_bold">
+                            <span>Type of LA<span class="red">*</span>:</span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <!--lightning-input required variant="label-hidden" type="text"></lightning-input-->
+                            <lightning-combobox 
+                                class="select-type"
+                                name="la_type"
+                                variant="label-hidden"
+                                value={value}
+                                dropdown-alignment = "bottom-left"
+                                placeholder="-None-"
+                                options={options}
+                                onchange={handleChangeLAType} >
+                            </lightning-combobox>
+                            <template if:true={isSpecificPolicy}>
+                                <lightning-button 
+                                    variant="Neutral" 
+                                    label="Select the Buyers" 
+                                    title="Select the Buyers" 
+                                    onclick={handleSelectTheBuyers} 
+                                    class="slds-m-left_x-small">
+                                </lightning-button>
+
+                            </template>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap margin_top_1">
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2 black_bold">
+                            <span>Effective Date<span class="red">*</span>:</span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input class="validValue" onblur={handleEffectiveDate} value={effectiveDate}  required variant="label-hidden" type="date"></lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap margin_top_1">
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2 black_bold">
+                            <span>Bank<span class="red">*</span>: </span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input value={bankName} onblur={handleBankName} required variant="label-hidden" type="text"></lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap margin_top_1">
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2 black_bold">
+                            <span>Bank Address<span class="red">*</span> : </span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input value={bankAddress} onblur={handleBankAddress} required variant="label-hidden" type="text"></lightning-input>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="slds-align_absolute-center">
+                        <lightning-button
+                            variant="destructive" 
+                            label="Generate Letter" 
+                            onclick={createLAFinancer} >
+                        </lightning-button>
+
+                    </div>
+                </div>
+        </div>
+        <span class="red">*</span> Required field
+    </article>
+    
+        
+        
+    
+   </template>
+    <template if:false={createLaForm}>
+        <lightning-card title="LA Record">
+            <lightning-datatable
+                key-field="id"
+                hide-checkbox-column
+                data={allLV}
+                columns={laFormColumns}>
+            </lightning-datatable>
+        </lightning-card>
+    </template>
+
+    <template if:true={isSelectBuyerPopUp}>
+        <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                    </lightning-spinner>
+                </template>
+            <header class="slds-modal__header slds-modal__header_empty"></header>
+            <div class="slds-modal__content slds-p-around_small slds-scrollable" id="modal-content-id-2">
+                <lightning-card class="slds-theme_shade" title="Buyers List">
+                    <table class="slds-table  ">
+                        <tr><th>Select</th><th>Name</th></tr>
+                        <tr>
+                            <td><lightning-input type="checkbox" name="input1"></lightning-input>
+                            </td>
+                            <td>Buyer A</td>
+                        </tr>
+                        <tr>
+                            <td><lightning-input type="checkbox"  name="input1"></lightning-input></td>
+                            <td>Buyer B</td>
+                        </tr>
+                    </table>
+                </lightning-card>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning-button variant="Neutral" label="Cancel" onclick={buyerPopCancel}></lightning-button>
+                <lightning-button variant="Neutral" label="Add to LA" onclick={policyTerminationConfirm}></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+   
+</template>

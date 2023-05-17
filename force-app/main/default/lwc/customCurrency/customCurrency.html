@@ -1,0 +1,12 @@
+<template>
+    <div class="slds-form-element">
+        <!-- <label class="slds-form-element__label" for="text-input-id-2">Email</label> -->
+        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+            <span class={currencyClass}>{currency}</span>
+
+            <input name={name} type="text" id={id} placeholder={placeholder} disabled={disabled}
+                class="slds-input input_small_c" value={showText} onchange={change} onfocus={handleFocus}
+                onblur={handleFocusOut} />
+        </div>
+    </div>
+</template>

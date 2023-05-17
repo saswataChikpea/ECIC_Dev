@@ -1,0 +1,32 @@
+.lgc-bg {
+    background-color: rgb(242, 242, 242);
+}
+.p1 {
+    font-size:14px;
+    font-weight: bold;
+}
+.p2 {
+    font-size:12px;
+    border-bottom: 1px solid #aea3a3;
+}
+.red{
+    color:red
+}
+.redWithUnderLine{
+    font-size:15px;
+    color:red;
+    border-bottom: 3px red;
+}
+.THIS .slds-text-heading_small{
+    text-decoration : underline ;
+    color:red;
+}
+.exampleHolder{
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+.mb_1 {
+    margin-bottom: 1rem;
+}

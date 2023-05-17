@@ -1,0 +1,102 @@
+/* .page_1,.page_2,.page_3,.page_4,.page_5,.page_6,.page_7,.page_8,.page_9,.page_10{
+    margin-bottom: 100px;
+} */
+
+.heading,.schedule{
+    font-size: 16.5px;
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.heading,.page_no,.c_address{
+    color:gray
+}
+.confedential{
+    text-align: left;
+    font-size: 16.5px;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.doctitle{
+     text-decoration-line: underline;
+     text-align: center;
+     font-weight: bold;
+}
+.issue_date{
+    margin-left: 60%;
+    /* text-align: right; */
+    font-size: 16.5px;
+}
+.output_date{
+    padding-left: 8px;
+}
+.title{
+    text-align: left;
+    font-size: 16.5px;
+    padding:10px;
+}
+.colon{
+    padding: 8px;
+    font-size: 16.5px;
+}
+.value{
+    padding-left: 5px;
+    font-size: 16.5px;
+}
+.p_value{
+    padding-left: 20px;
+    font-size: 16.5px;
+}
+.thead{
+    text-align: center;
+    font-size: 16.5px;
+    background-color: #d3d3d3;
+}
+.tbody{
+    font-size: 16.5px;
+    margin-top: 0%;
+    text-align: center;
+}
+.table_2{
+   margin-top: 20px;
+   margin-left: 40px;
+}
+.page_no{
+    margin-top: 20%;
+    font-size: 16px;
+    text-align: center;
+}
+.c_address{
+    text-align: left;
+    font-size: 8px;
+    margin-bottom: 5%;
+}
+.hkecic{
+    text-align: right;
+    margin-top: 40px;
+}
+.block{
+    margin-left: 5%;
+}
+.block_heading{
+    background-color: #d3d3d3;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.block_body{
+    font-size: 16.5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.sub_1{
+    margin-left: 10%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 16.5px;
+}
+.sub_2{
+    margin-left: 15%;
+    margin-top: 2px;
+    margin-bottom: 10px;
+    font-size: 16.5px;
+}

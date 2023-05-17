@@ -1,0 +1,116 @@
+<style>
+      @media print {
+      .noprint {
+      display: none;
+      }
+      * {
+      color-adjust: exact!important;
+      -webkit-print-color-adjust: exact!important;
+      print-color-adjust: exact!important;
+      }
+      }
+      body {
+      font-family: "Times New Roman", Times, serif;
+      font-style: normal;
+      font-size: 20px;
+      }
+      @page {
+      size: A4;
+      margin-top: 150px;
+      margin-bottom: 20px;
+      margin-left: .79in;
+      margin-right: .79in;
+      @bottom-right {
+      content: element(footer);
+      }
+      @top-center {
+      content: element(header);
+      }
+      }
+      div.header {
+      background-color: white;
+      margin: .5in;
+      padding: 0px;
+      border: 1px;
+      position: running(header);
+      }
+      div.footer {
+      background-color: #666;
+      display: block;
+      padding: 0px;
+      position: running(footer);
+      }
+      .doctitle{
+      text-decoration: underline;
+      text-align: center;
+      font-weight: bold;
+      }
+      .pagenumber:before {
+      content: counter(page);
+      }
+      .pagecount:before {
+      content: counter(pages);
+      }
+      .align-center {
+      text-align: center;
+      }
+      
+      .thead{
+      background-color: lightgrey;
+      font-size: 20px}
+
+      .td-section {
+      width:14.2857%;
+      text-align: center;
+      }
+      .tr-country-section {
+      width: 16.6667%; 
+      height: 89px;
+      text-align: center;
+      }
+      .tr-period-credit {
+      width: 66.6668%; 
+      height: 21px;
+      text-align: center;
+      }
+      .premium-rate-section {
+      width: 83.3335%; 
+      height: 47px;
+      text-align: center;
+      }
+      .tr-DP-section {
+      width: 16.6667%; 
+      height: 42px; 
+      text-align: center;
+      }
+      .section-title {
+      background-color: grey; 
+      margin-left: -40px;
+      }
+      .left-spacing {
+      margin-left: -40px;
+      }
+      .section-space {
+      margin-bottom: 1.10rem;
+      }
+      .title-space {
+      margin-bottom: 2.25rem;
+      }
+      .pb-after{
+      page-break-after:always;
+      }
+      .pb-before{
+      page-break-before:always;
+      }
+      .laparent ol { counter-reset: item }
+      .laparent li { display: block ; counter-increment: item; }
+      /* replace the counter before list item with
+      open parenthesis + counter + close parenthesis */
+      .laparent li:before { content: " (" counter(item,lower-alpha) ") "; 
+      }
+      .laparent2 ol { counter-reset: item }
+      .laparent2 li { display: block ; counter-increment: item; }
+      /* replace the counter before list item with
+      open parenthesis + counter + close parenthesis */
+      .laparent2 li:before { content: " (" counter(item,lower-roman) ") "};
+</style>

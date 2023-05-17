@@ -1,0 +1,21 @@
+<template>
+        <template for:each={jsonData.data} for:item="content">
+                <!--<span key={content.managedContentId}>{content.contentNodes.body.value}<br></span>-->
+                
+        </template>
+        <template if:true={isPolicyTermHeader}>
+                <lightning-formatted-rich-text value={policyTermHeaderContent}></lightning-formatted-rich-text><br>
+        </template>
+        <template if:true={isCover}>
+                <lightning-formatted-rich-text value={cover}></lightning-formatted-rich-text><br>
+        </template>
+        <template if:true={isContracts}>
+                <lightning-formatted-rich-text value={contractsCoveredAndRelatedConditions}></lightning-formatted-rich-text><br>
+        </template>
+        <template if:true={isPremium}>
+                <lightning-formatted-rich-text value={premium}></lightning-formatted-rich-text><br>
+        </template>
+        <template if:true={isPolSch1Remarks}>
+                <lightning-formatted-rich-text value={policySchedule1Remarks}></lightning-formatted-rich-text><br>
+        </template>
+</template>

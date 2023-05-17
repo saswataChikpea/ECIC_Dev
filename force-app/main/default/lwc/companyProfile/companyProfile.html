@@ -1,0 +1,446 @@
+<template>
+    <div class="container">
+        <template if:true={policy_available}>
+            <div class="inner-container" style="margin-left:2%;">
+                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;">
+                    <div class="slds-size_3-of-12 ">
+                        <p class="p1">{label.Company_Name}</p>
+                        <p class="p5">{account_name}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_3-of-12 ">
+                        <p class="p1">{label.Login_Account}</p>
+                        <!-- <p class="p5">{policy_no}&nbsp;</p> -->
+                        <p class="p5">&nbsp;</p>
+
+                    </div>
+                    <div class="slds-size_3-of-12 ">
+                        <p class="p1">{label.Policy_Number}</p>
+                        <p class="p5">{policy_no}&nbsp;</p>
+                        <!-- <p>contact:{contacts.Phone}</p> -->
+                    </div>
+                </div>
+            </div>
+        </template>
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;width:98%;">
+            <div class="slds-large-size_8-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                style="margin-top: 1%;padding-left:1%;">
+                <div class="inner-container" style="margin-left: 1%;">
+                    <p class="p7" style="padding-left: 1%;padding-top: 1%;">{label.Company_Information}</p>
+                    <div class="slds-grid slds-wrap" style="padding-top: 2%;width:98%;">
+                        <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left:1%;">
+                            <p class="p1">{label.Registered_Company_Name}<span style="color:red">*</span></p>
+                            <p class="p5" style="padding-top: 2%;">{company_info.Name}&nbsp;</p>
+                            <hr class="hr2" />
+                            <p class="p1">{label.Registered_Company_Address}<span style="color:red">*</span></p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Registered_Address_Line_1__c}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Registered_Address_Line_2__c}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Registered_Address_Line_3__c}</p>
+                            <p class="p1" style="padding-top: 2%;">{label.Registered_Territory}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Registered_Territory__c}</p>
+                            <p class="p1" style="padding-top: 2%;">{label.Registered_District}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Registered_District__c}</p>
+                            <hr class="hr2" />
+                            <p class="p1" style="">{label.Language_Of_Correspondence}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Language_of_Correspondence__c}</p>
+                            <p class="p1">{label.Legal_Type}<span style="color:red">*</span></p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Legal_Type__c}&nbsp;</p>
+                            <p class="p1" style="padding-top: 2%;">{label.Goods_Services}<span style="color:red">*</span></p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Goods_or_Services__c}&nbsp;</p>
+                        </div>
+                        <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left:1%;">
+                            <p class="p1">{label.Business_Registration_Number}<span style="color:red">*</span></p>
+                            <p class="p5" style="padding-top: 2%;">{company_info.Registration_Number__c}&nbsp;</p>
+                            <hr class="hr2" />
+                            <p class="p1">{label.Correspondence_Company_Address}<span style="color:red">*</span></p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Correspondence_Address_Line_1__c}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Correspondence_Address_Line_2__c}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Correspondence_Address_Line_3__c}</p>
+                            <p class="p1" style="padding-top: 2%;">{label.Correspondence_Territory}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Correspondence_Territory__c}</p>
+                            <p class="p1" style="padding-top: 2%;">{label.Correspondence_District}</p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Correspondence_District__c}</p>
+                            <hr class="hr2" />
+                            
+                            
+                            <p class="p1" style="">{label.Office_Telephone_No}<span style="color:red">*</span>
+                            </p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Phone}&nbsp;</p>
+
+                            <p class="p1" style="">Mobile<span style="color:red">*</span>
+                            </p>
+                            <p class="p5" style="padding-top: 1%;">{company_info.Mobile__c}&nbsp;</p>
+                            
+                            <lightning-input style="padding-top: 2%;" type="checkbox" label={label.Bank_account}
+                                             checked={company_info.Bank_Account__c} disabled></lightning-input>
+                        </div>
+                    </div>
+                    <!-- <lightning-button variant="destructive" label="Edit" title="Edit" onclick={handleSearch}
+                        class="slds-m-left_x-small"></lightning-button> -->
+                    <div class="slds-grid slds-wrap" style="padding-top: 2%;width:98%;">
+                        <div class="slds-large-size_11-of-12">&nbsp;</div>
+                        <div class="slds-large-size_1-of-12">
+                            <button style="color: white;background-color:rgb(216, 38, 38);border-radius:10px;"
+                                class="slds-button slds-button_neutral" onclick={handleEdit}>{label.Edit}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="inner-container" style="margin-left: 1%;margin-top:2%;">
+                    <lightning-tabset variant="scoped">
+                        <lightning-tab label={label.Authorised_Person}>
+                            <!-- <template if:true={show_authorised_person_list}>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        style="width: 95%;margin-top:2%;margin-bottom:2%;">
+                        <thead>
+                            <tr class="slds-line-height_reset" style="background-color: #dbdbdb;">
+                                <th scope="col">
+                                    Name
+                                </th>
+                                <th scope="col">
+                                    Mobile
+                                </th>
+                                <th scope="col">
+                                    Contact Number
+                                </th>
+                                <th scope="col">
+                                    Birthday
+                                </th>
+                                <th scope="col">
+                                    Nationality
+                                </th>
+                            </tr>
+                        </thead>
+                        <template for:each={authorised_person_list} for:item="each_person" for:index="indx">
+                            <tr key={each_person.id} class="slds-hint-parent">
+                                <td>
+                                    <p>{each_person.Name}&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p>{each_person.MobilePhone}&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p>{each_person.Phone}&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p>{each_person.Birthdate}&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p>{each_person.Nationality__c}&nbsp;</p>
+                                </td>
+                            </tr>
+
+                        </template>
+                    </table>
+                </template>
+                    <button style="color: white;background-color:rgb(216, 38, 38);border-radius:10px;"
+                                    class="slds-button slds-button_neutral" onclick={handleAuthAdd}>Add</button> -->
+                                    <table style="max-width: 40%;">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <p class="p1">Name</p>
+                                                </th>
+                                                <th style="padding-left: 1%;">
+                                                    <p>&nbsp;</p>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <template for:each={authorised_person_list} for:item="auth_person" for:index="indx">
+                                            <tr key={auth_person.Id}>
+                                                <td>
+                                                    <template if:true={auth_person.editable}>
+                                                        <lightning-input data-id={auth_person.Id} variant="label-hidden"
+                                                            style="padding-top:2%" type="text" onchange={handleAuthPersonName}>
+                                                        </lightning-input>
+                                                    </template>
+                                                    <template if:false={auth_person.editable}>
+                                                        <p>{auth_person.Name}&nbsp;</p>
+                                                    </template>
+        
+                                                </td>
+                                                <td>
+                                                    &nbsp;&nbsp;<lightning-icon icon-name="utility:ban" variant="Error"
+                                                        style="color:red" alternative-text="Remove" size="xx-small"
+                                                        title="xx-small size" data-id={auth_person.Id} onclick={removeAuthPersonRow}>
+                                                    </lightning-icon>
+        
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </table>
+                                    <lightning-icon icon-name="utility:add" variant="success"
+                                        style="color:rgb(18, 163, 13);margin-top:4%; margin-bottom:3%;margin-left:13%;"
+                                        alternative-text="Add" size="xx-small" title="xx-small size" onclick={addAuthPersonRow}>
+                                    </lightning-icon>
+                                    <br />
+                                    <template if:true={auth_person_save_btn}>
+                                        <button style="color: white;background-color:rgb(126, 121, 121);border-radius:10px;"
+                                            class="slds-button slds-button_neutral" onclick={handleAuthPersonSave}>Save</button>
+                                    </template>
+                        </lightning-tab>
+                        <lightning-tab label={label.Beneficiary_Owner}>
+                            <table style="max-width: 40%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <p class="p1">Name</p>
+                                        </th>
+                                        <th style="padding-left: 1%;">
+                                            <p>&nbsp;</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <template for:each={benificiary_owners} for:item="benf" for:index="indx">
+                                    <tr key={benf.Id}>
+                                        <td>
+                                            <template if:true={benf.editable}>
+                                                <lightning-input data-id={benf.Id} variant="label-hidden"
+                                                    style="padding-top:2%" type="text" onchange={handleBenName}>
+                                                </lightning-input>
+                                            </template>
+                                            <template if:false={benf.editable}>
+                                                <p>{benf.Name}&nbsp;</p>
+                                            </template>
+
+                                        </td>
+                                        <td>
+                                            &nbsp;&nbsp;<lightning-icon icon-name="utility:ban" variant="Error"
+                                                style="color:red" alternative-text="Remove" size="xx-small"
+                                                title="xx-small size" data-id={benf.Id} onclick={removeRow}>
+                                            </lightning-icon>
+
+                                        </td>
+                                    </tr>
+                                </template>
+                            </table>
+                            <lightning-icon icon-name="utility:add" variant="success"
+                                style="color:rgb(18, 163, 13);margin-top:4%; margin-bottom:3%;margin-left:13%;"
+                                alternative-text="Add" size="xx-small" title="xx-small size" onclick={addRow}>
+                            </lightning-icon>
+                            <br />
+                            <template if:true={show_save_btn}>
+                                <button style="color: white;background-color:rgb(126, 121, 121);border-radius:10px;"
+                                    class="slds-button slds-button_neutral" onclick={handleBenificiarySave}>Save</button>
+                            </template>
+                        </lightning-tab>
+                        <lightning-tab label={label.Director}>
+                            <table style="max-width: 40%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <p class="p1">Name</p>
+                                        </th>
+                                        <th style="padding-left: 1%;">
+                                            <p>&nbsp;</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <template for:each={directors_list} for:item="dir" for:index="indx">
+                                    <tr key={dir.Id}>
+                                        <td>
+                                            <template if:true={dir.editable}>
+                                                <lightning-input data-id={dir.Id} variant="label-hidden"
+                                                    style="padding-top:2%" type="text" onchange={handleDirectorName}>
+                                                </lightning-input>
+                                            </template>
+                                            <template if:false={dir.editable}>
+                                                <p>{dir.Name}&nbsp;</p>
+                                            </template>
+
+                                        </td>
+                                        <td>
+                                            &nbsp;&nbsp;<lightning-icon icon-name="utility:ban" variant="Error"
+                                                style="color:red" alternative-text="Remove" size="xx-small"
+                                                title="xx-small size" data-id={dir.Id} onclick={removeDirectorRow}>
+                                            </lightning-icon>
+
+                                        </td>
+                                    </tr>
+                                </template>
+                            </table>
+                            <lightning-icon icon-name="utility:add" variant="success"
+                                style="color:rgb(18, 163, 13);margin-top:4%; margin-bottom:3%;margin-left:13%;"
+                                alternative-text="Add" size="xx-small" title="xx-small size" onclick={addDirectorRow}>
+                            </lightning-icon>
+                            <br />
+                            <template if:true={director_save_btn}>
+                                <button style="color: white;background-color:rgb(126, 121, 121);border-radius:10px;"
+                                    class="slds-button slds-button_neutral" onclick={handleDirectorSave}>Save</button>
+                            </template>
+                        </lightning-tab>
+                        <!-- <lightning-tab label='ifarme'>
+                            <iframe src="https://www.w3schools.com/"></iframe>
+                            <button style="color: white;background-color:rgb(126, 121, 121);border-radius:10px;"
+                                    class="slds-button slds-button_neutral" onclick={handleExternalLink}>Open Link</button>
+                        </lightning-tab> -->
+                    </lightning-tabset>
+                </div>
+            </div>
+
+            <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                <div class="inner-container" style="margin-left: 1%;max-height:15rem;overflow-y:auto;min-height:10rem;">
+                    <p style="font-size:16px;font-weight: bold;padding-top: 1%;">Contacts</p>
+
+                    <template if:true={show_checkbox_spinner}>
+                        <div class="spinne-div">
+                            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                        </div>
+                    </template>
+                    <template if:false={show_checkbox_spinner}>
+                        <template for:each={contact_info} for:item="contact">
+                            <div key={contact.Id}>
+                                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;">
+                                    <div class="slds-size_4-of-12 ">
+                                        <p class="p1">{label.Surname}<span style="color:red">*</span></p>
+                                        <p class="p5">{contact.LastName}&nbsp;</p>
+                                    </div>
+                                    <div class="slds-size_4-of-12 ">
+                                        <p class="p1">{label.First_Name}<span style="color:red">*</span></p>
+                                        <p class="p5">{contact.FirstName}&nbsp;</p>
+                                    </div>
+                                    <div class="slds-size_4-of-12 ">
+                                        <p class="p1">{label.Title}<span style="color:red">*</span></p>
+                                        <p class="p5">{contact.Position__c}&nbsp;</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;">
+                                    <div class="slds-size_4-of-12 ">
+                                        <p class="p1">{label.Contact_Number}<span style="color:red">*</span></p>
+                                        <p class="p5">{contact.Phone}&nbsp;</p>
+                                    </div>
+                                    <div class="slds-size_4-of-12 ">
+                                        <p class="p1">{label.Email}<span style="color:red">*</span></p>
+                                        <p class="p5">{contact.Email}&nbsp;</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;">
+                                    <div class="slds-size_6-of-12 ">
+                                        <template if:true={enable_primary_contact}>
+                                            <lightning-input type="checkbox" label="Mark as main contact person"
+                                            data-id={contact.Id} checked={contact.Primary_Contact__c}
+                                            onchange={handlePrimaryContact}></lightning-input>
+                                        </template>
+                                        <!-- <template if:false={enable_primary_contact}>
+                                            <template if:true={contact.Primary_Contact__c}>
+                                                <lightning-input type="checkbox" label="Mark as main contact person"
+                                                data-id={contact.Id} checked={contact.Primary_Contact__c}
+                                                onchange={handlePrimaryContact}></lightning-input>
+                                            </template>
+                                            <template if:false={contact.Primary_Contact__c}>
+                                                <lightning-input type="checkbox" label="Mark as main contact person"
+                                                data-id={contact.Id} checked={contact.Primary_Contact__c}
+                                                disabled></lightning-input>
+                                            </template>
+                                        </template> -->
+                                        <lightning-input type="checkbox" label={label.Main_Contact_Person}
+                                            data-id={contact.Id} checked={contact.Primary_Contact__c}
+                                            onchange={handlePrimaryContact} disabled={contact.Primary_Contact__c}>
+                                        </lightning-input>
+
+                                        
+                                    </div>
+                                    <div class="slds-size_6-of-12 ">
+                                        <lightning-input type="checkbox" label={label.Enable_email_notifications}
+                                            data-id={contact.Id}
+                                            checked={contact.Enable_Email_Notification__c}
+                                            onchange={handleEmailNotif} disabled={contact.Primary_Contact__c}></lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;">
+                                    <div class="slds-size_6-of-12 ">
+                                        <template if:true={contact.Primary_Contact__c}>
+                                            <lightning-input type="checkbox" label="Enable SMS notifications"
+                                                data-id={contact.Id} checked={contact.Enable_SMS_Notification__c}
+                                                onchange={handleSmsNotif}></lightning-input>
+                                        </template>
+                                        <template if:false={contact.Primary_Contact__c}>
+                                            <lightning-input type="checkbox" label="Enable SMS notifications"
+                                                data-id={contact.Id} checked={contact.Enable_SMS_Notification__c}
+                                                disabled></lightning-input>
+                                        </template>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;">
+                                    <div class="slds-size_6-of-12">
+                                        &nbsp;
+                                    </div>
+                                    <div class="slds-size_3-of-12 ">
+                                        <template if:false={contact.Primary_Contact__c}>
+                                            <button style="color: white;background-color:rgb(216, 38, 38);border-radius:10px;"
+                                            class="slds-button slds-button_neutral" data-id={contact.Id} onclick={handleContactDelete}>Delete</button>
+                                        </template>
+                                    </div>
+                                    <div class="slds-size_1-of-12 ">
+                                        &nbsp;
+                                    </div>
+                                    <div class="slds-size_2-of-12 ">
+                                        <button style="color: white;background-color:rgb(216, 38, 38);border-radius:10px;"
+                                        class="slds-button slds-button_neutral" data-id={contact.Id} onclick={handleContactEdit}>{label.Edit}</button>
+                                    </div>
+                                </div>
+                                <hr style="margin-top:5%;margin-bottom:5%;"/>
+                            </div>
+                            
+                        </template>
+                        
+                        <div class="slds-grid slds-grid--wrap" style="padding-top: 1%;">
+                            <div class="slds-size_10-of-12 ">
+                                &nbsp;
+                            </div>
+                            <div class="slds-size_2-of-12 ">                                
+                                <button style="color: white;background-color:rgb(225 172 10);border-radius:10px;"
+                                class="slds-button slds-button_neutral"  onclick={handleContactAdd}>{label.Add}</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <div class="inner-container" style="margin-left: 1%;max-height:15rem;overflow-y:auto;margin-top:2%;">
+                    <p class="p1" style="margin-top: 2%;">{label.Business_Registration_Certificate_Record}</p>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        style="width: 95%;margin-top:5%;margin-bottom:5%;">
+                        <thead>
+                            <tr class="slds-line-height_reset" style="background-color: #dbdbdb;">
+                                <th scope="col">
+                                    {label.Document }
+                                </th>
+                                <th scope="col">
+                                    {label.Received_Date}
+                                </th>
+                                <th scope="col">
+                                    {label.BRC_Expiry_Date}
+                                </th>
+                            </tr>
+                        </thead>
+                        <template for:each={brc_records} for:item="brc" for:index="indx">
+                            <tr key={brc.id} class="slds-hint-parent">
+                                <td>
+                                    <a href={brc.link} data-field={brc.document}>{brc.BR_Number__c}</a>
+                                </td>
+                                <td>
+                                    <p>{brc.Received_Date__c}&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p>{brc.Expiry_Date__c}&nbsp;</p>
+                                </td>
+                            </tr>
+
+                        </template>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <template if:true={show_edit_modal}>
+        <c-company-info-edit companyinfo={company_info} oncloseeditmodal={closeeditmodal}></c-company-info-edit>
+    </template>
+    <template if:true={contact_edit_modal}>
+        <c-contact-info-edit contactid={edit_contact_id} oncloseeditmodal={closecontacteditmodal}></c-contact-info-edit>
+    </template>
+    <template if:true={show_contact_create_modal}>
+        <c-create-contact accountid={accId} onclosecreatecontactmodal={closecreatecontactmodal}></c-create-contact>
+    </template>
+    <!-- <template if:true={show_auth_person_create_modal}>
+        <c-create-authorised-person accountid={accId} onclosecreateauthmodal={closecreateauthmodal}></c-create-authorised-person>
+    </template> -->
+</template>

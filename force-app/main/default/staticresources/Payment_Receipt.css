@@ -1,0 +1,29 @@
+.header>p{
+    text-align: center;
+    text-decoration: underline;
+    color: navy;
+    font-weight: bold;
+    font-size: 16.5px;
+}
+.table_1,.table_2,.table_3,.table_4{
+    font-size: 13px;
+}
+
+.small_text{
+    font-size: 11px;
+}
+.footer{
+    font-size: 9px;
+    text-align: left;
+    color: gray;
+}
+.line{
+    border:1px solid black;
+}
+.value{
+    padding-left: 5px;
+}
+.value__{
+    padding-right: 25px;
+    text-align: right;
+}

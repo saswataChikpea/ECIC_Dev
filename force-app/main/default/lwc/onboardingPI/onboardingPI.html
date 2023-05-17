@@ -1,0 +1,165 @@
+<template>
+    <div class="body_div">
+        <template if:true={error}>
+            <c-lwc-error message={error} title="Error" technical-detail={exceptionDetail}></c-lwc-error>
+        </template>
+        <c-onboarding-progress active-index="1"></c-onboarding-progress>
+        <div class="card_body">
+            <div class="slds-grid slds-grid_align-center">
+                <span class="card_title">
+                    {label.Complete_the_questionnaire_below_to_find_out_the_suitable_policy_for_your_compan}
+                </span>
+            </div>
+            <div class="section_container">
+                <template if:true={showFirstPage}>
+                    <!-- <template for:each={firstPageQuestions} for:item="ques_arr"> -->
+                    <template for:each={firstPageQuestions} for:item="ques">
+                        <div key={ques.Id} class="slds-grid slds-wrap margin_top_1">
+                            <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                                <span>{ques.Question__c}</span>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                                <lightning-input maxlength="600" type="text" class="input_small_c" label="Input label"
+                                    variant="label-hidden" name={ques.Name} data-id={ques.Name} required
+                                    value={ques.Value} onchange={handleQChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </template>
+                    <!-- </template> -->
+                    <div class="slds-grid slds-grid_align-center mt_2">
+                        <button onclick={showPrevious} class="slds-button back_button"><span>{label.Back}</span>
+                        </button>
+                        <button onclick={togglePage} class="slds-button next_button">{label.Next}
+                        </button>
+                    </div>
+                </template>
+
+                <template if:true={showSecondPage}>
+                    <!-- <template for:each={secondPageQuestions} for:item="ques_arr"> -->
+                    <template for:each={secondPageQuestions} for:item="ques">
+                        <!--Id missing-->
+                        <div class="slds-grid slds-wrap margin_top_1" key={ques.Id}>
+                            <!-- <div class="slds-var-m-around_medium" key={ques.Id}> -->
+                            <!-- <template if:true={ques.visible}> -->
+
+                            <template if:true={ques.isText}>
+                                <div class="slds-size_1-of-1 slds-large-size_8-of-12">
+                                    <span>{ques.Question__c}</span>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-large-size_4-of-12">
+                                    <lightning-input type="text" variant="label-hidden" label="Input label"
+                                        class="input_small_c" name={ques.Name} data-id={ques.Name} required
+                                        value={ques.Value} onchange={handleQChange}>
+                                    </lightning-input>
+                                </div>
+
+                                <!-- <lightning-input style="font-size: 1.2em;" type="text" label={ques.Question__c}
+                                    name={ques.Name} data-id={ques.Name} value={ques.Value} required onchange={handleQChange}>
+                                </lightning-input> -->
+                            </template>
+                            <template if:true={ques.isNumber}>
+                                <div class="slds-size_1-of-1 slds-large-size_8-of-12">
+                                    <span>{ques.Question__c}</span>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-large-size_4-of-12">
+                                    <lightning-input type="text" variant="label-hidden" label="Input label"
+                                        class="input_small_c" name={ques.Name} data-id={ques.Name} required
+                                        value={ques.Value} onchange={handleQChange}>
+                                    </lightning-input>
+                                </div>
+
+                                <!-- <lightning-input style="font-size: 1.2em;" type="text" label={ques.Question__c}
+                                    name={ques.Name} data-id={ques.Name} value={ques.Value} required onchange={handleQChange}>
+                                </lightning-input> -->
+                            </template>
+                            <template if:true={ques.isCurrency}>
+                                <div class="slds-size_1-of-1 slds-large-size_8-of-12">
+                                    <span>{ques.Question__c}</span>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-large-size_4-of-12">
+                                    <!-- <lightning-input type="number" formatter="currency" format-fraction-digits="0"
+                                        variant="label-hidden" label="Input label" class="input_small_c"
+                                        name={ques.Name} data-id={ques.Name} required value={ques.Value}
+                                        onchange={handleQChange}>
+                                    </lightning-input> -->
+                                    <c-custom-currency name={ques.Name} value={ques.Value} data-id={ques.Name}
+                                        eventname="change" onchange={handleCurrencyChange} disabled={ques.readOnly}>
+                                    </c-custom-currency>
+                                    <div data-id={ques.Name} class="slds-form-element__help color_red">
+                                        {ques.errMsg}</div>
+                                </div>
+
+                                <!-- <lightning-input style="font-size: 1.2em;" type="text" label={ques.Question__c}
+                                    name={ques.Name} data-id={ques.Name} value={ques.Value} required onchange={handleQChange}>
+                                </lightning-input> -->
+                            </template>
+
+
+                            <template if:true={ques.isPickList}>
+                                <div class="slds-size_1-of-1 slds-large-size_8-of-12">
+                                    <span>{ques.Question__c}</span>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-large-size_4-of-12">
+                                    <lightning-combobox class="input_small_c" label="Input label" name={ques.Name}
+                                        data-id={ques.Name} value={ques.Value} variant="label-hidden"
+                                        placeholder="--Select--" options={ques.options} onchange={handleQChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </template>
+                            <template if:true={ques.isMultiSelectPicklist}>
+                                <div class="slds-size_1-of-1 slds-large-size_8-of-12">
+                                    <span>{ques.Question__c}</span>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-large-size_4-of-12">
+                                    <div class="slds-grid slds-grid_vertical">
+                                        <!-- <c-custom-multi-select-picklist label="" options={ques.options} name={ques.Name}
+                                            default-value={ques.Value} onvaluechange={handleQChange}>
+                                        </c-custom-multi-select-picklist> -->
+
+                                        <c-multi-select-combo-box onselect={handleQChange} name={ques.Name}
+                                            max-items="3" selected-values={ques.Value} options={countryOptions}
+                                            multi-select="true">
+
+                                        </c-multi-select-combo-box>
+                                    </div>
+                                    <div class="slds-form-element__help color_red">
+                                        {ques.errMsg}</div>
+                                </div>
+                            </template>
+                            <template if:true={ques.isRadio}>
+                                <div class="slds-size_1-of-1 slds-large-size_8-of-12">
+                                    <span>{ques.Question__c}</span>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-large-size_4-of-12 ">
+                                    <div class="slds-grid slds-grid_vertical">
+                                        <c-custom-radio eventname="handleradiochange" btnname={ques.Name}
+                                            options={ques.options} onhandleradiochange={handleQRadioChange}>
+                                        </c-custom-radio>
+                                        <div class="slds-form-element__help color_red">
+                                            {ques.errMsg}</div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- </template> -->
+                        </div>
+                        <!-- </template> -->
+                    </template>
+                    <!-- <div class="slds-var-m-around_medium slds-align_absolute-center slds-grid">
+                    <button if:true={shouldShowPrevButton} onclick={prevStep}
+                        class="slds-button slds-button_success slds-col">Previous</button>
+                    <button onclick={nextStep} class="slds-button slds-button_destructive slds-col">{nextBtn}</button>
+                    </div> -->
+                    <div class="slds-grid slds-grid_align-center mt_2">
+                        <button onclick={togglePage} class="slds-button back_button"><span>{label.Back}</span>
+                        </button>
+                        <button onclick={showOnboardingDP} class="slds-button next_button">{label.Show_Recommended_Product}
+                        </button>
+                    </div>
+                </template>
+
+            </div>
+        </div>
+    </div>
+</template>

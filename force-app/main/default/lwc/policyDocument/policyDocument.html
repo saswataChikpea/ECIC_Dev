@@ -1,0 +1,56 @@
+<template>
+    <!-- Simple -->
+    <div class="card_body" >
+       
+       <lightning-card>
+           <lightning-layout multiple-rows>
+               <lightning-layout-item 
+                    size="12" 
+                    small-device-size="3"  
+                    padding="around-small">
+                    <p class="p1">Company Name</p>
+                    <p class="p5">{companyName}</p>
+                </lightning-layout-item>
+                <lightning-layout-item 
+                    size="12" 
+                    small-device-size="3"    
+                    padding="around-small">
+                    <p class="p1">Login Account</p>
+                    <p class="p5">{logged_in_user}</p>
+                </lightning-layout-item>
+                <lightning-layout-item  
+                    size="12" 
+                    small-device-size="3"   
+                    padding="around-small">
+                    <p class="p1">Policy Number</p>
+                    <p class="p5">{policyNumber}</p>
+                </lightning-layout-item>
+            </lightning-layout>
+            
+        </lightning-card>
+        <br/>
+        <lightning-card theme="slds-theme_shade">
+            <div slot="title" class="slds-text-title_bold" >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Term
+            </div>
+            <div class="slds-scrollable_y" style="height:20rem;width:100%">
+                <template if:true={isLoadCMS}>
+                    <c-policy-cms-content-term-and-condition policy-number={policyNumber} product-title={currentPolicyName} policy-product-name={currentPolicy}></c-policy-cms-content-term-and-condition>
+                </template>
+            </div>
+            <p slot="footer" align="center">
+                <lightning-button 
+                    icon-name="utility:download"
+                    variant="destructive" 
+                    label=" Download PDF" 
+                    onclick={downloadPdf}
+                    slot="actions">
+                </lightning-button>
+            </p>
+                
+            </p>
+        </lightning-card>
+            
+        
+   </div>
+</template>

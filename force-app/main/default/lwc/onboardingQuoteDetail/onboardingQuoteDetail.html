@@ -1,0 +1,1019 @@
+<template>
+    <div if:false={isLoaded}>
+        <lightning-spinner alternative-text="Loading..." variant="large">
+        </lightning-spinner>
+    </div>
+    <template if:true={show_welcome_modal}>
+        <c-quotation-tutorial-modal id={quoteId} product-name={productTitle} onclosewelcomemodal={closewelcomemodal}>
+        </c-quotation-tutorial-modal>
+    </template>
+    <div class="card_body">
+        <div class="" if:true={isRevisionCompulsary}>
+            {revisionMessage}
+        </div>
+        <div class="slds-card default_padding">
+            <div class="section_container">
+                <div class="slds-grid slds section_head">
+                    <h2>Contact Details </h2>
+                </div>
+                <div class="section_container">
+                    <div class="slds-grid slds-wrap mb_1">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 bold">
+                            <span>Contact name</span>
+                        </div>
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input disabled type="text" class="input_small_c" label="dsf"
+                                variant="label-hidden" name="" onchange={handleQChange} value={combinedName}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap mb_1">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 bold">
+                            <span>Title</span>
+                        </div>
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input disabled type="text" class="input_small_c" label="dsf"
+                                variant="label-hidden" name="" onchange={handleQChange} value={proposal.Title__c}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap mb_1">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 bold">
+                            <span>Email address</span>
+                        </div>
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input disabled type="text" class="input_small_c" label="dsf"
+                                variant="label-hidden" name="" onchange={handleQChange}
+                                value={proposal.Company_Email__c}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap mb_1">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 bold">
+                            <span>Company Telephone Number</span>
+                        </div>
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input disabled type="text" class="input_small_c" label="dsf"
+                                variant="label-hidden" name="" onchange={handleQChange}
+                                value={proposal.Company_Telephone_Number__c}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap mb_1">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 bold">
+                            <span>Mobile number</span>
+                        </div>
+                        <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-input disabled type="text" class="input_small_c" label="dsf"
+                                variant="label-hidden" name="" onchange={handleQChange}
+                                value={proposal.Mobile_Number__c}>
+                            </lightning-input>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="slds-grid slds section_head">
+                    <h2>Policy Wording </h2>
+                </div>
+                <div class="section_container">
+                    <div class="slds-grid slds-wrap mb_1" style="max-height: 50vh; overflow-y: scroll;">
+                        <lightning-card>
+                            <div slot="title">
+                                {productTitle}<br>
+                            </div>
+                            <!--template if:true={isLoading}>
+                                <div class="exampleHolder">
+                                    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                                </div>
+                            </template-->
+                            <lightning-formatted-rich-text value={policyTermHeaderContent}>
+                            </lightning-formatted-rich-text><br>
+
+                            <div class="slds-grid slds section_head_sm" id="sectionCover" onclick={expandHandler}>
+                                <h2>I. THE COVER</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={coverButtonIcon} size="x-small"
+                                        class="slds-current-color" alternative-text="document" title="document">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={isCoverSectionexpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={cover}></lightning-formatted-rich-text><br>
+
+                                </div>
+                            </template>
+                            <div class="slds-grid slds section_head_sm" id="sectionContractsAndRelatedConditions"
+                                onclick={expandHandler}>
+                                <h2>II. CONTRACTS COVERED AND RELATED CONDITIONS</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={contractsButtonIcon} size="x-small"
+                                        class="slds-current-color"
+                                        alternative-text="CONTRACTS COVERED AND RELATED CONDITIONS"
+                                        title="CONTRACTS COVERED AND RELATED CONDITIONS">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={isContractsSectionexpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={contractsCoveredAndRelatedConditions}>
+                                    </lightning-formatted-rich-text><br>
+
+                                </div>
+                            </template>
+                            <div class="slds-grid slds section_head_sm" id="sectionCreditLimit" onclick={expandHandler}>
+                                <h2>III. CREDIT LIMIT</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={creditLimitIcon} size="x-small"
+                                        class="slds-current-color" alternative-text="CREDIT LIMIT" title="CREDIT LIMIT">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={creditLimitExpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={creditLimit}></lightning-formatted-rich-text>
+                                    <br>
+
+                                </div>
+                            </template>
+                            <template if:false={isSBP}>
+
+
+                                <div class="slds-grid slds section_head_sm" id="sectionPremium" onclick={expandHandler}>
+                                    <h2>IV. PREMIUM</h2>
+                                    <div class="slds-col_bump-left">
+                                        <lightning-icon icon-name={premiumButtonIcon} size="x-small"
+                                            class="slds-current-color" alternative-text="PREMIUM" title="PREMIUM">
+                                        </lightning-icon>
+                                    </div>
+                                </div>
+                                <template if:true={isPremiumSectionexpanded}>
+                                    <div class="section_container">
+                                        <lightning-formatted-rich-text value={premium}></lightning-formatted-rich-text>
+                                        <br>
+
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:true={isSBP}>
+
+                                <div class="slds-grid slds section_head_sm" id="sectionDecAndPrem"
+                                    onclick={expandHandler}>
+                                    <h2>IV. DECLARATIONS AND PREMIUM</h2>
+                                    <div class="slds-col_bump-left">
+                                        <lightning-icon icon-name={decAndPremIcon} size="x-small"
+                                            class="slds-current-color" alternative-text="DECLARATIONS AND PREMIUM"
+                                            title="DECLARATIONS AND PREMIUM">
+                                        </lightning-icon>
+                                    </div>
+                                </div>
+                                <template if:true={decAndPremExpanded}>
+                                    <div class="section_container">
+                                        <lightning-formatted-rich-text value={decAndPrem}>
+                                        </lightning-formatted-rich-text><br>
+                                    </div>
+                                </template>
+                            </template>
+
+
+
+                            <div class="slds-grid slds section_head_sm" id="sectionLossMinimisation"
+                                onclick={expandHandler}>
+                                <h2>V. LOSS MINIMISATION</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={lossMinimisationIcon} size="x-small"
+                                        class="slds-current-color" alternative-text="LOSS MINIMISATION"
+                                        title="LOSS MINIMISATION">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={lossMinimisationExpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={lossMinimisationContent}>
+                                    </lightning-formatted-rich-text><br>
+
+                                </div>
+                            </template>
+
+                            <div class="slds-grid slds section_head_sm" id="sectionExclusions" onclick={expandHandler}>
+                                <h2>VI. EXCLUSIONS</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={exclusionsIcon} size="x-small" class="slds-current-color"
+                                        alternative-text="EXCLUSIONS" title="EXCLUSIONS">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={exclusionsExpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={exclusionsContent}>
+                                    </lightning-formatted-rich-text><br>
+                                </div>
+                            </template>
+
+                            <div class="slds-grid slds section_head_sm" id="sectionClaimAndRec" onclick={expandHandler}>
+                                <h2>VII. CLAIMS AND RECOVERIES </h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={claimAndRecIcon} size="x-small"
+                                        class="slds-current-color" alternative-text="CLAIMS AND RECOVERIES"
+                                        title="CLAIMS AND RECOVERIES">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={claimAndRecExpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={claimAndRecContent}>
+                                    </lightning-formatted-rich-text><br>
+                                </div>
+                            </template>
+
+                            <div class="slds-grid slds section_head_sm" id="sectionGenCondition"
+                                onclick={expandHandler}>
+                                <h2>VIII. GENERAL CONDITIONS</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={genConditionIcon} size="x-small"
+                                        class="slds-current-color" alternative-text="GENERAL CONDITIONS"
+                                        title="GENERAL CONDITIONS">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={genConditionExpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={genConditionContent}>
+                                    </lightning-formatted-rich-text><br>
+                                </div>
+                            </template>
+
+                            <div class="slds-grid slds section_head_sm" id="sectionMiscellaneous"
+                                onclick={expandHandler}>
+                                <h2>IX. MISCELLANEOUS</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={miscellaneousIcon} size="x-small"
+                                        class="slds-current-color" alternative-text="MISCELLANEOUS"
+                                        title="MISCELLANEOUS">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={miscellaneousExpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={miscellaneousContent}>
+                                    </lightning-formatted-rich-text><br>
+                                </div>
+                            </template>
+
+                            <div class="slds-grid slds section_head_sm" id="sectionConfidentiality"
+                                onclick={expandHandler}>
+                                <h2>X. CONFIDENTIALITY</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={confidentialityIcon} size="x-small"
+                                        class="slds-current-color" alternative-text="CONFIDENTIALITY"
+                                        title="CONFIDENTIALITY">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={confidentialityExpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={confidentialityContent}>
+                                    </lightning-formatted-rich-text><br>
+                                </div>
+                            </template>
+
+                            <div class="slds-grid slds section_head_sm" id="sectionDefnitions" onclick={expandHandler}>
+                                <h2>XI. DEFINITIONS</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={defnitionsIcon} size="x-small" class="slds-current-color"
+                                        alternative-text="DEFINITIONS" title="DEFINITIONS">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={defnitionsExpanded}>
+                                <div class="section_container">
+                                    <lightning-formatted-rich-text value={defnitionsContent}>
+                                    </lightning-formatted-rich-text><br>
+                                </div>
+                            </template>
+                        </lightning-card>
+                    </div>
+                </div>
+
+                <div class="slds-grid slds section_head">
+                    <h2 if:true={isSBPOrSUP}>Schedule 1 </h2>
+                    <h2 if:false={isSBPOrSUP}>Schedule </h2>
+
+                </div>
+                <div class="section_container">
+                    <div class="slds-grid slds-wrap mb_1" style="max-height: 50vh; overflow-y: scroll;">
+                        <!-- <lightning-tab label="Schedule 1">
+                            <lightning-card> -->
+                        <table>
+                            <tr>
+                                <td><b>Policyholder’s name</b> <br>
+                                    {account.Name}</td>
+                                <td><b>Policyholder's Address</b><br>
+                                    <p>{proposal.Registered_Address_Line_1__c}</p>
+                                    <p>{proposal.Registered_Address_Line_2__c}</p>
+                                    <p>{proposal.Registered_Address_Line_3__c}</p>
+                                    <p>{proposal.Registered_District__c}</p>
+                                    <p>{proposal.Registered_Territory__c}</p>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <hr>
+                        <table>
+                            <tr>
+                                <td><b>Commencement Date</b> <br>
+                                    {commencementDate}
+                                </td>
+                                <td if:false={isSUP}><b>Issue Date of 1st Credit Limit</b> <br>
+                                    <!-- {proposal.Policy_Commence_Date__c} -->
+                                    N/A
+                                </td>
+                                <td><b>This schedule takes effect from</b> <br>
+                                    {proposal.Policy_Commence_Date__c}
+
+                                </td>
+                            </tr>
+
+                        </table>
+                        <hr>
+                        <table>
+                            <tr>
+                                <td><b>Maximum Liability</b> <br>
+                                    {maximumLiabilty}</td>
+                                <td><b>Percentage of Indemnity</b><br>
+                                    <p>{percentageOfIndmenity}</p>
+                                </td>
+                                <td if:true={isSBPOrSUP}><b>Policy period: </b><br>
+                                    <p>{policyPeriod}</p>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <hr>
+
+                        <hr>
+                        <table if:true={isSBPOrSUP}>
+                            <tr>
+                                <td><b>Policy deposit</b> <br>
+                                    HKD 0</td>
+                                <td><b>Policy fee</b><br>
+                                    <p>HKD 0</p>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <hr>
+                        <table if:true={isSBP}>
+                            <tr>
+                                <td><b>Amount referred to in Sub-clauses 1.2 and 69.2</b> <br>
+                                    {maximumLiabilty}</td>
+                                <td><b>Non-qualifying loss amount</b><br>
+                                    <p>HKD {NQL}</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <hr>
+                        <table>
+                            <tr>
+                                <td if:true={isSBP}><b>Exclusion of risk</b> <br>
+                                    {exclusionLabel}</td>
+                                <td><b>Maximum credit period</b><br>
+                                    <p>Up to 120 days</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <hr>
+                        <table if:false={isSBPOrSUP}>
+                            <tr>
+                                <td>
+                                    <b>Countries / Markets of Shipments (Clause)</b>
+                                </td>
+                            </tr>
+                        </table>
+                        <table if:false={isSBPOrSUP} border="1" style="border-collapse: collapse; width: 100%;">
+                            <thead>
+
+                                <tr class="table_head ">
+                                    <th style="width: 50%;  height: 65px; text-align: center; ">Countries/Markets of
+                                        Shipment</th>
+                                    <th style="width: 50%;   height: 65px;text-align: center;">Code</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={OMBPclauseCountryList} for:item="country">
+                                    <tr key={country.code}>
+                                        <td style="width: 50%;">{country.name}</td>
+                                        <td style="width: 50%;">{country.code}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <table class="red">
+                            <tr>
+                                <td>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- </lightning-card>
+
+
+                        </lightning-tab> -->
+                    </div>
+                </div>
+                <div class="" if:true={isSBPOrSUP}>
+                    <div class="slds-grid slds section_head">
+                        <h2>Schedule 2 </h2>
+                    </div>
+                    <div class="section_container">
+
+                        <template if:true={isLoading}>
+                            <div class="exampleHolder">
+                                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                            </div>
+                        </template>
+
+                        <h2 class="slds-align_absolute-center slds-text-heading_medium top_text">{productTitle}</h2>
+                        <br>
+
+                        <template if:true={isSBPOrSUP}>
+                            <table style="border-collapse: collapse; width: 100%;">
+                                <tbody>
+                                    <tr>
+
+                                        <td class="first_table_content"><b>Issue Date:</b></td>
+                                        <td class="first_table_content">{issueDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first_table_content"><b>Effective Date:</b></td>
+                                        <td class="first_table_content">{effectiveDate}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <span class="head_content">
+                                The Policyholder must pay premium within 14 days from the date of an invoice in
+                                accordance
+                                with Clause 11 of the SBP and the following terms:
+                            </span>
+                            <br><br>
+                            <template if:true={isSUP}>
+                                <b>Premium Rate: {proposal.Base_Rate_Per_Anum__c}%</b>
+                            </template>
+                            <template if:true={isSBP}>
+                                <span class="prem_content slds-text-title_bold"><b>Premium Rates Table [Clause
+                                        11]</b></span>
+                                <br><br>
+                                <table border="1">
+                                    <tbody>
+                                        <tr style="height: 47px;" class="table_head">
+                                            <td style="width: 16.6667%; height: 89px;" rowspan="3">Buyer's
+                                                Country/Market
+                                                Group Specified in Part2</td>
+                                            <td style="width: 83.3335%; height: 47px; text-align: center;" colspan="5">
+                                                <span>Premium Rates Per HKD100</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 21px;" class="table_head">
+                                            <td style="width: 16.6667%; height: 42px; text-align: center;" rowspan="2">
+                                                DP
+                                            </td>
+                                            <td style="width: 66.6668%; height: 21px; text-align: center;" colspan="4">
+                                                DA
+                                                and OA - Period of credit</td>
+                                        </tr>
+                                        <tr style="height: 21px;" class="table_head">
+                                            <td class="bottom_td">up to 30 days</td>
+                                            <td class="bottom_td">31-60 days</td>
+                                            <td class="bottom_td">61-90 days</td>
+                                            <td class="bottom_td">91-120 days</td>
+                                        </tr>
+                                        <tr style="height: 21px;">
+                                            <td class="bottom_td table_head"><strong>A</strong></td>
+                                            <td class="bottom_td">{proposal.DP__c}</td>
+                                            <td class="bottom_td">{proposal.DA_OA_0_30__c}</td>
+                                            <td class="bottom_td">{proposal.DA_OA_31_60__c}</td>
+                                            <td class="bottom_td">{proposal.DA_OA_61_90__c}</td>
+                                            <td class="bottom_td">{proposal.DA_OA_91_180__c}</td>
+                                        </tr>
+                                        <tr style="height: 21px;">
+                                            <td class="table_head bottom_td"><strong>B/C</strong></td>
+                                            <td class="bottom_td">{proposal.DP_NonA__c}</td>
+                                            <td class="bottom_td">{proposal.DA_OA_0_30_NonA__c}</td>
+                                            <td class="bottom_td">{proposal.DA_OA_31_60_NonA__c}</td>
+                                            <td class="bottom_td">{proposal.DA_OA_61_90_NonA__c}</td>
+                                            <td class="bottom_td">{proposal.DA_OA_91_180_NonA__c}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br><br>
+
+                                <span class="prem_content slds-text-title_bold"><b>Premium Rates For Countries/Markets
+                                        In
+                                        Addition To Those Listed In Part 2</b></span>
+                                <br><br>
+                                <table border="1" style="border-collapse: collapse; width: 100%;">
+                                    <tbody>
+                                        <tr class="middle_head">
+                                            <td class="middle_td" rowspan="3">Buyer’s Country/Market</td>
+                                            <td class="middle_td" rowspan="3">Code</td>
+                                            <td class="middle_td" colspan="5">Premium Rates Per HKD100</td>
+                                            <td class="middle_td" rowspan="3">Special Conditions</td>
+                                        </tr>
+                                        <tr class="middle_head">
+                                            <td class="middle_td" rowspan="2">DP</td>
+                                            <td class="middle_td" colspan="4">DA and OA - Period of Credit</td>
+                                        </tr>
+                                        <tr class="middle_head">
+                                            <td class="middle_td">Up to 30 days</td>
+                                            <td class="middle_td">31-60 days</td>
+                                            <td class="middle_td">61-90 days</td>
+                                            <td class="middle_td">91-120 days</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="middle_td">*</td>
+                                            <td class="middle_td">*</td>
+                                            <td class="middle_td">*</td>
+                                            <td class="middle_td">*</td>
+                                            <td class="middle_td">*</td>
+                                            <td class="middle_td">*</td>
+                                            <td class="middle_td">*</td>
+                                            <td class="middle_td">*</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br><br>
+                                <span class="prem_content slds-text-title_bold"><b>Countries/Markets of Shipment [Clause
+                                        70]</b></span>
+                                <br><br>
+                                <table border="1" style="border-collapse: collapse; width: 100%;">
+                                    <tbody>
+                                        <tr class="table_head ">
+                                            <th style="width: 50%;  height: 65px; text-align: center; ">
+                                                Countries/Markets of
+                                                Shipment</th>
+                                            <th style="width: 50%;   height: 65px;text-align: center;">Code</th>
+                                        </tr>
+                                        <template for:each={clause70CountryList} for:item="country">
+                                            <tr key={country.code}>
+                                                <td style="width: 50%;">{country.name}</td>
+                                                <td style="width: 50%;">{country.code}</td>
+                                            </tr>
+                                        </template>
+
+                                    </tbody>
+                                </table>
+                                <br><br>
+                                <span class="prem_content ">
+                                    Note: Please inform HKECIC if the Policyholder has any insurable <b>shipments</b>
+                                    made
+                                    from a <b>country</b>/market of <b>shipment</b> other than those<br>
+                                    listed in Schedule II. HKECIC may add such <b>country</b>/market of <b>shipment</b>
+                                    to
+                                    Schedule II or may exclude them from cover.
+                                </span>
+                                <br><br>
+                            </template>
+                        </template>
+                        <!-- <template if:true={isSUP}>
+                            <table style="border-collapse: collapse; width: 100%;">
+                                <tbody>
+                                    <tr>
+                                        <td class="first_table_content"><b>Policy Number:</b></td>
+                                        <td class="first_table_content">{policyNumber}</td>
+                                        <td class="first_table_content"><b>Issue Date:</b></td>
+                                        <td class="first_table_content">{issueDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first_table_content"></td>
+                                        <td class="first_table_content"></td>
+                                        <td class="first_table_content"><b>Effective Date:</b></td>
+                                        <td class="first_table_content">{commencementDate}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <span class="head_content">
+                                The Policyholder must pay premium within 14 days from the date of an invoice in
+                                accordance
+                                with Clause 11 of the SUP and the following terms:
+                            </span>
+                            <br><br>
+                            <span class="prem_content slds-text-title_bold"><b>Premium Rates Table [Clause
+                                    11]</b></span>
+                            <br><br>
+                            <table border="1">
+                                <tbody>
+                                    <tr style="height: 47px;" class="table_head">
+                                        <td style="width: 16.6667%; height: 89px;" rowspan="3">Buyer's Country/Market
+                                            Group Specified in Part2</td>
+                                        <td style="width: 83.3335%; height: 47px; text-align: center;" colspan="5">
+                                            <span>Premium Rates Per HKD100</span>
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 21px;" class="table_head">
+                                        <td style="width: 16.6667%; height: 42px; text-align: center;" rowspan="2">DP
+                                        </td>
+                                        <td style="width: 66.6668%; height: 21px; text-align: center;" colspan="4">DA
+                                            and OA - Period of credit</td>
+                                    </tr>
+                                    <tr style="height: 21px;" class="table_head">
+                                        <td class="bottom_td">up to 30 days</td>
+                                        <td class="bottom_td">31-60 days</td>
+                                        <td class="bottom_td">61-90 days</td>
+                                        <td class="bottom_td">91-120 days</td>
+                                    </tr>
+                                    <tr style="height: 21px;">
+                                        <td class="bottom_td table_head"><strong>A</strong></td>
+                                        <td class="bottom_td">0.10%</td>
+                                        <td class="bottom_td">0.20%</td>
+                                        <td class="bottom_td">0.30%</td>
+                                        <td class="bottom_td">0.40%</td>
+                                        <td class="bottom_td">0.50%</td>
+                                    </tr>
+                                    <tr style="height: 21px;">
+                                        <td class="table_head bottom_td"><strong>B/C</strong></td>
+                                        <td class="bottom_td">0.60%</td>
+                                        <td class="bottom_td">0.70%</td>
+                                        <td class="bottom_td">0.80%</td>
+                                        <td class="bottom_td">0.90%</td>
+                                        <td class="bottom_td">1.00%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br><br>
+                        </template> -->
+                        <template if:true={isSBP}>
+                            <h2 class="slds-align_absolute-center slds-text-heading_medium top_text">SCHEDULE II (PART
+                                2)
+                            </h2><br>
+                            <h2 class="slds-text-heading_medium top_text">Country/Market Group [Sub-clause 3.3]</h2>
+                            <br><br>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-size_1-of-2">
+                                    <table border="1" style="border-collapse: collapse; width: 100%;">
+                                        <tbody>
+                                            <tr class="part2">
+                                                <td align="center"><b>COUNTRY/ MARKET</b></td>
+                                                <td align="center"><b>CODE</b></td>
+                                                <td align="center"><b>GROUP</b></td>
+                                                <td align="center"><b>SPECIAL <br />CONDITIONS</b></td>
+                                            </tr>
+                                            <template for:each={leftCountryList} for:item="country">
+                                                <tr key={country.name}>
+                                                    <td>{country.name}</td>
+                                                    <td>{country.code}</td>
+                                                    <td>{country.group}</td>
+                                                    <td>{country.condition}</td>
+                                                </tr>
+                                            </template>
+                                            <tr>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <table border="1" style="border-collapse: collapse; width: 100%;">
+                                        <tbody>
+                                            <tr class="part2">
+                                                <td align="center"><b>COUNTRY/ MARKET</b></td>
+                                                <td align="center"><b>CODE</b></td>
+                                                <td align="center"><b>GROUP</b></td>
+                                                <td align="center"><b>SPECIAL <br />CONDITIONS</b></td>
+                                            </tr>
+                                            <template for:each={rightCountryList} for:item="country">
+                                                <tr key={country.name}>
+                                                    <td>{country.name}</td>
+                                                    <td>{country.code}</td>
+                                                    <td>{country.group}</td>
+                                                    <td>{country.condition}</td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div><br><br>
+                            Notes:
+                            <ul class="slds-list_ordered">
+                                <li>SPECIAL CONDITION 1 indicates an extension of the date of loss specified in
+                                    Sub-clause
+                                    62.4 from 4 months to the number of months shown in the brackets for such
+                                    countries/markets.</li>
+                                <li>SPECIAL CONDITION 2 indicates that notwithstanding anything contained in Sub-clause
+                                    3.3,
+                                    the Policyholder must apply for a specific Endorsement from ECIC.</li>
+                                <li>SPECIAL CONDITION 3 indicates that cover is only provided under the payment term of
+                                    irrevocable letter of credit (ILC).</li>
+                                <li>Please inform ECIC if the Policyholder has any insurable shipments made to
+                                    countries/markets other than those listed in Schedule II. ECIC may add such
+                                    countries/markets and their respective premium rates to Schedule II or may exclude
+                                    them
+                                    from cover.</li>
+                                <li>This Schedule II (Part 2) takes effect from 1 April 2021 and is valid until it is
+                                    superseded.</li>
+                            </ul>
+                            <br><br>
+                        </template>
+                    </div>
+
+                </div>
+                <div class="" if:true={isSBPOrSUP}>
+                    <div class="slds-grid slds section_head">
+                        <h2>Schedule 3 </h2>
+                    </div>
+                    <div class="section_container">
+                        <h2 class="slds-align_absolute-center slds-text-heading_medium top_text">{productTitle}</h2>
+                        <br>
+                        <template if:true={isSBPOrSUP}>
+                            <table style="border-collapse: collapse; width: 100%;">
+                                <tbody>
+                                    <tr>
+
+                                        <td class="first_table_content"><b>Issue Date:</b></td>
+                                        <td class="first_table_content">{issueDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first_table_content"><b>Effective Date:</b></td>
+                                        <td class="first_table_content">{commencementDate}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <div style="font-family: 'Montserrat'; "><b>
+                                    <li>Declarations</li>
+                                </b>
+                                The Policy requires the Policyholder to declare <b>shipments</b> made under the &nbsp;
+                                <b>insurable contracts</b> as specified below (Clause 8):
+
+                                <br>
+                                <table border="1">
+                                    <tr>
+                                        <td>
+                                            The Policyholder must declare to HKECIC in the form specified by HKECIC
+                                            (or in such other form acceptable to HKECIC):
+                                            <br>
+                                            a.&nbsp;&nbsp;the <b>gross invoice value</b> of the goods shipped within
+                                            21 days from the date of shipment under any insurable contract; or
+                                            <br>
+                                            b.&nbsp;&nbsp;for each of the buyers within 15 days of the following
+                                            month the aggregate amount of the <b>gross invoice value</b> of the
+                                            goods shipped in the preceding month.
+                                            <br>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
+                                <b>
+                                    <li>Premium Rebate</li>
+                                </b>
+                                <br>
+                                a.&nbsp;&nbsp;This Schedule III sets out the premium rebate which the Policyholder
+                                shall be entitled under the Policy.
+                                <br>
+                                b.&nbsp;&nbsp;Upon the commencement of a new policy period, the Policyholder shall
+                                be entitled to a one-off premium rebate equivalent to {rebate_rate}% of the total
+                                amount of the premium invoiced and received by HKECIC for the shipments made under
+                                all insurable contracts during the preceding policy period. The premium rebate shall
+                                be finalised and credited to the Policyholder's account upon Policyholder’s
+                                confirmation of declaration of all insurable shipments and full settlement of all
+                                outstanding premium attributable to the policy period concerned.
+                                <br>
+                                c.&nbsp;&nbsp;The premium rebate shall be applied to offset any premium of shipments
+                                made from the new policy period onwards or any amount due to HKECIC by the
+                                Policyholder, whether under this Policy or otherwise.
+                                <br>
+                                d.&nbsp;&nbsp;In the event that any claim including expense reimbursement is
+                                subsequently payable by HKECIC on the shipments made in any previous policy period
+                                for which premium rebate has been made, such payable shall be offset by the premium
+                                rebate of the related policy period up to the lower of the claim payable amount or
+                                the rebate in its original sum. Any balance of the premium rebate on the
+                                Policyholder’s account shall be settled with the Policyholder upon the termination
+                                of the Policy.
+                            </div>
+
+                        </template>
+                    </div>
+                </div>
+
+                <div class="" if:true={isSUP}>
+                    <div class="slds-grid slds section_head">
+                        <h2>Schedule 4 </h2>
+                    </div>
+                    <div class="section_container">
+                        <div style="font-family:Montserrat; font-size: 15px;">
+                            <h2 class="slds-align_absolute-center slds-text-heading_medium top_text">{productTitle}</h2>
+                            <br>
+                            <!-- <table style="font-family:Montserrat;border-collapse: collapse; width: 100%;">
+                                <tbody>
+                                    <tr>
+                                        <td class="first_table_content"><b>Policy Number:</b></td>
+                                        <td class="first_table_content">{policyNumber}</td>
+                                        <td class="first_table_content"><b>Issue Date:</b></td>
+                                        <td class="first_table_content">{issueDate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="first_table_content"></td>
+                                        <td class="first_table_content"></td>
+                                        <td class="first_table_content"><b>Effective Date:</b></td>
+                                        <td class="first_table_content">{effectiveDate}</td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+                            <br>
+                        </div>
+                        <div style="font-family: Montserrat; ">
+                            <h2 class="slds-align_absolute-center"><u>Discretionary Credit Limit Amount Table</u></h2>
+                            <br>
+                            <table style="border-collapse: collapse; width: 100%;" border="1" cellspacing="0"
+                                cellpadding="1">
+                                <tbody>
+                                    <tr>
+                                        <td>Discretionary credit limit amount (HKD)</td>
+                                        <td>Reference paragraph</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HKD 400,000</td>
+                                        <td>3 to 4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HKD 400,001 to HKD 800,000
+                                        </td>
+                                        <td>5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <div class="slds-text-longform">
+                                <ol>
+                                    <li>
+                                        This Schedule IV sets out the range of discretionary credit limits which the
+                                        Policyholder may choose from
+                                        and set as the <b>credit limit</b> for each of its selected buyers upon <span
+                                            class="red">HKECIC</span>'s acceptance of its discretionary credit
+                                        limit application for such buyers respectively.
+                                    </li><br>
+                                    <li>
+                                        The Policyholder may submit to <span class="red">HKECIC</span> a discretionary
+                                        credit limit application and set a <b>credit limit</b> for its
+                                        selected buyer respectively based on trade experience and/or reports from credit
+                                        information agencies in
+                                        accordance with the terms and conditions in this Schedule IV, except in the
+                                        following circumstances:
+                                        <ol>
+                                            <li>
+                                                the Policyholder has submitted a <b>credit limit</b> application or a
+                                                discretionary credit limit application for the buyer which is being
+                                                processed
+                                                by <span class="red">HKECIC</span>;
+                                            </li><br>
+                                            <li>
+                                                <span class="red">HKECIC</span> has indicated that the discretionary
+                                                credit limit application
+                                                submitted by the Policyholder for the buyer is not accepted;
+                                            </li><br>
+                                            <li>the Policyholder holds a valid <b>credit</b> limit for the buyer or its
+                                                <b>credit
+                                                    limit</b> application for that buyer was not approved by <span
+                                                    class="red">HKECIC</span>;
+                                            </li><br>
+                                            <li>
+                                                <span class="red">HKECIC</span> has cancelled the <b>credit limit</b> of
+                                                the buyer; or
+                                            </li>
+                                            <li>
+                                                the buyer was once <b>insolvent</b> or is currently <b>insolvent</b> or
+                                                the buyer
+                                                fails to pay the Policyholder any sums within 60 days from the <b>due
+                                                    date(s).</b>
+                                            </li>
+                                        </ol>
+                                    </li><br>
+                                    <li>
+                                        Once a discretionary credit limit application is accepted by <span
+                                            class="red">HKECIC</span>, the
+                                        Policyholder may set a <b>credit limit</b> for the buyer up to HKD 400,000,
+                                        provided always that all of the following
+                                        conditions are met:<br>
+                                        <ol>
+                                            <li>
+                                                the Policyholder has previously traded with the buyer in the preceding
+                                                12 months prior to the date of <b>shipment</b> and has written evidence
+                                                of
+                                                payment received in full from the buyer in respect of those trade
+                                                transactions, which were all settled within 60 days from the <b>due
+                                                    date(s);</b>
+                                                and
+                                            </li><br>
+                                            <li>
+                                                the Policyholder is unaware of any information or event from any sources
+                                                that in the reasonable opinion of a prudent and careful uninsured may be
+                                                adverse and/or negative with regard to the buyer’s creditworthiness.
+                                            </li>
+
+                                        </ol>
+                                    </li><br>
+                                    <li>If the Policyholder has not traded with the buyer in the preceding 12 months
+                                        prior to the date of <b>shipment</b>, it may still set a <b>credit limit</b> for
+                                        the buyer up to
+                                        HKD 400,000 once its discretionary credit limit
+                                        application for that buyer is accepted by <span class="red">HKECIC</span>,
+                                        provided always that the
+                                        Policyholder has obtained a written report from a credit information agency
+                                        within 12 months prior to the date of <b>shipment</b> which in the reasonable
+                                        opinion
+                                        of a prudent and careful uninsured, reveals no information that may be adverse
+                                        and/or negative with regard to the buyer’s creditworthiness, including but not
+                                        limited to the following:
+                                        <ol>
+                                            <li>
+                                                the buyer was once <b>insolvent</b> or is currently <b>insolvent</b>;
+                                            </li><br>
+                                            <li>
+                                                there are any legal proceedings against the buyer;
+                                            </li><br>
+                                            <li>
+                                                the buyer has late payment records of 90 days beyond payment terms;
+                                            </li><br>
+                                            <li>
+                                                the buyer has any bad debts or there are debt collection records in
+                                                respect
+                                                of the buyer; and / or
+                                            </li><br>
+                                            <li>
+                                                the credit information agency declines to recommend any credit limit for
+                                                the
+                                                buyer.
+                                            </li>
+                                        </ol>
+                                    </li><br>
+                                    <li>The Policyholder may set a <b>credit limit</b> for the buyer in the range from
+                                        HKD 400,001 to HKD 800,000
+                                        once its discretionary credit limit
+                                        application for that buyer is accepted by <span class="red">HKECIC</span>,
+                                        provided always that all the
+                                        conditions set out in sub-clauses 3.1 and 3.2 above are met and the Policyholder
+                                        has obtained a written report from a credit information agency within 12 months
+                                        prior to the date of <b>shipment</b> which in the reasonable opinion of a
+                                        prudent and
+                                        careful uninsured, reveals no information that may be adverse and/or negative
+                                        with regard to the buyer’s creditworthiness, including but not limited to those
+                                        set out in sub-clauses 4.1 to 4.5 above.</li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="">
+                    <div class="slds-grid slds section_head">
+                        <h2>Endorsements </h2>
+                    </div>
+                    <div class="section_container">
+                        <div class="slds-grid slds-wrap mb_1">
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 bold">
+                                <span></span>
+                            </div>
+                            <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                                <lightning-input type="text" class="input_small_c" label="dsf" variant="label-hidden"
+                                    name="" onchange={handleQChange} value={proposal.Question}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="mt_1">
+                    <div if:true={showAcceptQuote} class="slds-form-element slds-has-error" style="margin-left: 1rem;">
+                        <div class="slds-checkbox">
+                            <input type="checkbox" name="checkbox1" checked={showCheckboxChecked} id="checkbox1"
+                                onchange={handleCheckboxChange} aria-describedby="error_01" />
+                            <label class="slds-checkbox__label" for="checkbox1">
+                                <span class="slds-checkbox_faux">&nbsp;</span>
+                                <span class="slds-form-element__label red_bold">
+                                    I have read the quotation and accepted the policy offer.
+                                </span>
+                            </label>
+                        </div>
+                        <div if:true={showCheckboxError} class="slds-form-element__help color_red">
+                            {checkboxNotSelectedErrorMsg}</div>
+                    </div>
+                    <div class="slds-grid slds-grid_align-center mt_1">
+                        <button onclick={showPrevious} class="slds-button back_button"><span>Back</span>
+                        </button>
+                        <button onclick={downloadPDF} class="slds-button back_button"><span>Download PDF</span>
+                        </button>
+                        <button if:true={showReviceQuote} onclick={reviceQuotation}
+                            class="slds-button slds-button back_button">Revise</button>
+                        <button if:true={showAcceptQuote} onclick={acceptQuote}
+                            class="slds-button slds-button_destructive next_button">Accept</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</template>

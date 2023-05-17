@@ -1,0 +1,88 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class=" inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_11-of-12 slds-medium-size--5-of-6 slds-size--2-of-2">&nbsp;</div>
+                <div class="slds-size_1-of-12">
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" title="Close" onclick={closeModal}></lightning-icon>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <p class="p1">{label.Date_f2f}:</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <template if:true={is_approved}>
+                        <lightning-input type="date" name="input1" variant="label-hidden" min={min_date} max={max_date}
+                                onchange={handleAppointmentDate} data-id='appointment_date' value={prev_appointment_date}></lightning-input>    
+                    </template>
+                    <template if:false={is_approved}>
+                        <lightning-input type="date" name="input1" variant="label-hidden" min={min_date} max={max_date}
+                                onchange={handleAppointmentDate} value={prev_appointment_date} disabled></lightning-input>
+                    </template>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <p class="p1">{label.Time}:</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <template if:true={is_approved}>
+                        <lightning-input type="time" min="10:00" max="18:00" name="input1" variant="label-hidden"
+                                onchange={handleAppointmentTime} value={prev_appointment_time}></lightning-input>
+                    </template>
+                    <template if:false={is_approved}>
+                        <lightning-input type="time" min="10:00" max="18:00" name="input1" variant="label-hidden"
+                                onchange={handleAppointmentTime} value={prev_appointment_time} disabled></lightning-input>
+                    </template>
+                </div>
+            </div>
+            <!-- <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <p class="p1">End Time:</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <lightning-input type="time" name="input1" variant="label-hidden"
+                                onchange={handleAppointmentEndTime}></lightning-input>
+                </div>
+            </div> -->
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <p class="p1">{label.Number_of_participants}</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <template if:true={is_approved}>
+                        <lightning-input type="number" name="input1" variant="label-hidden" min=1 max=50
+                                onchange={handleParticipantNumber} value={prev_participant_no}></lightning-input>
+                    </template>
+                    <template if:false={is_approved}>
+                        <lightning-input type="number" name="input1" variant="label-hidden"
+                                onchange={handleParticipantNumber} value={prev_participant_no} disabled></lightning-input>
+                    </template>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">&nbsp;</div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <template if:true={show_submit}>
+                        <template if:true={is_approved}>
+                            <lightning-button variant="destructive" label="Cancel Appointment" title="Cancel Appointment" onclick={handleDelete}
+                                class="slds-m-left_x-small"></lightning-button>
+                            <lightning-button variant="destructive" label="Update" title="Update" onclick={handleSubmit}
+                                class="slds-m-left_x-small"></lightning-button>
+                        </template>
+                        <template if:false={is_approved}>
+                            <lightning-button variant="destructive" label="Decline" title="Decline" onclick={handleDecline}
+                                class="slds-m-left_x-small"></lightning-button>
+                            <lightning-button variant="destructive" label="Accept" title="Accept" onclick={handleAccept}
+                                class="slds-m-left_x-small"></lightning-button>
+                        </template>
+                    </template>
+                    <p>{submit_msg}</p>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

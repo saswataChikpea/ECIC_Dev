@@ -1,0 +1,353 @@
+<apex:page controller="Payment_Receipt_Controller" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false"
+    readOnly="true" renderAs="PDF" sidebar="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.Payment_Receipt}" />
+
+    <head>
+        <style>
+            @media print {
+                .noprint {
+                    display: none;
+                }
+            }
+
+            body {
+                font-family: "Arial", sans-serif;
+                font-style: normal;
+            }
+
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-bottom: 100px;
+                margin-left: 20px;
+                margin-right: 20px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+
+            div.header {
+                margin: 0px;
+                padding: 0px;
+                position: running(header);
+            }
+
+            div.footer {
+                display: block;
+                padding: 0px;
+                position: running(footer);
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="header">
+            <apex:image value="{!$Resource.ECIC_logo}" width="300px" height="50px" />
+            <p>Payment Receipt</p>
+        </div>
+        <div class="footer">
+            <p>2/F., Tower 1, South Seas Centre, 75 Mody Road, Tsimshatsui East, Kowloon, Hong Kong
+                <br/> Tel : 2732 9988 Fax : 2722 6277 E-mail : ec-reach@hkecic.com
+                <br/> EC-Reach portal : www.ec-reach.com.hk
+                <br/> ECIC 1015 9/2018</p>
+        </div>
+    </body>
+    <apex:outputPanel rendered="{!Policy_Type=='OMBP'}">
+        <!-- Customer Number:{!Customer_Number}
+        <br/> Receipt Number:{!Receipt_No}
+        <br/> Title:{!Title} -->
+        <table width="100%" class="table_1">
+            <tr>
+                <td style="text-align:right">
+                    <apex:outputText value="{0, date,d MMMM yyyy}">
+                        <apex:param value="{!Payment_Date}" />
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>Receipt No. {!Payment_Receipt_no}</td>
+            </tr>
+            <tr>
+                <td>{!Company_Name}</td>
+            </tr>
+            <tr>
+                <td>{!Customer_Number}/{!productType}</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+
+        <table width="100%" border="1" cellpadding="0" cellspacing="0" class="table_2">
+            <tr>
+                <td class="value">{!Title}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="value">(Invoice no. {!Invoice_No})</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <apex:repeat var="data" value="{!invoiceLinesList}" id="invoiceLinesList">
+                <tr>
+                    <td class="value">CL No: {!data.CL_application_no__c}</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="value">Buyer Code: {!data.Buyer_s_Code__c}</td>
+                    <td class="value__">HK$ {!data.Net_Premium__c}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </apex:repeat>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+        <table width="100%" style="font-size:13px;">
+            <tr>
+                <td style="text-align:right;">
+                    Total HK$ {!Invoice_Total}
+                </td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+        <table width="100%" class="table_3">
+            <tr>
+                <td>Payment Summary:</td>
+            </tr>
+            <tr>
+                <td>{!card_type}</td>
+            </tr>
+            <tr>
+                <td>{!card_number}</td>
+            </tr>
+            <tr>
+                <td>Date/Time:
+                    <apex:outputText value="{0, date,d /MM/yyyy HH:mm a}">
+                        <apex:param value="{!Payment_Date}" />
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>Transaction No: {!transation_number}</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+        <table width="100%" class="table_4">
+            <tr>
+                <td>Please contact HKECIC’s Service Hotline for enquiry</td>
+            </tr>
+            <tr>
+                <td>Tel: 2732 9988</td> 
+            </tr>
+            <tr>
+                <td>Email: ec-reach@hkecic.com</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+        <div class="small_text" width="100%">
+            <p>The acceptance by HKECIC of the premium payments does not make HKECIC liable unless you have complied with all
+                other
+                <br/> terms and conditions of your Policy.</p>
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!Policy_Type=='SBP'}">
+        <!-- Customer Number:{!Customer_Number}
+        <br/> Receipt Number:{!Receipt_No}
+        <br/> Title:{!Title} -->
+        <!-- Customer Number:{!customerNumber}
+                    <br/> Receipt Number:{!Receipt_No}
+                    <br/> Title:{!Title} -->
+        <table width="100%" class="table_1">
+            <tr>
+                <td style="text-align:right">
+                    <apex:outputText value="{0, date,d MMMM yyyy}">
+                        <apex:param value="{!Payment_Date}" />
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>Receipt No. {!Payment_Receipt_no}</td>
+            </tr>
+            <tr>
+                <td>{!Company_Name}</td>
+            </tr>
+            <tr>
+                <td>{!Customer_Number}/{!productType}</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+
+        <table width="100%" border="1" cellpadding="0" cellspacing="0" class="table_2">
+            <tr>
+                <td class="value">{!Title}</td>
+                <td class="value__">HK$&nbsp;{!Payment_Amt}</td>
+            </tr>
+            <tr>
+                <td>(Invoice no. {!Invoice_No})</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+
+        <table width="100%" class="table_3">
+            <tr>
+                <td>Payment Summary:</td>
+            </tr>
+            <tr>
+                <td>{!card_type}</td>
+            </tr>
+            <tr>
+                <td>{!card_number}</td>
+            </tr>
+            <tr>
+                <td>Date/Time:
+                    <apex:outputText value="{0, date,d/MM/yyyy HH:mm a}">
+                        <apex:param value="{!Payment_Date}" />
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>Transaction No: {!transation_number}</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+        <table width="100%" class="table_4">
+            <tr>
+                <td>Please contact HKECIC’s Service Hotline for enquiry</td>
+            </tr>
+            <tr>
+                <td>Tel: 2732 9988</td>
+            </tr>
+            <tr>
+                <td>Email: ec-reach@hkecic.com</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+        <div class="small_text" width="100%">
+            <p>The acceptance by HKECIC of the premium payments does not make HKECIC liable unless you have complied with all
+                other
+                <br/> terms and conditions of your Policy.</p>
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!Policy_Type=='SUP'}">
+        <!-- Customer Number:{!customerNumber}
+        <br/> Receipt Number:{!Receipt_No}
+        <br/> Title:{!Title} -->
+        <table width="100%" class="table_1">
+            <tr>
+                <td style="text-align:right">
+                    <apex:outputText value="{0, date,d MMMM yyyy}">
+                        <apex:param value="{!Payment_Date}" />
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>Receipt No. {!Payment_Receipt_no}</td>
+            </tr>
+            <tr>
+                <td>{!Company_Name}</td>
+            </tr>
+            <tr>
+                <td>{!Customer_Number}/{!productType}</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+
+        <table width="100%" border="1" cellpadding="0" cellspacing="0" class="table_2">
+            <tr>
+                <td class="value">{!Title}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="value">(Invoice no. {!Invoice_No})</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="value">ML application no: 79100</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="value">Initial payment</td>
+                <td class="value__">HK$&nbsp;{!Payment_Amt}</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+
+        <table width="100%" class="table_3">
+            <tr>
+                <td>Payment Summary:</td>
+            </tr>
+            <tr>
+                <td>{!card_type}</td>
+            </tr>
+            <tr>
+                <td>{!card_number}</td>
+            </tr>
+            <tr>
+                <td>Date/Time :
+                    <!--apex:outputText value="{0, date,d/MM/ yyyy HH:mm a}">
+                        <apex:param value="{!Payment_Date}" />
+                    </apex:outputText-->
+                    <apex:outputText value="string: {0,date,dd.MM.yyyy G 'at' HH:mm:ss z}"> 
+                        <apex:param value="{!Payment_Date}" /> 
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>Transaction No: {!transation_number}</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+
+        <hr class="line" />
+        <table width="100%" class="table_4">
+            <tr>
+                <td>Please contact HKECIC’s Service Hotline for enquiry</td>
+            </tr>
+            <tr>
+                <td>Tel: 2732 9988</td>
+            </tr>
+            <tr>
+                <td>Email: ec-reach@hkecic.com</td>
+            </tr>
+        </table>
+        <div style="margin:5%;" />
+        <div class="small_text" width="100%">
+            <p>The acceptance by HKECIC of the premium payments does not make HKECIC liable unless you have complied with all
+                other
+                <br/> terms and conditions of your Policy.</p>
+        </div>
+    </apex:outputPanel>
+</apex:page>

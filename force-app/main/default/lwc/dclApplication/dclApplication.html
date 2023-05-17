@@ -1,0 +1,190 @@
+<template>
+    <div if:true={loading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>Please Wait
+    </div>
+    <div if:false={loading}>
+    <div class="container">
+        <p class="p8" style="margin-left:2%;margin-bottom:1%;">{label.Discretionary_Credit_Limit_Application}</p>
+        <div class="inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Company_Name}</p>
+                    <p class="p5">{account_name}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Number}</p>
+                    <p class="p5">{policy_no}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Type}</p>
+                    <p class="p5">{policy_type}</p>
+                </div>
+            </div>
+        </div>
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <p class="p1">{label.Discretionary_Credit_Limit_Application}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <p class="p9">{label.Required_field_DCL}</p>
+                </div>      
+            </div>
+            <div class="slds-grid slds-wrap div2" style="padding-top: 2%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">                                        
+                    <p class="p4" style="padding-left: 7%;"> {label.Buyer_Country_Market}<span style="color: red;">*</span></p>
+                </div>
+                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <lightning-combobox value={buyer_country} placeholder="-Select-" options={buyer_country_options}
+                        variant="label-hidden" onchange={handleBuyerCountryChange} class="input1">
+                    </lightning-combobox>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap div2" style="padding-top: 2%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">                                        
+                    <p class="p4" style="padding-left: 1%;"><span><lightning-helptext style="vertical-align: text-bottom;" icon-name="utility:info" content="The buyer / client is the one who has the contractual obligation to pay for the goods / services, but not the agent of the consignee."></lightning-helptext></span> Buyer Name<span style="color: red;">*</span>(<a onclick={handleShowBuyerSearch} href="javascript:void(0)">Search Company</a>)</p>
+                </div>
+                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <template if:false={enable_buyer_edit}>
+                        <p class="p4">{buyer_name}<lightning-icon style="padding-left: 5%;"
+                                onclick={handleEdit} icon-name="utility:edit" size="xx-small"
+                                class="slds-current-color" alternative-text="Edit" title="Edit">
+                            </lightning-icon>
+                        </p>
+                    </template>
+                    <template if:true={enable_buyer_edit}>
+                        <lightning-input type="text" variant="label-hidden" class="input1"
+                            onchange={handleBuyerNameChange} value={buyer_name}></lightning-input>
+                        
+                    </template>
+                </div>
+            </div>
+            
+                
+            
+            <template if:true={search_buyer}>
+                <div class="search-div">
+                    <div class="slds-grid slds-wrap div2" style="padding-top: 1%;">
+                        <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                            <p class="p4">{label.Search_Buyer}</p>
+                        </div>
+                    </div>
+                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                        <p class="p4">{label.Buyer_Name}</p>
+                        <lightning-input type="text" variant="label-hidden" class="input1" disabled={search_buyer_name_disable}
+                            onchange={handleSearchBuyerName} >
+                        </lightning-input>
+                    </div>
+                    <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                        <p class="p4">{label.Or}</p>
+                    </div>
+                    <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                        <p class="p4">{label.Registration_No}</p>                                       
+                            <lightning-input type="text" variant="label-hidden" class="input1" style="width:80%;" disabled={search_buyer_reg_no_disable}
+                            onchange={handleSearchRegno} >
+                            </lightning-input>                                                                       
+                    </div>
+                    <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                        <p class="p4"><a onclick={handleBuyerSearch} href="javascript:void(0)">{label.Search}</a></p>
+                    </div>
+                </div> 
+            </div>  
+            <div class="search-div">
+                <div if:true={buyer_search_loading}>
+                    <lightning-spinner alternative-text="Loading"></lightning-spinner>{label.Please_Wait}
+                </div>
+                <div if:false={buyer_search_loading}>
+                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                        <p class="p4">{label.Search_Result}</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;max-height: 100px;overflow-y:auto">
+                    <div class="slds-large-size_9-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered" style="width: 95%;">
+                            
+                            <template for:each={buyer_search_result} for:item="buyer">
+                                <tr key={buyer.index} class="slds-hint-parent">
+                                    <td>
+                                        <a href="javascript:void(0)" data-id={buyer.index} onclick={handleBuyerSelect}>{buyer.byr_name}</a>
+                                    </td>
+                                    <td>
+                                        <p  data-field={buyer.Id} >{buyer.byr_addr_1},{buyer.byr_addr_2},{buyer.byr_addr_3},{buyer.byr_addr_4},{buyer.byr_ctry}</p>
+                                    </td>                                               
+                                </tr>                                            
+                            </template>
+                    </table>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </template>
+            <div class="slds-grid slds-wrap div2" style="padding-top: 1%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <p class="p4" style="padding-left: 7%;"> {label.Buyer_Address}<span style="color: red;">*</span></p>
+                </div>
+                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <template if:false={enable_buyer_edit}>
+                        <p class="p4">{buyer_address_line1}</p>
+                    </template>
+                    <template if:true={enable_buyer_edit}>
+                        <lightning-input type="text" variant="label-hidden" class="input1"
+                            onchange={handleBuyerAddressEnglishL1} value={buyer_address_line1}>
+                        </lightning-input>
+                    </template>
+                    <template if:false={enable_buyer_edit}>
+                        <p class="p4">{buyer_address_line2}</p>
+                    </template>
+                    <template if:true={enable_buyer_edit}>
+                        <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden"
+                            class="input1" onchange={handleBuyerAddressEnglishL2}
+                            value={buyer_address_line2}></lightning-input>
+                    </template>
+                    <template if:false={enable_buyer_edit}>
+                        <p class="p4">{buyer_address_line3}</p>
+                    </template>
+                    <template if:true={enable_buyer_edit}>
+                        <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden"
+                            class="input1" onchange={handleBuyerAddressEnglishL3}
+                            value={buyer_address_line3}></lightning-input>
+                    </template>
+                    <template if:false={enable_buyer_edit}>
+                        <p class="p4">{buyer_address_line4}</p>
+                    </template>
+                    <template if:true={enable_buyer_edit}>
+                        <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden"
+                            class="input1" onchange={handleBuyerAddressEnglishL4}
+                            value={buyer_address_line4}></lightning-input>
+                    </template>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap div2" style="padding-top: 1%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <p class="p4" style="padding-left: 7%;"> {label.Registration_Number_If_any}</p>
+                </div>
+                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                    <template if:false={enable_buyer_edit}>
+                        <p class="p4">{registration_no}</p>
+                    </template>
+                    <template if:true={enable_buyer_edit}>
+                        <lightning-input type="text" variant="label-hidden" class="input1"
+                            onchange={handleRegistration} value={registration_no}></lightning-input>
+                    </template>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <template if:true={allow_dcl_create}>
+                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <button class="slds-button slds-button_neutral btn3" onclick={handleCancel}>{label.Cancel}</button>
+                        <button class="slds-button slds-button_neutral btn2" onclick={handleSubmit} >{label.Submit}</button>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+    </div>
+</template>

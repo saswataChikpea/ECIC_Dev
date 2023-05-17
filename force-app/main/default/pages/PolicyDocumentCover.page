@@ -1,0 +1,209 @@
+<apex:page controller="PolicyDocument_Pdf_controller" 
+    sidebar="false" 
+    showHeader="false" 
+    standardStylesheets="false"
+    applyBodyTag="false"
+    renderAs="PDF">
+    <apex:stylesheet value="{!$Resource.policyDetailOMBPCover}" />
+    <head>
+        <style>
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-left: .5in;
+                margin-right: .5in;
+                margin-bottom: 150px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+            
+            div.header {
+                position: running(header);
+            }
+            div.footer {     
+                /* padding: 1px; */
+                /* bottom:0; */
+                position: running(footer);
+            }
+            .pagenumber:before {
+                content: counter(page);
+            }
+            .pagecount:before {
+                content: counter(pages);
+            }
+            .company_addr{
+                float: left;
+                font-size: 8.5px;
+                color: #000;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="logo">
+                <span class="ecic_logo">
+                    <img src="{!$Resource.ECIC_logo}" width="300" height="50" alt="ecic_logo" />
+                </span>
+    
+                <span class="ecreach-logo">
+                    <img src="{!$Resource.EC_Reach_Logo}" width="100" height="40" alt="ec_reach_logo" />
+                </span>
+    
+            </div>
+        </div>
+        
+
+        <div class="header__part">
+            <!-- <p class="formatted_para">Our ref: {!Cover_Phone_Number}</p> -->
+            <span class="issue__date">
+                {!Cover_Issue_Date}
+            </span>
+            <p class="formatted_para">
+                <b>
+                    <u>CONFIDENTIAL</u>
+                </b>
+            </p>
+            <p class="formatted_para">
+                {!Policy_Holder_Name}
+                <br/> {!Registered_Address_Line_1}
+                <br/> {!Registered_Address_Line_2}
+                <br/> {!Registered_Address_Line_3}
+                <br/> {!Registered_District}
+                <br/> {!Registered_Territory}
+
+            </p>
+            <p class="formatted_para">Dear Policyholder,</p>
+        </div>
+        <div class="heading">
+            <p>
+                <b>
+                    <u>
+                        {!Policy_Heading}
+                    </u>
+                </b>
+            </p>
+        </div>
+        <div class="para__one">
+            <p>
+                <span class="formatted_line">We are pleased to inform you that we have accepted your application 
+                    on {!Proposal_Submission_Date} 
+                    for {!Policy_Heading}. It is our pleasure in providing you with:
+                </span>
+                <span class="formatted_para">
+                    <!-- on {!Proposal_Submission_Date} for {!Policy_Heading}. It is our pleasure in
+                    <br/>
+                    <span style="margin-left:25px;">providing you with:</span> -->
+                </span>
+                <br/>
+                <div>
+                    <span class="formatted_line">
+                        <b>{!Point_a}</b>
+                    </span>
+                    <br/>
+                    <span class="formatted_line">
+                        <b>{!Point_b}</b>
+                    </span>
+                    <br/>
+                    <span class="formatted_line">
+                        <b>{!Point_c}</b>
+                    </span>
+                    <br/>
+                    <span class="formatted_line">
+                        <b>{!Point_d}</b>
+                    </span>
+                </div>
+
+                <div>
+                    <span style="margin:50px;"></span>
+                    <br/>
+                    <span class="formatted_line">You can submit up to
+                        <b>{!Number_of_credit_limit_applications}</b> credit limit applications during each 12-month</span>
+                    <br/>
+                    <span class="formatted_para">period starting from the date of application of the first credit limit.</span>
+                </div>
+
+            </p>
+        </div>
+        <div class="para__two">
+            <p>
+                <span class="formatted_line">You may manage your policy via our 24-hour online platform
+                    <b>EC-Reach.</b>
+                </span>
+                <br/>
+                <span class="formatted_para">Simply login to your EC-Reachaccountat www.ec-reach.com.hk by using:</span>
+                <br/>
+                <!-- <span class="formatted_line">
+                    <li>User ID:
+                        <b>«UserID»</b>,and
+                    </li>
+
+                </span> -->
+                <div class="slds-text-longform" style="margin-left:120px;">
+                    <ul class="li">
+                        <li>User ID:
+                            <b>{!user_id}</b>, and</li>
+                        <li>Password: (Password which you have set during the online policy application).</li>
+                    </ul>
+                </div>
+                <!-- <span class="formatted_line">
+                    Password: (Password which you have set during the online policy application).
+                </span> -->
+
+            </p>
+        </div>
+        <div class="para__three">
+            <p>
+                <span class="formatted_line">
+                    To protect your interest and understand your obligations under
+                    <b>{!Policy_Type}</b>,
+                </span>
+                <br/>
+                <span class="formatted_para">
+                    please read through the terms and conditions of {!Policy_Type}.
+                </span>
+                <div>
+                    <br/>
+                    <span class="formatted_line">
+                        For the explanation of the policy and operations, please visit EC-Reach.
+                    </span>
+
+                    <br/>
+                    <span class="formatted_para">If you have any queries, please contact us at 2732 &emsp; 9988 or via
+                        <a href="ec-reach@hkecic.com.">ec-reach@hkecic.com.</a>
+                    </span>
+                </div>
+
+
+            </p>
+            <div style="margin-top:50px;">
+                <p class="__hkecic" style="text-align: right;">
+                    Hong Kong Export Credit Insurance Corporation
+                </p>
+            </div>
+            <div class="footer">
+           
+                <p>
+                    <span style="color:red;font-size:10px;">ECIC 950 1/3/2016</span>
+                    <p>
+                        <small class="footer_text">
+                            2/F., Tower 1, South Seas Centre, 75 Mody Road, Tsimshatsui East, Kowloon, Hong Kong
+                            <br/> Tel : 2732 9988 Fax : 2722 6277 E-mail : ec-reach@hkecic.com
+                            <br/> EC-Reach portal :
+                            <a href="www.ec-reach.com.hk">www.ec-reach.com.hk</a>
+                        </small>
+                    </p>
+                </p>
+                <p align="right">Page<span class="pagenumber" /> of <span class="pagecount" /></p> 
+            </div>
+            <div style="page-break-after:auto;" />
+            <div style="page-break-before:auto;" />
+
+        </div>
+    </body>
+
+</apex:page>

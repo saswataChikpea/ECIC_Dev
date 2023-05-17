@@ -1,0 +1,77 @@
+<template>
+    <!--UsrPhone: {UsrPhone}
+    UsrMPhone: {UsrMPhone}
+    UsrRoleName: {UsrRoleName}
+    UsrManagerId: {UsrManagerId}-->
+
+    <!-- SMS verificatin Do not delete
+        <c-custom-modal type='Input' modal-title='Verify your email Id'
+        modal-message = 'An otp has been sent your registered mobile number. Please enter the OTP to continue'
+        input-label = 'OTP' 
+        input-place-holder="OTP" onconfirmbtnpress={handleOTP} confirm-label='Verify'>
+    </c-custom-modal>
+    <button onclick={callInitSMSVerify} class="slds-button back_button"><span>Verify Phone</span>
+    </button> -->
+    <!-- <template if:false={boardingSetting}>
+        <div class="exampleHolder">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template> -->
+    <template if:true={error}>
+        <c-lwc-error message={error} title="Error" technical-detail={exceptionDetail}></c-lwc-error>
+    </template>
+    <c-custom-modal type='Input' modal-title='Verify your email address'
+        modal-message='A verification code has been sent to your registered email address. Please enter the verification code to continue.'
+        input-label='' input-place-holder="verification code" onconfirmbtnpress={handleOTP} onresendbtnpress={resendOTP}
+        confirm-label='Verify'>
+    </c-custom-modal>
+    <!-- <template if:true={showOnboardingHome}>
+        <template if:true={boardingSetting}>
+            <c-onboarding-home onhandlepagechange={handlePageChange} boarding-setting={boardingSetting}
+                products={products} selectedproduct={selected_product} onproductselected={handleProductSelected}
+                usr-id={usrId}></c-onboarding-home>
+        </template>
+    </template> -->
+    <!-- <template if:true={showProductCom}>
+        <c-onboarding-product-comparison ret-url={retUrl} onhandlepagechange={handlePageChange}>
+        </c-onboarding-product-comparison>
+    </template> -->
+    <template if:true={showOnboardingPI}>
+        <c-onboarding-p-i ret-url={retUrl} proposal={proposal} products={products} language={language}
+            onhandlepagechange={handlePageChange}></c-onboarding-p-i>
+    </template>
+    <template if:true={showOnboardingDP}>
+        <c-onboarding-d-p ret-url={retUrl} is-revise-quote={isReviseQuote} is-multiple-proposal={isMultipleProposal}
+            proposal={proposal} products={products} onhandlepagechange={handlePageChange} usr-id={usrId}
+            language={language} selectedproduct={selected_product} product-search-error={productSearchError}>
+        </c-onboarding-d-p>
+    </template>
+    <template if:true={showOnboardingFillInProposal}>
+        <c-onboarding-fill-in-proposal br-file={brFile} is-revise-quote={isReviseQuote} quote={quote}
+            language={language} selected-product-name={selectedProductName} ret-url={retUrl}
+            onhandlepagechange={handlePageChange} products={products} selectedproduct={selected_product}
+            proposal={proposal}>
+        </c-onboarding-fill-in-proposal>
+    </template>
+    <template if:true={showOnboardingProposalConfirmation}>
+        <c-onboarding-proposal-confirmation ret-url={retUrl} is-revise-quote={isReviseQuote} quote={quote}
+            language={language} selected-product-name={selectedProductName} onhandlepagechange={handlePageChange}
+            products={products} selectedproduct={selected_product} proposal={proposal}>
+        </c-onboarding-proposal-confirmation>
+    </template>
+    <template if:true={showOnboardingTermsAndConditions}>
+        <c-onboarding-terms-and-conditions selected-product-name={selectedProductName}
+            is-multiple-proposal={isMultipleProposal} ret-url={retUrl} onhandlepagechange={handlePageChange}
+            products={products} selectedproduct={selected_product} proposal={proposal}>
+        </c-onboarding-terms-and-conditions>
+    </template>
+    <template if:true={showAccountCreation}>
+        <c-onboarding-create-Account br-file={brFile} ret-url={retUrl} onhandlepagechange={handlePageChange}
+            proposal={proposal} selectedproduct={selected_product} usr-id={usrId} language={language}
+            verification-status={verificationStatus}>
+        </c-onboarding-create-Account>
+    </template>
+    <template if:true={showOnboardingACConfirm}>
+        <c-onboarding-a-c-confirm proposal={proposal} language={language} usr-id={usrId}></c-onboarding-a-c-confirm>
+    </template>
+</template>

@@ -1,0 +1,93 @@
+.heading{
+    font-size:16.5px;
+    color:#000080; 
+    text-align:center;
+}
+.issue_date{
+    font-size:13.33px;
+    color:#000080;
+    margin-bottom:30px;
+    font-weight: bold;
+}
+.title{
+    font-size:13.33px;
+    color:#000080;
+    padding:10px; 
+    /* margin-bottom:15px; */
+    text-align:left;
+}
+.detail{
+    padding-left: 25px;
+}
+.shipment_row{
+    font-size:13.33px;
+    color:#000080;
+    margin-bottom:15px;
+    text-align:left;
+    border: 1px solid black; 
+    background-color:#e0e0d1;
+    padding:5px;
+    width:810px; 
+    height:0px;
+}
+.remark_1 ,.remark_2{
+    padding-top: 100px;
+    float: left;
+    font-size: 11px;
+    color: #000080;
+
+}
+.note{
+    padding-top: 100px;
+    float: right;
+    font-size: 11px;
+    color: #000080;
+   
+}
+.ecic{
+    font-size: 11px;
+    color: #000080;
+}
+.company_addr{
+    float: left;
+    font-size: 8.5px;
+    color: #000;
+    width: 100%;
+}
+.empty{
+    padding-bottom: 300px;
+}
+
+.bottom_empty{
+    padding-bottom: 300px;
+}
+.hkecic{
+    text-align: right;
+    font-size: 16px;
+}
+
+.remark_1_sbp>p ,.remark_2_sbp>p{
+    padding: 0;
+    float: left;
+    font-size: 11px;
+    color: #000080;
+    
+
+}
+.note_sbp>p{
+    float: right;
+    font-size: 11px;
+    color: #000080;
+   
+}
+.ecic{
+    font-size: 11px;
+    color: #000080;
+}
+.company_addr>p{
+    float: left;
+    font-size: 8.5px;
+    color: #000;
+    width: 100%;
+}
+

@@ -1,0 +1,131 @@
+<template>
+    <!--div style="background-color: rgb(241, 236, 236);"-->
+    <div class="slds-p-around_medium lgc-bg">
+        <lightning-card theme="slds-theme_shade">
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <p>
+                        <lightning-button label="Home" title="Home">
+                        </lightning-button>
+                    </p>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <p>
+                        <lightning-button label="Account Profile" title="Account Profile">
+                        </lightning-button>
+                    </p>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <p>
+                        <lightning-button-menu label="Policy" title="Policy" onselect={handleOnselectPolicyManagement}>
+                            <lightning-menu-item value="PolicyDocument" label="Policy Document"></lightning-menu-item>
+                            <lightning-menu-item value="PolicyDetail" label="Policy Detail"></lightning-menu-item>
+                            <lightning-menu-item value="LetterOfAuthority" label="Letter of Authority (LA)">
+                            </lightning-menu-item>
+                            <lightning-menu-item value="Invoice" label="Invoice"></lightning-menu-item>
+                        </lightning-button-menu>
+                    </p>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <p>
+                        <lightning-button label="Credit Limit" title="Credit Limit">
+                        </lightning-button>
+
+                    </p>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <p>
+                        <lightning-button-menu label="Declaration" title="Declaration"
+                            onselect={handleOnselectPolicyManagement}>
+                            <lightning-menu-item value="DeclarationSubmission" label="Declaration Submission">
+                            </lightning-menu-item>
+                            <lightning-menu-item value="DeclarationRecord" label="Declaration Record">
+                            </lightning-menu-item>
+                            <lightning-menu-item value="DeclarationSubmissionBulk" label="Declaration Submission Bulk">
+                            </lightning-menu-item>
+                        </lightning-button-menu>
+
+                    </p>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <p>
+                        <lightning-button label="Risk Management" title="Risk Management">
+                        </lightning-button>
+
+                    </p>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <p>
+                        <lightning-button label="EC-Reach Database" title="EC-Reach Database">
+                        </lightning-button>
+
+                    </p>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <p>
+                        <lightning-button label="Communication" title="Communication">
+                        </lightning-button>
+
+                    </p>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!--<div class="slds-grid slds-wrap">
+                        <div class="slds-size--1-of-8  slds-medium-size--2-of-8 slds-large-size--2-of-12">
+                            <lightning-button  label="Home" title="Home"></lightning-button>
+                        </div>
+                        <div class="slds-size--1-of-8 slds-medium-size--2-of-8 slds-large-size--2-of-12">
+                            <lightning-button  label="Account Profile" title="Account Profile"></lightning-button>
+                        </div>
+                        <div class="slds-size--1-of-8  slds-medium-size--2-of-8 slds-large-size--2-of-12">
+                            <lightning-button-menu label="Policy" title="Policy"  onselect={handleOnselectPolicyManagement}>
+                                <lightning-menu-item value="PolicyDocument" label="Policy Document"></lightning-menu-item>
+                                <lightning-menu-item value="PolicyDetail" label="Policy Detail"></lightning-menu-item>
+                                <lightning-menu-item value="LetterOfAuthority" label="Letter of Authority (LA)"></lightning-menu-item>
+                                <lightning-menu-item value="Invoice" label="Invocie"></lightning-menu-item>
+                            </lightning-button-menu>
+                        </div>
+                        <div class="slds-size--1-of-8  slds-medium-size--2-of-8 slds-large-size--2-of-12">
+                            <lightning-button   label="Credit Limit" title="Credit Limit"></lightning-button>
+                        </div>
+                        <div class="slds-size--1-of-8  slds-medium-size--2-of-8 slds-large-size--2-of-12">
+                            <lightning-button  label="Declaration" title="Declaration"></lightning-button>
+                        </div>
+                        <div class="slds-size--1-of-8  slds-medium-size--2-of-8 slds-large-size--2-of-12">
+                            <lightning-button  label="Risk Management" title="Risk Management"></lightning-button>
+                        </div>
+                        <div class="slds-size--1-of-8  slds-medium-size--2-of-8 slds-large-size--2-of-12">
+                            <lightning-button  label="EC-Reach Database" title="EC-Reach Database"></lightning-button>
+                        </div>
+                        <div class="slds-size--1-of-8  slds-medium-size--2-of-8 slds-large-size--2-of-12">
+                            <lightning-button  label="Communication" title="Communication"></lightning-button>
+                        </div>
+                </div>-->
+        </lightning-card>
+    </div>
+    <br />
+    <template if:true={isPolicyDocument}>
+        <c-policy-document></c-policy-document>
+    </template>
+    <template if:true={isPolicyDetail}>
+        <c-policy-detail></c-policy-detail>
+    </template>
+    <template if:true={isLetterOfAuthority}>
+        <c-policy-letter-of-authority></c-policy-letter-of-authority>
+    </template>
+    <template if:true={isInvoice}>
+        <c-policy-invoice></c-policy-invoice>
+    </template>
+    <template if:true={isDeclarationSubmission}>
+        <c-ship-dec-submission-form></c-ship-dec-submission-form>
+    </template>
+    <template if:true={isDeclarationRecord}>
+        <c-ship-dec-submission-form></c-ship-dec-submission-form>
+    </template>
+    <template if:true={isDeclarationSubmissionBulk}>
+        <c-ship-dec-submission-bulk></c-ship-dec-submission-bulk>
+    </template>
+
+    <!--/div-->
+</template>

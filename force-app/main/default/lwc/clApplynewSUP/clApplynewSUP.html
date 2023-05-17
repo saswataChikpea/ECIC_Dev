@@ -1,0 +1,794 @@
+<template>
+    <div if:true={loading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>Please Wait
+    </div>
+    <div if:false={loading}>
+    <div class="container">
+        <p class="p8" style="margin-left:2%;margin-bottom:1%;">{label.Credit_Limit_Application}</p>
+        <div class="inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Company_Name}</p>
+                    <p class="p5">{account_name}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Number}</p>
+                    <p class="p5">{policy_no}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Type}</p>
+                    <p class="p5">{policy_type}</p>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Free_Credit_Check_Facility_Balance}</p>
+                    <p class="p5"><span onclick={handleCreditCheckFacility}>{available_credit_check_facility} (<a href="javascript:void(0)">Details</a>)</span></p>
+                </div>
+
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <lightning-button variant="destructive" label={label.CL_Application_Draft} title="CL Application Draft"
+                        class="slds-m-left_x-small" onclick={handleDraft}></lightning-button>
+                    <!-- <button style="color: black;" class="slds-button slds-button_neutral"
+                        onclick={handleOpenClApplyNew}>New Application</button> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section1" onclick={expandHandler1}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section1.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section1.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section1.isSectionOpen}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                &nbsp;
+                            </div>
+                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p9">{label.Required_field_DCL}</p>
+                            </div>
+                            <!-- <div class="slds-large-size_9-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p10">{label.Self_Underwritten_Policy_is_only_applicable_to_Hong_Kong_exporters_with_annual}</p>
+                            </div> -->
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{label.Policyholder_Must_be_the_contractual_seller}</p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{account_name}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Are_you_holding_a_valid_credit_limit_on_the_buyer}<span
+                                        style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <template if:true={isNewApplication}>
+                                    <c-custom-radio options={existing_credit_limit} btnname='existing_credit_limit'
+                                    eventname='creditlimitexist' oncreditlimitexist={handleCreditLimitExist}>
+                                    </c-custom-radio>
+                                </template>                              
+                            </div>
+                        </div>
+                        <!-- <template if:true={is_credit_limit_exist}> -->
+                            <template if:true={show_buyer_section}>
+                                <template if:false={manual_buyer_input}>
+                                    <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                        <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                            <p class="p4"> {user_type} {label.Country_Market}<span style="color: red;">*</span></p>
+                                        </div>
+                                        <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                            <p class="p4">{buyer_country}</p>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template if:true={manual_buyer_input}>
+                                    <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                        <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                            <p class="p4"> {user_type} {label.Country_Market}<span style="color: red;">*</span></p>
+                                        </div>
+                                        <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                            <lightning-combobox value={buyer_country} placeholder="-Select-" options={buyer_country_options}
+                                                variant="label-hidden" onchange={handleBuyerCountryChange} class="input1">
+                                            </lightning-combobox>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        <!-- </template> -->
+                        <!--<template if:true={show_qs_4_5}>
+                            <template if:true={is_service}>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">4. Will the service be ultabately rendered to an overseas client?<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <c-custom-radio options={existing_credit_limit} btnname='hkg_goods_exported'
+                                            eventname='hkggoodsexported' onhkggoodsexported={handleHkgGoodsExported}>
+                                        </c-custom-radio>
+                                    </div>                            
+                                </div>
+                            </template>
+                            <template if:false={is_service}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">4. Will the goods to be sold to the Hong Kong exporter be exported?<span style="color: red;">*</span></p>
+                                </div>
+                                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <c-custom-radio options={existing_credit_limit} btnname='hkg_goods_exported'
+                                        eventname='hkggoodsexported' onhkggoodsexported={handleHkgGoodsExported}>
+                                    </c-custom-radio>
+                                </div>                            
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">5. Destination Country / Market<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div
+                                    class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <lightning-combobox value={destination_country} placeholder="-Select-" options={countryOptions}
+                                        variant="label-hidden" onchange={handleDestinationCountryChange}
+                                        class="input1">
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                            </template>
+                        </template>-->
+                            
+                            <template if:true={show_buyer_select}>
+                                <template if:true={isNewApplication}>
+                                    <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                        <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                            &nbsp;
+                                        </div>
+                                        <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                            <lightning-combobox value='' placeholder="Select Buyer"
+                                                options={existing_buyer_list} variant="label-hidden"
+                                                onchange={handleBuyerChange} class="input1">
+                                            </lightning-combobox>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        <template if:true={show_buyer_section}>
+                            <template if:false={manual_buyer_input}>
+                                <!-- <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {user_type} Country / Market<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{buyer_country}</p>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {user_type} Code<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{buyer_code}</p>
+                                    </div>
+                                </div> -->
+                            </template>
+                            
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <template if:true={show_buyer_search_link}>
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {user_type} {label.Name}<span style="color: red;">*</span>(<a onclick={handleShowBuyerSearch} href="javascript:void(0)">Search Company</a>)</p>
+                                    </div>
+                                </template>
+                                <template if:false={show_buyer_search_link}>
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {user_type} {label.Name}<span style="color: red;">*</span></p>
+                                    </div>
+                                </template>
+                                
+                                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <template if:false={enable_buyer_edit}>
+                                        <p class="p4">{buyer_name}<lightning-icon style="padding-left: 5%;"
+                                                onclick={handleEdit} icon-name="utility:edit" size="xx-small"
+                                                class="slds-current-color" alternative-text="Edit" title="Edit">
+                                            </lightning-icon>
+                                        </p>
+                                    </template>
+                                    <template if:true={enable_buyer_edit}>
+                                        <lightning-input type="text" variant="label-hidden" class="input1"
+                                            onchange={handleBuyerNameChange} value={buyer_name}></lightning-input>
+                                        
+                                    </template>
+                                </div>
+                            </div>
+                            <template if:true={search_buyer}>
+                                <div class="search-div">
+                                    <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                        <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                            <p class="p4">{label.Search} {user_type}</p>
+                                        </div>
+                                    </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{user_type} {label.Name}</p>
+                                        <lightning-input type="text" variant="label-hidden" class="input1" disabled={search_buyer_name_disable}
+                                            onchange={handleSearchBuyerName} >
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{label.Or}</p>
+                                    </div>
+                                    <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{label.Registration_No}</p>                                       
+                                            <lightning-input type="text" variant="label-hidden" class="input1" style="width:80%;" disabled={search_buyer_reg_no_disable}
+                                            onchange={handleSearchRegno} >
+                                            </lightning-input>                                                                       
+                                    </div>
+                                    <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"><a onclick={handleBuyerSearch} href="javascript:void(0)">{label.Search}</a></p>
+                                    </div>
+                                </div> 
+                            </div>  
+                            <div class="search-div">
+                                <div if:true={buyer_search_loading}>
+                                    <lightning-spinner alternative-text="Loading"></lightning-spinner>{label.Please_Wait}
+                                </div>
+                                <div if:false={buyer_search_loading}>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{label.Search_Result}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;max-height: 100px;overflow-y:auto">
+                                    <div class="slds-large-size_9-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <table class="slds-table slds-table_cell-buffer slds-table_bordered" style="width: 95%;">
+                                            
+                                        <template for:each={buyer_search_result} for:item="buyer">
+                                            <tr key={buyer.index} class="slds-hint-parent">
+                                                <td>
+                                                    <a href="javascript:void(0)" data-id={buyer.index} onclick={handleBuyerSelect}>{buyer.byr_name}</a>
+                                                </td>
+                                                <td>
+                                                    <p  data-field={buyer.Id} >{buyer.byr_addr_1},{buyer.byr_addr_2},{buyer.byr_addr_3},{buyer.byr_addr_4},{buyer.byr_ctry}</p>
+                                                </td>                                               
+                                            </tr>                                            
+                                        </template>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div> 
+                            </div> 
+                            </template>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {user_type} {label.Address}<span style="color: red;">*</span></p>
+                                </div>
+                                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <template if:false={enable_buyer_edit}>
+                                        <p class="p4">{buyer_address_line1}</p>
+                                    </template>
+                                    <template if:true={enable_buyer_edit}>
+                                        <lightning-input type="text" variant="label-hidden" class="input1"
+                                            onchange={handleBuyerAddressEnglishL1} value={buyer_address_line1}>
+                                        </lightning-input>
+                                    </template>
+                                    <template if:false={enable_buyer_edit}>
+                                        <p class="p4">{buyer_address_line2}</p>
+                                    </template>
+                                    <template if:true={enable_buyer_edit}>
+                                        <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden"
+                                            class="input1" onchange={handleBuyerAddressEnglishL2}
+                                            value={buyer_address_line2}></lightning-input>
+                                    </template>
+                                    <template if:false={enable_buyer_edit}>
+                                        <p class="p4">{buyer_address_line3}</p>
+                                    </template>
+                                    <template if:true={enable_buyer_edit}>
+                                        <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden"
+                                            class="input1" onchange={handleBuyerAddressEnglishL3}
+                                            value={buyer_address_line3}></lightning-input>
+                                    </template>
+                                    <template if:false={enable_buyer_edit}>
+                                        <p class="p4">{buyer_address_line4}</p>
+                                    </template>
+                                    <template if:true={enable_buyer_edit}>
+                                        <lightning-input type="text" style="padding-top: 2%;" variant="label-hidden"
+                                            class="input1" onchange={handleBuyerAddressEnglishL4}
+                                            value={buyer_address_line4}></lightning-input>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Registration_Number_If_any}</p>
+                                </div>
+                                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <template if:false={enable_buyer_edit}>
+                                        <p class="p4">{registration_no}</p>
+                                    </template>
+                                    <template if:true={enable_buyer_edit}>
+                                        <lightning-input type="text" variant="label-hidden" class="input1"
+                                            onchange={handleRegistration} value={registration_no}></lightning-input>
+                                    </template>
+                                </div>
+                            </div>
+                            <!-- <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4" > Harmonized Code<span style="color: red;">*</span></p>
+                                </div>
+                                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <lightning-input type="counter" maxlength="8" variant="label-hidden" class="input1"
+                                        onchange={handleHarmonizedCode} value={harmonized_code}></lightning-input>
+                                        <a href="https://www.censtatd.gov.hk/trader/hscode/index.jsp" style="padding-top: 2%;"
+                                        target="_blank">Search Harmonized Code ( Census and Statistics Department)</a>
+                                </div>
+                            </div> -->
+                            
+                            
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Goods_Involved}<span style="color: red;">*</span></p>
+                                </div>
+                                <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <lightning-combobox value={goods_involved} placeholder="Select Goods"
+                                        options={goodsOptions} variant="label-hidden"
+                                        onchange={handleGoods} class="input1">
+                                    </lightning-combobox> 
+                                    <template if:true={is_miscellaneous}>
+                                        {label.Please_Specify} <lightning-input type="text" variant="label-hidden" class="input1"
+                                            onchange={handleGoodsSpecify} value={specific_goods_involved}></lightning-input>
+                                    </template>  
+                                </div>
+                            </div>
+                            
+                                                                
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Application_Amount_HKD}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <lightning-slider label="" value={application_amount} max={application_amount_max} min={application_amount_min} step={application_amount_step} variant="label-hidden" onchange={handleCLAmountChange}></lightning-slider>                                    
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Payment_Terms}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container" >
+                                        <lightning-combobox value={payment_terms_value} placeholder="-Select-" options={payment_terms} class="input2" style="width:70%;"
+                                            variant="label-hidden" disabled onchange={handlePaymentTermChange}> 
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container" style="padding-left: 0;">
+                                        <lightning-input type="number" variant="label-hidden" class="input2" value={payment_terms_days}
+                                        disabled onchange={handlePaymentTermDaysChange}></lightning-input>
+                                    </div>
+                                    <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container"
+                                        style="padding-left: 1%;">
+                                        <p class="p4" style="padding-top: 8%;">{label.Days}</p>
+                                    </div>
+                                </div>
+                            
+                            
+                            <!--<template if:false={hide_country_lists}>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">12. Country / Market of Shipment (Port of Loading)<span
+                                                style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <lightning-combobox value={shipment_country} placeholder="-Select-" options={countryOptions}
+                                            variant="label-hidden" onchange={handleShipmentCountryChange}
+                                            class="input1">
+                                        </lightning-combobox>
+                                    </div>
+                                </div>
+                                
+                            
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4">14. Country / Market of Origin<span style="color: red;">*</span></p>
+                                </div>
+                                <div
+                                    class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <lightning-combobox value={country_origin} placeholder="-Select-" options={countryOptions}
+                                        variant="label-hidden" onchange={handleOriginCountryChange} class="input1">
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                            </template>-->
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section2" onclick={expandHandler2}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section2.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section2.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section2.isSectionOpen}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Is_this_your_new_buyer}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <c-custom-radio options={new_buyer_options} btnname='is_new_buyer' eventname='isnewbuyer'
+                                    onisnewbuyer={handleNewBuyer}></c-custom-radio>
+                            </div>
+                        </div>
+                        <template if:true={show_new_buyer_detail}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.How_many_years_have_you_been_trading_with_this_buyer}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <lightning-input type="number" variant="label-hidden" style="padding-top: 0;" class="input4" value={buyer_trading_time}
+                                    onchange={handleBuyerTradingTime}></lightning-input>
+                            </div>
+                        </div>
+                        
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Please_provide_the_amount_and_payment_terms_of_the_shipments_you_made_to_this_bu}<span style="color: red;">{mandatory_mark}</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    
+                                        <div class="slds-grid slds-wrap" style="padding: 1%;">
+                                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="number" variant="label-hidden" class="input1" value={shipment_payment_terms_amount} style="width: 80%;"
+                                                onchange={handleShipmentPaymentTermAmount}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.ILC} checked={shipment_payment_term_method1_id}
+                                                onchange={handleShipmentPaymentTermMethod1}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.Payment_in_advance} checked={shipment_payment_term_method2_id}
+                                                onchange={handleShipmentPaymentTermMethod2}></lightning-input>
+                                            </div>                                            
+                                        </div>
+                                        <div class="slds-grid slds-wrap" style="padding: 1%;">
+                                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="number" variant="label-hidden" class="input1" value={shipment_payment_terms_days} style="width: 80%;"
+                                                    onchange={handleShipmentPaymentTermDays}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.DA} checked={shipment_payment_term_method3_id}
+                                                onchange={handleShipmentPaymentTermMethod3}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.DP} checked={shipment_payment_term_method4_id}
+                                                onchange={handleShipmentPaymentTermMethod4}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.OA} checked={shipment_payment_term_method5_id}
+                                                onchange={handleShipmentPaymentTermMethod5}></lightning-input>
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap" style="padding: 1%;">
+                                            <!-- <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-combobox value={shipment_payment_terms_value} placeholder="-Select-" options={payment_terms} class="input2" style="width:85%;padding-top:1%;"
+                                                    variant="label-hidden" onchange={handleShipmentPaymentTerm}>
+                                                </lightning-combobox>
+                                            </div> -->
+                                              
+                                            <!-- <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <p style="padding-top: 10%;">&nbsp;Days</p>
+                                            </div>                             -->
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Is_there_any_amount_currently_unpaid_for_more_than_60_days_from_the_due_date}<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <c-custom-radio options={unpaid_options} btnname='unpaid_amount' eventname='unpaidamount'
+                                        onunpaidamount={handleUnpaidAmountChange}></c-custom-radio>
+                                </div>
+                            </div>
+                            
+                        </template>
+                        <!-- <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">2. Does this buyer have any unpaid, shipments (whether due or not)?<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <c-custom-radio options={existing_credit_limit} btnname='unpaid_shipment' eventname='unpaidshipment'
+                                    onunpaidshipment={handleUnpaidShipmentChange}></c-custom-radio>
+                            </div>
+                        </div> -->
+                        <template if:true={flag_unpaid_shipment}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p8" style="margin-bottom:1%;">{label.Unpaid_Shipment_Details}</p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_12-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <p>&nbsp;</p>
+                                                </th>
+                                                <th style="padding-left: 1%;">
+                                                    <p class="p1">{label.Shipment}<br />{label.Invoice_date}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Gross_Invoice_Value_Currency}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Gross_Invoice_Value_Amount}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th style="width: 30%;">
+                                                    <p class="p1">{label.Payment_Terms}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Due_Date}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Remarks}</p>
+                                                </th>
+                                                <!-- <th>
+                                                    <p class="p1">Add</p>
+                                                </th> -->
+                                            </tr>
+                                        </thead>
+                                        <template for:each={invoiceList} for:item="inv" for:index="indx">
+                                            <tr key={inv.key} id={inv.key}>
+                                                <td>
+                                                    <lightning-icon data-id={indx} icon-name="utility:ban" variant="Error" style="color:rgb(112, 85, 85)"
+                                                        alternative-text="Remove" size="xx-small" title="xx-small size" onclick={removeRow}>
+                                                    </lightning-icon>
+                                                </td>
+                                                <td style="padding-left: 1%;">
+                                                    <lightning-input data-id={indx} value={inv.InvoiceDate} variant="label-hidden" style="padding-top:2%"
+                                                        class="input3" type="date" onchange={handleInvoiceDate}></lightning-input>
+                                                </td>
+                                                <td>                                                    
+                                                    <lightning-combobox data-id={indx} value={inv.InvoiceCurrency} placeholder="-Select-" options={CurrencyList}
+                                                        variant="label-hidden" onchange={handleInvoiceCurrencyChange}
+                                                        class="input1">
+                                                    </lightning-combobox>
+                                                </td>
+                                                <td>
+                                                    <lightning-input data-id={indx} value={inv.InvoiceAmount} variant="label-hidden" style="padding-top:2%"
+                                                        class="input3" type="Number"  onchange={handleInvoiceValue}>
+                                                    </lightning-input>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-large-size_4-of-12">
+                                                            <lightning-combobox data-id={indx} value={inv.PaymentTermsType} placeholder="-Select-" options={invoice_payment_terms}
+                                                                variant="label-hidden" onchange={handleInvoicePaymentTermChange} style="width:80%;"
+                                                                class="input1">
+                                                            </lightning-combobox>
+                                                        </div>
+                                                        <div class="slds-large-size_4-of-12">
+                                                            <lightning-input data-id={indx} value={inv.PaymentTermsDays} variant="label-hidden" class="input2"
+                                                                onchange={handleInvoicePaymentTermDays} style="padding-top:2%;padding-left:1%;" type="Number">
+                                                            </lightning-input>
+                                                        </div>
+                                                        <div class="slds-large-size_2-of-12">
+                                                            <p style="padding-top: 16%;">&nbsp;{label.Days}</p>
+                                                        </div>
+                                                    </div>
+                    
+                                                </td>
+                                                <td>
+                                                    <lightning-input data-id={indx} value={inv.InvoiceDueDate} variant="label-hidden" onchange={handleInvoiceDueDate}
+                                                        style="padding-top:2%" class="input3" type="date"></lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input data-id={indx} value={inv.InvoiceRemark} variant="label-hidden" style="padding-top:2%"
+                                                        class="input3" type="text"  onchange={handleInvoiceRemarks}>
+                                                    </lightning-input>
+                                                </td>
+                                                <!-- <td>
+                                                    
+                                                    <lightning-icon icon-name="utility:add" variant="Error" style="color:rgb(16, 151, 23)"
+                                                        alternative-text="Add" size="xx-small" title="xx-small size" onclick={addRow}>
+                                                    </lightning-icon>
+                                                </td> -->
+                                            </tr>
+                                        </template>
+                                    </table>
+                                    <lightning-icon icon-name="utility:add" variant="success"
+                                        style="color:rgb(18, 163, 13);margin-top:1%; margin-bottom:3%;"
+                                        alternative-text="Add" size="xx-small" title="xx-small size" onclick={addRow}>
+                                    </lightning-icon>
+                                    <hr style="margin-top:10px;margin-bottom:10px;width:92%" />
+                                </div>
+                            </div>
+
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--****************-->
+        <template if:false={is_service}>
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section3" onclick={expandHandler3}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section3.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section3.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section3.isSectionOpen}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Do_you_have_any_orders_confirmed_negotiation_with_this_buyer}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <lightning-combobox value={order_confirm_negotiation_value} placeholder="-Select-" options={order_confirm_negotiation_options}
+                                    variant="label-hidden" onchange={handleOrderConfirmNegotiationChange} style="width:50%;"
+                                    class="input1">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                        <template if:true={show_order_confirm_negotiation_detail}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Please_provide_the_amount_and_payment_terms_of_the_orders}<span style="color: red;">*</span>
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <lightning-input type="number" variant="label-hidden" style="padding-top: 0;" class="input4" value={payment_term_order_amount}
+                                    onchange={handlePaymentTermOrderAmount}></lightning-input>
+                                        <div class="slds-grid slds-wrap" style="padding: 1%;">
+                                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.ILC} checked={confirm_order_payment_terms_method1_id}
+                                                onchange={handleConfirmOrderPaymentTermMethod1}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.Payment_in_advance} checked={confirm_order_payment_terms_method2_id}
+                                                onchange={handleConfirmOrderPaymentTermMethod2}></lightning-input>
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap" style="padding: 1%;">                                            
+                                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.DA} checked={confirm_order_payment_terms_method3_id}
+                                                onchange={handleConfirmOrderPaymentTermMethod3}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.DP} checked={confirm_order_payment_terms_method4_id}
+                                                onchange={handleConfirmOrderPaymentTermMethod4}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="checkbox" label={label.OA} checked={confirm_order_payment_terms_method5_id}
+                                                onchange={handleConfirmOrderPaymentTermMethod5}></lightning-input>
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap" style="padding: 1%;">
+                                            <!-- <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-combobox value={order_payment_terms_value} placeholder="-Select-" options={invoice_payment_terms}
+                                                    variant="label-hidden" onchange={handleOrderPaymentTermChange} style="width:80%;padding-top:1%;"
+                                                    class="input2">
+                                                </lightning-combobox>
+                                            </div> -->
+                                            <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <lightning-input type="number" variant="label-hidden" class="input1" value={order_payment_term_days} style="width: 70%;"
+                                                    onchange={handleOrderPanymentTermDays}></lightning-input>
+                                            </div>
+                                            <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 ">
+                                                <p style="padding-top: 10%;">&nbsp;{label.Days}</p>
+                                            </div>                            
+                                        </div>
+                                        
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.When_will_the_shipments_commence}
+                                    </p>
+                                </div>
+                                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <lightning-combobox  value={shipment_commencement_month} placeholder="-Select-" options={monthOptions}
+                                        variant="label-hidden" onchange={handleShipmentCommenceMonth} 
+                                        class="input1" style="width:80%">
+                                    </lightning-combobox>
+                                </div>
+                                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <lightning-combobox  value={shipment_commencement_year} placeholder="-Select-" options={yearOptions}
+                                        variant="label-hidden" onchange={handleShipmentCommenceYear} 
+                                        class="input1" style="width:70%">
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                        </template>
+                        <template if:false={is_preshipment}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> Remarks </p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <lightning-input type="text" variant="label-hidden" class="input1" value={remarks}
+                                            onchange={handleRemarks}></lightning-input>
+                                </div>
+                            </div>
+                        </template>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+        <!--****************-->
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                &nbsp;
+            </div>
+            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                <button class="slds-button slds-button_neutral btn3" onclick={handleCancel}>{label.Cancel}</button>
+                    <button class="slds-button slds-button_neutral btn3" onclick={handleSave}>{label.Save_and_Exit}</button>
+                <button class="slds-button slds-button_neutral btn2" onclick={handleNext}>{label.Next}</button>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+
+
+    <!-- <div if:true={showBuyerModal}>
+        <c-cl-buyer-select onselectbuyer={handleBuyerSelection}></c-cl-buyer-select>
+    </div> -->
+    <div if:true={showCheckFacilityModal}>
+        <c-cl-check-facility policydetail={policy_detail} ondisplayclfacilitychange={handleDisplayccfmodal}>
+        </c-cl-check-facility>
+    </div>
+</template>

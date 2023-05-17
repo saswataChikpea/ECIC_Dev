@@ -1,0 +1,30 @@
+@import url(https://allfont.net/allfont.css?fonts=book-antiqua);
+
+body{
+    font-family: 'Book Antiqua', arial;
+}
+p{
+    font-size: 16px;
+}
+.logo>.ecic_logo{
+    margin-left: 20px;
+}
+.logo>.ecreach-logo{
+    margin-left: 230px;
+}
+
+.issue__date{
+    margin-left: 550px;
+}
+.heading{
+    text-align: center;
+}
+.formatted_line{
+    margin-left: 150px;
+}
+.formatted_para{
+    margin-left: 24.5px;  
+}
+/* .ecic_logo{
+    margin: 100px;
+} */

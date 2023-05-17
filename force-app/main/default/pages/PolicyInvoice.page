@@ -1,0 +1,629 @@
+<apex:page controller="PolicyDocument_Pdf_controller" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false"
+    readOnly="true" renderAs="PDF" sidebar="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.PolicyInvoice}" />
+
+    <body>
+        <apex:outputPanel rendered="{!Policy_Type == 'OMBP'}">
+            <apex:image value="{!$Resource.ECIC_BW_LOGO}" height="50" width="300" />
+            <apex:variable var="Item" value="{!0000}" />
+            <apex:variable var="CL_No" value="{!780999}" />
+            <div class="heading">
+                <p class="draft">(DRAFT)</p>
+                <p class="invoice">Invoice</p>
+            </div>
+            <div class="left_div">
+                <p>{!Policy_Account_Name}</p>
+            </div>
+            <div class="right_div">
+                <table class="block">
+                    <tr>
+                        <td>Please contact HKECIC's Service Hotline for enquiry</td>
+                    </tr>
+                    <tr>
+                        <td>Tel: 2732xxxx</td>
+                    </tr>
+                    <tr>
+                        <td>Email: XXX@hkecic.com</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="left_div">
+                <p>312868/70</p>
+            </div>
+            <div class="right_div">
+                <table class="block">
+                    <tr>
+                        <td>Online Micro-Business Policy (OMBP)</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice No.</td>
+                        <td>:</td>
+                        <td>{!Policy_Invoice_Number}</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice Date</td>
+                        <td>:</td>
+                        <td>
+                            <apex:outputText styleClass="output_date" value="{0,date,d MMMM  yyyy}">
+                                <apex:param value="{!Policy_Invoice_Issue_Date}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Page No.</td>
+                        <td>:</td>
+                        <td>1 of 1</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table_1">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>CL application no.</th>
+                            <th>Buyer's Code no.</th>
+                            <th style="text-align:right;">Premium (in HKD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat var="data" value="{!invoiceLinesSUPList}">
+                            <apex:variable var="Item" value="{!Item+1}" />
+                            <apex:variable var="CL_No" value="{!CL_No+1}" />
+                            <tr>
+                                <td>000{!data.Item__c}</td>
+                                <td>{!data.CL_application_no__c}</td>
+                                <td>{!data.Buyer_s_Code__c}</td>
+                                <td style="text-align:right;">{!data.Net_Premium__c}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+                <p style="margin-left:480px;font-weight:bold;text-align:right;">Invoice Total:
+                    <span style="padding-left:40px;">{!Invoice_Total}</span>
+                </p>
+            </div>
+            <div class="footer" style="margin-top:0%;">
+                <ul style="margin-left:1%;">
+                    <li class="rotate" style="padding-bottom:20px;">To accept the
+                        <span class="highlight">CL application(s)</span>, please log in “EC-Reach 2.0"
+                        <br/> (www.ec-reach.com.hk) to make payment by 20 June 2021
+                    </li>
+                    <li class="rotate">The acceptance by HKECIC of the premium payments
+                        <br/> does not make HKECIC liable unless you have complied
+                        <br/> with all other terms and conditions of your Policy</li>
+                </ul>
+                <p style="padding-left:0%;">
+                    <b>Payment Method:</b>
+                    <br/>
+                    <small>
+                        <b>Logo of available</b>
+                    </small>
+                </p>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!Policy_Type == 'SBP'}">
+            <apex:image value="{!$Resource.ECIC_BW_LOGO}" height="50" width="300" />
+
+            <div class="heading">
+                <p class="draft">(DRAFT)</p>
+                <p class="invoice">Invoice</p>
+            </div>
+            <div class="left_div">
+                <p>{!Policy_Account_Name}</p>
+            </div>
+            <div class="right_div">
+                <table class="block">
+                    <tr>
+                        <td>Please contact HKECIC's Service Hotline for enquiry</td>
+                    </tr>
+                    <tr>
+                        <td>Tel: 2732xxxx</td>
+                    </tr>
+                    <tr>
+                        <td>Email: XXX@hkecic.com</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="left_div">
+                <p>312868/70</p>
+            </div>
+            <div class="right_div">
+                <table class="block">
+                    <tr>
+                        <td>Calculated premiums shown below refer to your
+                            <br/> declaration(s) of shipments to HKECIC received on or
+                            <br/> before 26 July 2021</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="left_div">
+                <table border="1" cellspacing="0" cellpadding="0" width="80%">
+                    <tr>
+                        <td colspan="2">Credit Checking Facility
+                            <br/>No. of Credit Limit Application</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Policy period: {!Policy_Period}</td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="padding-left:5px;">Opening balance</td>
+                        <td width="50%" style="text-align:right; padding-right:5px;">22</td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="padding-left:5px;">Utilization</td>
+                        <td width="50%" style="text-align:right; padding-right:5px;">1</td>
+                    </tr>
+                    <tr>
+                        <td width="50%" style="padding-left:5px;">Balance</td>
+                        <td width="50%" style="text-align:right; padding-right:5px;">21</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="right_div">
+                <table class="block">
+                    <tr>
+                        <td>Online Small Business Policy (OSBP)</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice No.</td>
+                        <td>:</td>
+                        <td>{!Policy_Invoice_Number}</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice Date</td>
+                        <td>:</td>
+                        <td>
+                            <apex:outputText styleClass="output_date" value="{0,date,d MMMM  yyyy}">
+                                <apex:param value="{!Policy_Invoice_Issue_Date}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Due Date</td>
+                        <td>:</td>
+                        <td>
+                            <apex:outputText styleClass="output_date" value="{0,date,d MMMM  yyyy}">
+                                <apex:param value="{!Policy_Invoice_Due_Date}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Page No.</td>
+                        <td>:</td>
+                        <td>1 of 1</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table_1">
+                <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                        <td colspan="5">
+                            <b>Outstanding Amount</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <b>Premium/Policy fee</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title">
+                            <b>0-30 days</b>
+                        </td>
+                        <td class="title">
+                            <b>31-60 days</b>
+                        </td>
+                        <td class="title">
+                            <b>61-90 days</b>
+                        </td>
+                        <td class="title">
+                            <b>90+ days</b>
+                        </td>
+                        <td class="title">
+                            <b>Total</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="value">
+                            <b>7.00</b>
+                        </td>
+                        <td class="value">
+                            <b>-</b>
+                        </td>
+                        <td class="value">
+                            <b>-</b>
+                        </td>
+                        <td class="value">
+                            <b>-</b>
+                        </td>
+                        <td class="value">
+                            <b>7.00</b>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="footer">
+                <p>
+                    <b>Payment Method:</b>
+                </p>
+                <br/>
+                <small>
+                    <b>Logo of available</b>
+                </small>
+            </div>
+            <div class="table_2" style="margin-top:300px;">
+                <apex:image value="{!$Resource.ECIC_BW_LOGO}" height="50" width="300" />
+                <p class="draft">(DRAFT)</p>
+                <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr class="_tr ">
+                            <th class="title">Transaction Date</th>
+                            <!-- <th class="title">Description</th> -->
+                            <th class="title">Buyer's code no.</th>
+                            <th class="title">Shipment Date</th>
+                            <th class="title">Policyholder's reference</th>
+                            <th class="title">Terms of Payment</th>
+                            <th class="title">Currency code and gross invoice value</th>
+                            <th class="title">Exchange rate</th>
+                            <th class="title">Premium rate(%)</th>
+                            <th class="title">Premium (in HKD)</th>
+                            <th class="title">Discount (in HKD)</th>
+                            <th class="title">Net Premium (in HKD)</th>
+                            <th class="title">Amount (in HKD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="1"></td>
+                            <td colspan="10">
+                                <b>Previous balance</b>
+                            </td>
+                            <td colspan="1">{!Previous_Balence}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">&nbsp;</td>
+                            <td colspan="10">
+                                &nbsp;
+                            </td>
+                            <td colspan="1">&nbsp;</td>
+                        </tr>
+                        <!-- {!invoiceLinesList.size} -- {!Transaction_Date} -->
+
+                        <apex:repeat var="data" value="{!invoiceLinesList}" id="theRepeat">
+                            <tr>
+                                <!-- <tr>
+                                    <td colspan="12" style="font-size: 12.5px;text-align:left;padding:10px;">
+                                        <b>{!data.Description__c}</b>
+                                    </td>
+                                </tr> -->
+                                <td class="value">
+                                    <apex:outputText styleClass="output_date" value="{0,date,yyyy/MM/d}">
+                                        <apex:param value="{!data.Transaction_Date_SBP__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <!-- <td colspan="12" style="font-size: 12.5px;text-align:left;padding:10px;">
+                                    <b>{!data.Description__c}</b>
+                                </td> -->
+                                <td class="value">{!data.Buyer_s_Code__c}</td>
+                                <td class="value">
+                                    <apex:outputText styleClass="output_date" value="{0,date,yyyy/MM/d}">
+                                        <apex:param value="{!data.Shipment_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td class="value  _td">{!data.Policyholder_s_Ref__c}</td>
+                                <td class="value  _td">{!data.Payment_Terms__c}</td>
+                                <td class="value  _td">{!data.Currency_Code__c}&nbsp;{!data.Gross_Invoice_Value__c}</td>
+                                <td class="value  _td">{!data.Exchange_Rate__c}</td>
+                                <td class="value  _td">{!data.Premium_Rate__c}</td>
+                                <td class="value  _td">{!data.Premium__c}</td>
+                                <td class="value  _td">{!data.Discount__c}</td>
+                                <td class="value  _td">{!data.Net_Premium__c}</td>
+                                <td class="value  _td">{!data.Line_Amount__c}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12" style="font-size: 12.5px;text-align:left;padding:10px;">
+                                    <b>{!data.Description__c}</b>
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                        <tr>
+                            <td colspan="1"></td>
+                            <td colspan="10" style="text-align:right;">
+                                <span style="background-color:yellow;text-align:right;">
+                                    <!-- <p style="text-align:right;"> -->
+                                    <b>Premium sub-Total</b>
+                                    <!-- </p> -->
+                                </span>
+
+                            </td>
+                            <td colspan="1">
+                                <b>{!Invoice_Total_SD}</b>
+                            </td>
+                        </tr>
+                        <apex:repeat var="data" value="{!invoiceLinesCCFList}" id="theRepeat1">
+                            <tr>
+                                <td class="value">
+                                    <apex:outputText styleClass="output_date" value="{0,date,yyyy/MM/d}">
+                                        <apex:param value="{!data.Transaction_Date_SBP__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <!-- <td colspan="12" style="font-size: 12.5px;text-align:left;padding:10px;">
+                                    <b>{!data.Description__c}</b>
+                                </td> -->
+                                <td class="value">{!data.Buyer_s_Code__c}</td>
+                                <td class="value">
+                                    <apex:outputText styleClass="output_date" value="{0,date,yyyy/MM/d}">
+                                        <apex:param value="{!data.Shipment_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td class="value  _td">{!data.Policyholder_s_Ref__c}</td>
+                                <td class="value  _td">{!data.Payment_Terms__c}</td>
+                                <td class="value  _td">{!data.Currency_Code__c}&nbsp;{!data.Gross_Invoice_Value__c}</td>
+                                <td class="value  _td">{!data.Exchange_Rate__c}</td>
+                                <td class="value  _td">{!data.Premium_Rate__c}</td>
+                                <td class="value  _td">{!data.Premium__c}</td>
+                                <td class="value  _td">{!data.Discount__c}</td>
+                                <td class="value  _td">{!data.Net_Premium__c}</td>
+                                <td class="value  _td">{!data.Line_Amount__c}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12" style="font-size: 12.5px;text-align:left;padding:10px;">
+                                    <b>{!data.Description__c}</b>
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                        <tr>
+                            <td colspan="1"></td>
+                            <!-- <td colspan="2">&nbsp;</td> -->
+                            <td colspan="10" style="text-align:right;">
+                                Credit Check Facility &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span style="background-color:yellow;text-align:right;">
+                                    <!-- <p style="text-align:right;"> -->
+                                    <b>Policy fee sub-Total</b>
+                                    <!-- </p> -->
+                                </span>
+
+                            </td>
+                            <td colspan="1">
+                                <b>{!Invoice_Total_CCF}</b>
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <td colspan="1"></td>
+                            <td colspan="6">Message</td>
+                            <td colspan="1"></td>
+                            <td colspan="1">----</td>
+                            <td colspan="1">----</td>
+                            <td colspan="1">----</td>
+                            <td colspan="1"></td>
+                        </tr> -->
+                        <!-- <tr>
+                            <td colspan="1"></td>
+                            <td colspan="6"></td>
+                            <td colspan="1"></td>
+                            <td colspan="1">
+                                <b>[AMT]</b>
+                            </td>
+                            <td colspan="1">
+                                <b>[AMT]</b>
+                            </td>
+                            <td colspan="1">
+                                <b>[AMT]</b>
+                            </td>
+                            <td colspan="1"></td>
+                        </tr> -->
+                        <!-- <tr>
+                            <td colspan="1"></td>
+                            <td colspan="10" style="text-align:right;">
+                                <span style="background-color:yellow;text-align:right;">
+                                    <p style="text-align:right;">
+                                    <b>Premium sub-Total</b>
+                                    </p>
+                                </span>
+
+                            </td>
+                            <td colspan="1">
+                                <b>[AMT]</b>
+                            </td>
+                        </tr> -->
+                        <!-- <tr>
+                            <td colspan="1"></td>
+                            <td colspan="4">{!Buyer_s_Code}</td>
+                            <td colspan="4">Credit Check Facility</td>
+                            <td colspan="2">
+                                <b>[AMT]</b>
+                                <br/>----
+                            </td>
+                            <td colspan="1"></td>
+                        </tr> -->
+                        <!-- <tr>
+                            <td colspan="1"></td>
+                            <td colspan="4"></td>
+                            <td colspan="4"></td>
+                            <td colspan="2">
+                                <b>[AMT]</b>
+                            </td>
+                            <td colspan="1"></td>
+                        </tr> -->
+                        <!-- <tr>
+                            <td colspan="1"></td>
+                            <td colspan="10" style="text-align:right;">
+                                <span style="background-color:yellow;text-align:right;">
+                                    <p style="text-align:right;"> -->
+                        <!-- <b>Policy fee sub-Total</b> -->
+                        <!-- </p>
+                                </span>
+
+                            </td>
+                            <td colspan="1">
+                                <b>[AMT]</b>
+                            </td>
+                        </tr> -->
+                        <tr>
+                            <td colspan="1"></td>
+                            <td colspan="6">
+                                <b>
+                                    <apex:outputText value="{0, date,YYYY-MM-dd}">
+                                        <apex:param value="{!Payment_Date}" />
+                                    </apex:outputText>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;{!Policy_Invoice_Number}</b>
+                            </td>
+                            <td colspan="4">{!Payment_Message}</td>
+                            <!-- <td colspan="2"></td> -->
+                            <td colspan="1">
+                                <b>{!Payment_Amount}</b>
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <td colspan="8" style="font-size: 12.5px;text-align:left;padding:10px;">
+                                <b>Refunded: This shipment was cancelled by you</b>
+                            </td>
+                            <td style="font-size: 12.5px;text-align:left;padding:10px;">Total</td>
+                            <td style="font-size: 12.5px;text-align:left;padding:10px;">115</td>
+                            <td style="font-size: 12.5px;text-align:left;padding:10px;">{!Total_Premium}</td>
+                            <td style="font-size: 12.5px;text-align:left;padding:10px;">{!Total_Premium}</td>
+                        </tr> -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="_tr ">
+                            <td colspan="8">
+                                <ul>
+                                    <li>The acceptance by HKECIC of the premium payments does not make HKECIC liable unless
+                                        <br/> you have complied with all other terms and conditions of your Policy
+                                    </li>
+                                </ul>
+                            </td>
+                            <td colspan="4" style="text-align:center;">
+                                <b>Invoice Balance&nbsp;&nbsp;{!Remaining_Amount}</b>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!Policy_Type == 'SUP'}">
+            <apex:image value="{!$Resource.ECIC_BW_LOGO}" height="50" width="300" />
+            <div class="heading">
+                <p class="draft">(DRAFT)</p>
+                <p class="invoice">Invoice</p>
+            </div>
+            <div class="left_div">
+                <p>{!Policy_Account_Name}</p>
+            </div>
+            <div class="right_div">
+                <table class="block">
+                    <tr>
+                        <td>Please contact HKECIC's Service Hotline for enquiry</td>
+                    </tr>
+                    <tr>
+                        <td>Tel: 2732xxxx</td>
+                    </tr>
+                    <tr>
+                        <td>Email: XXX@hkecic.com</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="left_div">
+                <p>312868/70</p>
+            </div>
+            <div class="right_div">
+                <table class="block">
+                    <tr>
+                        <td>Self-Underwritten Policy (SUP)</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice No.</td>
+                        <td>:</td>
+                        <td>{!Policy_Invoice_Number}</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice Date</td>
+                        <td>:</td>
+                        <td>
+                            {!Policy_Invoice_Issue_Date}
+                            <!-- <apex:outputText styleClass="output_date" value="{0,date,d MMMM  yyyy}">
+                                <apex:param value="{!Policy_Invoice_Issue_Date}" />
+                            </apex:outputText> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Page No.</td>
+                        <td>:</td>
+                        <td>1 of 1</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table_1">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <th>ML application no.</th>
+                            <th style="padding-left:400px;">Premium (in HKD)</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>79100</td>
+                            <td style="padding-left:450px;">{!Total_Premium}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="table_2">
+                <p>*****Total premium of {!Total_Premium} shall be paid as follows*****</p>
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <u>Payment Due Date</u>
+                            </td>
+                            <td>
+                                <u>Amount</u>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat var="data" value="{!invoiceLinesSUPList}">
+                            <tr>
+                                <td>{!data.Premium_Cycle__c}</td>
+                                <td style="padding-left:30px;">
+                                    <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                        <apex:param value="{!data.Premium_Due_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td>{!data.Net_Premium__c}</td>
+                                <!-- <td>{!Total_Premium}</td> -->
+                            </tr>
+                        </apex:repeat>
+                        <!-- <tr>
+                            <td>({!Total_Premium/4})</td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="footer">
+                <ul style="margin-left:1%;">
+                    <li style="padding-bottom:20px;">To accept the
+                        <span class="highlight">application</span>, please log in “EC-Reach 2.0"
+                        <br/> (www.ec-reach.com.hk) to make payment by 20 June 2021
+                    </li>
+                    <li>The acceptance by HKECIC of the premium payments does not
+                        <br/> make HKECIC liable unless you have complied with all other
+                        <br/> terms and conditions of your Policy</li>
+                </ul>
+                <p>
+                    <b>Payment Method:</b>
+                </p>
+                <br/>
+                <small>
+                    <b>Logo of available</b>
+                </small>
+            </div>
+        </apex:outputPanel>
+    </body>
+</apex:page>

@@ -1,0 +1,36 @@
+<apex:page showHeader="false" renderAs="{!renderAs}" standardController="Invoice__c" extensions="HostedPaymentController" id="ThePage" title="Secure Acceptance - Payment Form">
+  <apex:outputPanel id="testcard">
+    <apex:define name="body">
+      <center>
+        <form id="theForm" action="{!submissionURL}" method="post">
+          <apex:panelGrid columns="1" style="margin-top:1em;">
+            <apex:outputtext escape="false" value="{!ParametersValues}" />
+
+            <!--apex:outputtext escape="false" value="{!ParametersValuesHidden}"/-->
+            <apex:outputtext escape="false" value="{!SignedData}" />
+
+
+          </apex:panelGrid>
+
+          <apex:panelGrid columns="2" style="margin-top:1em;">
+            <!--<span>Amount to charge :</span>
+            <input type="text" name="amount" />
+            <br/>
+            <span>
+              <b>Your Department/Division/Unit:</b>
+            </span>
+            <input type="text" name="merchant_defined_data1" />
+            <br/>
+            <span>
+              <b>Comments:</b>
+            </span>
+            <input type="text" name="merchant_defined_data2" />
+            <br/>-->
+            <input type="submit" id="submit" value="Proceed To Pay" />
+          </apex:panelGrid>
+          <br/>
+        </form>
+      </center>
+    </apex:define>
+  </apex:outputPanel>
+</apex:page>

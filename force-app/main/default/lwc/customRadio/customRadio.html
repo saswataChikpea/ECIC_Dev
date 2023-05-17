@@ -1,0 +1,18 @@
+<template>
+    <div style="border:none!important">
+        <template for:each={options} for:item="item" class="card1">
+            <fieldset key={item.label} style="display: block; float: left; border:none">
+                <div class="slds-form-element__control card1">
+                    <span class="slds-radio card1">
+                        <input name={btnname} id={item.value} type="radio" value={item.value} checked={item.isChecked}
+                            disabled={isdisabled} onchange={handleSelected} />
+                        <label class="slds-radio__label" for={item.value}>
+                            <span class="slds-radio_faux"></span>
+                            <span class="slds-form-element__label">{item.label}</span>
+                        </label>
+                    </span>
+                </div>
+            </fieldset>
+        </template>
+    </div>
+</template>

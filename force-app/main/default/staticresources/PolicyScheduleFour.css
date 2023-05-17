@@ -1,0 +1,50 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+tr{
+    height: 30px;
+}
+li{
+    list-style: none;
+}
+.heading{
+    color: #000080;
+    font-size: 16.5px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+    margin: 20px;
+}
+.policy_number{
+    float: left;
+    width: 50%;
+}
+.issue_date{
+    margin-left: 400px;
+}
+.effective_date{
+    margin-left: 400px;
+}
+.output_date{
+    margin-left: 20px;
+}
+.title{
+    font-weight: bold;
+    color: #000080;
+    font-size: 13.33px;
+    padding: 20px;
+    margin-bottom: 5px;
+}
+.sub_heading{
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 5px;
+
+}
+.para{
+    margin-left: 50px;
+}
+.sub_para{
+    margin-left: 20px;
+}

@@ -1,0 +1,710 @@
+<template>
+    <div class="container">
+        <div class="inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Company_Name}</p>
+                    <p class="p5">{account_name}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Number}</p>
+                    <p class="p5">{policy_no}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Type}</p>
+                    <p class="p5">{policy_type}</p>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Free_Credit_Check_Facility_Balance}</p>
+                    <p class="p5"><span onclick={handleCreditCheckFacility}>{available_credit_check_facility} (<a href="javascript:void(0)">Details</a>)</span></p>
+                </div>
+                <template if:true={allow_cl_create}>
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                        <lightning-button variant="destructive" label={label.New_Application} title="New Application"
+                            class="slds-m-left_x-small" onclick={handleOpenClApplyNew}></lightning-button>
+                        <!-- <button style="color: black;" class="slds-button slds-button_neutral"
+                            onclick={handleOpenClApplyNew}>New Application</button> -->
+                    </div>
+                </template>
+            </div>
+        </div>
+        <div class="inner-container" style="margin-top: 2%;">
+            <p class="p1">{label.Search_Credit_Limit_Record}</p>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%;padding-left:1%; padding-top:5px;">
+                    <p>{label.Buyer_Code}</p>
+                    <lightning-input type="text" label="" variant="label-hidden" value={search_buyer_code} onchange={handleBuyerCode}></lightning-input>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%;padding-left:1%; padding-top:5px;">
+                    <p>{label.Buyer_Name}</p>
+                    <lightning-input type="text" label="" variant="label-hidden" value={search_buyer_name} onchange={handleBuyerName}></lightning-input>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:5px;">
+                    <p>{label.Status}</p>
+                    <div class=" input1">
+                        <!-- <select class="slds-select" data-item=10 onchange={handleStatusChange}>
+                            <option value="">Select</option>
+                            <template for:each={StatusList} for:item="item">
+                                <option key={item.key}  value={item.key}>{item.value}</option>
+                            </template>
+                        </select> -->
+                        <lightning-combobox value={search_status} placeholder="Select" 
+                            options={StatusList} variant="label-hidden"
+                            onchange={handleStatusChange} class="input1">
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:5px;">
+                    <p>{label.Credit_Limit_small} {effective_or_issue_date} {label.Date_from_to}</p>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-large-size_5-of-12">
+                            <lightning-input type="date" value={search_from_date} name="input1" variant="label-hidden"
+                                onchange={handleEffectiveDateFrom}></lightning-input>
+                        </div>
+                        <span class="span1">&nbsp;to&nbsp;</span>
+                        <div class="slds-large-size_5-of-12">
+                            <lightning-input type="date" value={search_to_date} name="input1" variant="label-hidden"
+                                onchange={handleEffectiveDateTo}></lightning-input>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-top:2%;">
+                    <lightning-button variant="destructive" label={label.Search} title="Search" onclick={handleSearch}
+                        class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button variant="destructive" label={label.Clear_Filters} title="Clear Filters" onclick={handleClearFilter}
+                        class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button variant="destructive" label={label.Export} title="Export" onclick={handleExcel}
+                        class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </div>
+        </div>
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style=" padding-top:2%;">
+                    <p class="p1">{label.Credit_Limit_Record}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%;  padding-top:2%;">
+                    <p class="p4" style="text-align:left">
+                        <lightning-icon style="padding-right:7%" icon-name="utility:slider" alternative-text="Connected"
+                            size="small">
+                        </lightning-icon>
+                        {label.Ordered_by}
+                    </p>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="padding-top:2%;">
+                    <p><span onclick={handleApplicationDateSort} class={application_text_class}>{label.Application_Date_CL} </span><span style="padding-left: 4%;">|</span><span
+                            style="padding-left: 4%;" onclick={handleEffectiveDateSort} class={effective_date_text_class}>{label.Credit_Limit_small} {effective_or_issue_date} {label.Date_CL}</span></p>
+                    <!-- </div>                
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="padding-right: 1%;  padding-top:2%;"> -->
+                    <!-- <p>CL effective/Issue Date</p> -->
+                </div>
+            </div>
+            <div class="steps">
+                <div class="slds-grid slds-wrap slds-grid_align-center">
+                    <template for:each={steps} for:item="step">
+                        <div class="slds-col ml_1" key={step.id}>
+                            <div class="slds-grid slds-grid_vertical align_center">
+                                <div class="slds-grid  align_center" style="align-self: center;">
+                                    <div class="step">
+                                        {step.name}
+                                    </div>
+                                </div>
+                                <span class="step_title">{step.des}</span>
+                                <!-- <div class="slds-var-m-top_small" style="color: rgb(127, 127, 127);"> -->
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-wrap">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:2%;">
+                    <p class="p5">{label.Buyer_Name}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:2%;">
+                    <p class="p5">{label.Credit_Limit_Number}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:2%;">
+                    <p class="p5">{label.Status}</p>
+                </div>
+                
+            </div>
+            <template if:true={show_checkbox_spinner}>
+                <div class="spinne-div">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+            </template>
+            <template if:false={show_checkbox_spinner}>
+            <template if:false={show_cl_record}>
+                <div  class="slds-grid slds-wrap" style="margin-top: 1%;">
+                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="padding-left: 1%;">
+                        &nbsp;
+                    </div>
+                    <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="padding-left: 1%;">
+                        <p class="p5">{label.No_record_found}</p>
+                    </div>
+                </div>
+            </template>
+            <template for:each={clRecord} for:item="clr">
+                <!-- <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 2%;"> -->
+                <!-- <div class="slds-large-size_12-of-11 slds-medium-size--6-of-6 slds-size--2-of-2"> -->
+                <div key={clr.Id}>
+                    <!-- <div class="section_head" id={clr.Id} onclick={expandHandler}> -->
+                    <div key={clr.Id} class="section_head slds-grid slds-wrap" id={clr.Id} onclick={expandHandler}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{clr.Buyer_Name__c}</p>
+                        </div>
+                        <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{clr.Legacy_Ref_No__c}</p>
+                        </div>
+                        <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{clr.CL_Status__c}</p>
+                        </div>
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                            <div class="slds-progress-bar slds-progress-bar_circular" style="margin-top: 2%;"
+                                aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" role="progressbar">
+                                <span class={clr.class}>
+                                    <span class="slds-assistive-text">{label.Progress_40}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={clr.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <!-- <p class="p4" style="text-align:left"><span>{clr.Buyer_Name__c}</span>
+                                    <span>{clr.CL_No__c}</span>
+                                    <span>{clr.CL_Status__c}</span>
+                                </p> -->
+
+                    <!-- </div> -->
+                    <div class="section_container" if:true={clr.isSectionOpen}>
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Buyer_Code}</p>
+                                <p class="p2">{clr.Buyer_Code__c}&nbsp;</p>
+                            </div>
+
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Credit_Limit_Number}</p>
+                                <p class="p2">{clr.CL_No__c}&nbsp;</p>
+                            </div>
+
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Expiry_Date}</p>
+                                <p class="p2">{clr.Expiry_Date__c}&nbsp;</p>
+                            </div>
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <lightning-button-menu alternative-text="Show menu" icon-name="utility:threedots"
+                                    menu-alignment="right" style="margin-left:70%;">
+                                    <!-- <lightning-menu-item value="MenuItemOne" label="Report Risk Management Case">
+                                    </lightning-menu-item> -->
+                                    <template if:true={clr.uplift_btn}>
+                                        <lightning-menu-item value="MenuItemTwo" data-id={clr.Id} onclick={handleUpLift} label={label.Uplift_Credit_Limit}>
+                                        </lightning-menu-item>
+                                    </template>
+                                    <template if:true={clr.renew_btn}>
+                                        <lightning-menu-item value="MenuItemThree" data-id={clr.Id} onclick={handleReapply} label={label.Reapply_Credit_Limit}>
+                                        </lightning-menu-item>
+                                    </template>
+                                    <template if:true={clr.show_ammend}>
+                                        <lightning-menu-item value="MenuItemThree" data-id={clr.Id} onclick={handleAmmend}  label={label.Amend_Application}>
+                                        </lightning-menu-item>
+                                    </template>
+                                    <template if:true={clr.show_cancel_application}>
+                                        <lightning-menu-item value="MenuItemThree" data-id={clr.Id} onclick={handleCancelCLA}  label={label.Cancel_Application}>
+                                        </lightning-menu-item>
+                                    </template>
+                                    <template if:true={clr.show_cancel_cl}>
+                                        <lightning-menu-item value="MenuItemThree" data-id={clr.Id} onclick={handleCancelCL}  label={label.Cancel_Credit_Limit}>
+                                        </lightning-menu-item>
+                                    </template>
+                                    <template if:true={clr.show_rejection}>
+                                        <lightning-menu-item value="MenuItemThree" data-id={clr.Id} onclick={handleRejectCL}  label={label.Reject_Credit_Limit}>
+                                        </lightning-menu-item>
+                                    </template>
+                                </lightning-button-menu>
+                            </div>
+                        </div>
+
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Buyer_Name}</p>
+                                <p class="p2">{clr.Buyer_Name__c}&nbsp;</p>
+                            </div>
+
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Credit_Limit_Application_Amount_HKD}</p>
+                                <p class="p2">{clr.CL_Application_Amount__c}&nbsp;</p>
+                            </div>
+
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Status}</p>
+                                <p class="p2">{clr.CL_Status__c}&nbsp;</p>
+                            </div>
+                        </div>
+
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Buyer_Address}</p>
+                                <p class="p7">{clr.Buyer_Address_Line_1__c}&nbsp;</p>
+                                <p class="p7">{clr.Buyer_Address_Line_2__c}&nbsp;</p>
+                                <p class="p7">{clr.Buyer_Address_Line_3__c}&nbsp;</p>
+                                <p class="p2">{clr.Buyer_Address_Line_4__c}&nbsp;</p>
+                            </div>
+
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Credit_Limit_Amount_HKD}</p>
+                                <p class="p2">{clr.CL_Amount__c}&nbsp;</p>
+                            </div>
+                            <template if:true={clr.show_premium}>
+                                <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Premium_HKD}</p>
+                                    <p class="p2">{clr.Premium__c}&nbsp;</p>
+                                </div>
+                            </template>
+                            
+                        </div>
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Reference_Number}</p>
+                                <p class="p2">{clr.Legacy_Ref_No__c}&nbsp;</p>
+                            </div>
+
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Application_Date_CL} </p>
+                                <p class="p2">{clr.Application_Date__c}&nbsp;</p>
+                            </div>
+
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{label.Remark}</p>
+                                <p class="p2">{clr.Remarks__c}&nbsp;</p>
+                            </div>
+                        </div>
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                &nbsp;
+                            </div>
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p3">{effective_or_issue_date} {label.Date_CL}</p>
+                                <p class="p2">{clr.CL_Effective_Date__c}&nbsp;</p>
+                            </div>
+                            <div
+                                class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                &nbsp;
+                            </div>
+                        </div>
+                        <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div
+                                class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                &nbsp;
+                            </div>
+                            <div
+                                class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <template if:true={clr.show_cancel_letter_btn}>
+                                    <button class="slds-button slds-button_neutral btn1" data-link={clr.CLA_Cancel_Letter__c} onclick={handleOpenCancelNotification}>Download
+                                        Cancel Notification</button>
+                                </template>
+                                <template if:true={clr.show_cl_notification}>
+                                    <button class="slds-button slds-button_neutral btn1" data-link={clr.CL_Approve_Letter__c} onclick={handleOpenCLNotification}>Download CL
+                                    Notification</button>
+                                </template>
+                                <template if:true={clr.show_indication}>
+                                    <button class="slds-button slds-button_neutral btn2" data-id={clr.Id} onclick={handleIndicationAccept}>{label.Accept_Indication}</button>
+                                </template>
+                            </div>
+                        </div>
+                        <template if:true={clr.uplift_rec_exist}>
+                            <hr class="hr2" />
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p style="font-size: 14px;text-align: left; font-weight:bold;text-decoration: underline;">{label.Uplift_Application}</p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Buyer_Code}</p>
+                                    <p class="p2">{clr.uplifted_cla_rec.Buyer_Code__c}&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Credit_Limit_Number}</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Expiry_Date}</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+                                
+                            </div>
+    
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Buyer_Name}</p>
+                                    <p class="p2">{clr.uplifted_cla_rec.Buyer_Name__c}&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Credit_Limit_Application_Amount_HKD}</p>
+                                    <p class="p2">{clr.uplifted_cla_rec.CL_Application_Amount__c}&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Status}</p>
+                                    <p class="p2">{clr.uplifted_cla_rec.CL_Status__c}&nbsp;</p>
+                                </div>
+                            </div>
+    
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Buyer_Address}</p>
+                                    <p class="p7">{clr.uplifted_cla_rec.Buyer_Address_Line_1__c}</p>
+                                    <p class="p7">{clr.uplifted_cla_rec.Buyer_Address_Line_2__c}</p>
+                                    <p class="p7">{clr.uplifted_cla_rec.Buyer_Address_Line_3__c}</p>
+                                    <p class="p2">{clr.uplifted_cla_rec.Buyer_Address_Line_4__c}</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Credit_Limit_Amount_HKD}</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Premium_HKD}</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+                            </div>
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Reference_Number}</p>
+                                    <p class="p2">{clr.Legacy_Ref_No__c}</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Application_Date_CL} </p>
+                                    <p class="p2">{clr.uplifted_cla_rec.Application_Date__c}&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Remark}</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+                            </div>
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    &nbsp;
+                                </div>
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">{label.Effective_Date_CL}</p>
+                                    <p class="p2">{clr.uplifted_cla_rec.CL_Effective_Date__c}&nbsp;</p>
+                                </div>
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            
+                        </template> 
+                        <!-- <template if:true={clr.reapply_rec_exist}>
+                            <hr class="hr2" />
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p style="font-size: 14px;text-align: left; font-weight:bold;text-decoration: underline;">Reapply CL Application</p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Buyer Code</p>
+                                    <p class="p2">{clr.reapplied_cla_rec.Buyer_Code__c}&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Credit Limit Number</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Expiry Date (YYYY-MM-DD)</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+                                
+                            </div>
+    
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Buyer Name</p>
+                                    <p class="p2">{clr.reapplied_cla_rec.Buyer_Name__c}&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Credit Limit Application Amount (HKD)</p>
+                                    <p class="p2">{clr.reapplied_cla_rec.CL_Application_Amount__c}&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Status</p>
+                                    <p class="p2">{clr.reapplied_cla_rec.CL_Status__c}&nbsp;</p>
+                                </div>
+                            </div>
+    
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Buyer Address</p>
+                                    <p class="p7">{clr.reapplied_cla_rec.Buyer_Address_Line_1__c}</p>
+                                    <p class="p7">{clr.reapplied_cla_rec.Buyer_Address_Line_2__c}</p>
+                                    <p class="p7">{clr.reapplied_cla_rec.Buyer_Address_Line_3__c}</p>
+                                    <p class="p2">{clr.reapplied_cla_rec.Buyer_Address_Line_4__c}</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Credit Limit Amount (HKD)</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Premium (HKD)</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+                            </div>
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Reference Number</p>
+                                    <p class="p2">&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Application Date (YYYY-MM-DD)</p>
+                                    <p class="p2">{clr.reapplied_cla_rec.Application_Date__c}&nbsp;</p>
+                                </div>
+    
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Remark</p>
+                                    <p class="p2">{clr.reapplied_cla_rec.Remarks__c}</p>
+                                </div>
+                            </div>
+                            <div key={clr.Id} class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    &nbsp;
+                                </div>
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p3">Effective Date (YYYY-MM-DD)</p>
+                                    <p class="p2">{clr.reapplied_cla_rec.CL_Effective_Date__c}&nbsp;</p>
+                                </div>
+                                <div
+                                    class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            
+                        </template> -->
+
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div> -->
+                </div>
+            </template>
+        </template>
+        </div>
+    </div>
+        <div if:true={showCheckFacilityModal}>
+            <c-cl-check-facility policydetail={policy_detail} ondisplayclfacilitychange={handleDisplayccfmodal}>
+            </c-cl-check-facility>
+        </div>
+        <div if:true={showCancelCLAModal}>
+            <c-cl-cancel-application policydetail={policy_detail} clid={cancel_cl_id} oncancelcla={handleCancelCLAModalClose}>
+            </c-cl-cancel-application>
+        </div>
+        <div if:true={showCancelCLModal}>
+            <c-cl-cancel-credit-limit policydetail={policy_detail} clid={cancel_cl_id} oncancelcl={handleCancelCLModalClose}>
+            </c-cl-cancel-credit-limit>
+        </div>
+        <div if:true={rejectModal}>
+            <c-cl-reject-credit-limit policydetail={policy_detail} clapprovedate={reject_cl_approve_date} clid={reject_cl_id} onreject={handleRejectCLModalClose}>
+            </c-cl-reject-credit-limit>
+        </div>
+        <!-- <template if:true={show_cl_record}>
+            <template for:each={clRecord} for:item="clr">
+            <div class="inner-container" key={clr.Id} style="margin-top: 2%;">
+                <div class="slds-grid slds-grid--wrap">
+                    <div class="slds-size_2-of-12" style="padding-right: 1%; padding-left:2%; padding-top:2%;">
+                        <p class="p1">Credit Limit Record
+
+                        </p>
+                    </div>
+
+                    <div class="slds-size_2-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p4">
+                            <lightning-icon style="padding-left: 15%;padding-right:7%" icon-name="utility:slider"
+                                alternative-text="Connected" size="small">
+                            </lightning-icon>
+                            Ordered by
+                        </p>
+                    </div>
+                    <div class="slds-size_2-of-12" style="padding-top:2%;">
+                        <p>Application Date <span style="padding-left: 18%;">|</span></p>
+
+                    </div>
+                    
+                    <div class="slds-size_2-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p>CL effective/Issue Date</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap">
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Buyer Name</p>
+                        <p class="p2">{clr.Buyer__r.Name}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Ref. No.</p>
+                        <p class="p2">{clr.Ref_No__c}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Status</p>
+                        <template if:true={clr.blue_status}>
+                            <p class="p2" style="width:95%;color:rgb(0, 109, 204)">{clr.CL_Status__c}&nbsp;</p>
+                        </template>
+                        <template if:true={clr.green_status}>
+                            <p class="p2" style="width:95%;color:green">{clr.CL_Status__c}&nbsp;</p>
+                        </template>
+                        <template if:true={clr.red_status}>
+                            <p class="p2" style="width:95%;color:red">{clr.CL_Status__c}&nbsp;</p>
+                        </template>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap">
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Buyer Address</p>
+                        <p class="p2">{clr.Buyer__r.Buyer_Address__c}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">CL. No.</p>
+                        <p class="p2">{clr.CL_No__c}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Remark</p>
+                        <p class="p2" style="width:95%">{clr.Remarks__c}&nbsp;</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap">
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">CL Application Amount (HKD)</p>
+                        <p class="p2">{clr.CL_Application_Amount__c}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Applicatin Date (YYYY/MM/DD)</p>
+                        <p class="p2">{clr.Application_Date__c}&nbsp;</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap">
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">CL Amount </p>
+                        <p class="p2">{clr.CL_Amount__c}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">CL Effective Date</p>
+                        <p class="p2">{clr.CL_Effective_Date__c}&nbsp;</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap">
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Premium (HKD) </p>
+                        <p class="p2">{clr.Premium__c}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Expiry Date</p>
+                        <p class="p2">{clr.Expiry_Date__c}&nbsp;</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid--wrap">
+                    <div class="slds-size_4-of-12" style="padding-right: 1%;  padding-top:2%;">
+                        <p class="p3">Policy Fee (HKD) </p>
+                        <p class="p2">{clr.Policy_Fee__c}&nbsp;</p>
+                    </div>
+                    <div class="slds-size_4-of-12">
+                        &nbsp;
+                    </div>
+                    <div class="slds-size_4-of-12">
+                        <lightning-button variant="destructive" label="Export as PDF" title="Export as PDF"
+                            onclick={handleClick} disabled="true" class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="destructive" label="Uplift" title="Uplift" disabled="true" onclick={handleClick}
+                            class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="destructive" label="Reapply" title="Reapply"
+                            onclick={handleClick} disabled="true" class="slds-m-left_x-small">
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+        </template>
+        </template> -->
+    
+</template>

@@ -1,0 +1,489 @@
+<apex:page controller="PolicyDocument_Pdf_controller" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false"
+    readOnly="true" renderAs="PDF" sidebar="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.EN}" />
+
+    <head>
+        <style>
+            @media print {
+                .noprint {
+                    display: none;
+                }
+            }
+
+            body {
+                font-family: "Arial", sans-serif;
+                font-style: normal;
+            }
+
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-bottom: 50px;
+                margin-left: 20px;
+                margin-right: 20px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+
+            div.header {
+                margin: 0px;
+                padding: 0px;
+                position: running(header);
+            }
+
+            div.footer {
+                display: block;
+                padding: 0px;
+                position: running(footer);
+            }
+
+            .pagenumber:before {
+                content: counter(page);
+            }
+
+            .pagecount:before {
+                content: counter(pages);
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="header">
+            <apex:image value="{!$Resource.ECIC_logo}" width="300" height="50" />
+            <div class="heading">
+                SALES BY OVERSEAS SUBSIDIARY COMPANY
+                <br/> (SALES OVER THE BORDER) ENDORSEMENT
+                <br/> (ENDORSEMENT NO. EN69)
+                <br/>
+            </div>
+        </div>
+        <div class="footer" align="center" style="color:#000000;font-size:12px;padding-right:40px;">
+            <div class="page_no">Page
+                <span class="pagenumber" /> of
+                <span class="pagecount" />
+            </div>
+            <div class="c_address">COMPANY_ADDRESS</div>
+        </div>
+        <div>
+            <div class="page_1">
+                <div>
+                    <p class="schedule">THE SCHEDULE</p>
+                    <p class="confedential">CONFIDENTIAL</p>
+                    <p class="issue_date">
+                        <span>Issue Date:</span>
+                        <apex:outputText styleClass="output_date" value="{0, date, yyyy-MM-dd}">
+                            <apex:param value="{!Endorsement_Issue_Date}" />
+                        </apex:outputText>
+                    </p>
+                </div>
+                <div class="table_1">
+                    <table>
+                        <tr>
+                            <td class="title">1.&nbsp;Policyholder’s name &amp; address</td>
+                            <td class="colon">:</td>
+                        </tr>
+                        <tr>
+                            <td class="p_value">{!Policy_Holder_Name}</td> <br/>
+                        </tr>
+                        <tr>
+                            <td class="p_value">
+                                {!Registered_Address_Line_1} <br/> 
+                                {!Registered_Address_Line_2} <br/>
+                                {!Registered_Address_Line_3} <br/>
+                                {!Registered_District} <br/>
+                                {!Registered_Territory}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">2.&nbsp;Policy number</td>
+                            <td class="colon">:</td>
+                            <td class="value">{!Policy_Number}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">3.&nbsp;This Endorsement takes effect from</td>
+                            <td class="colon">:</td>
+                            <td class="value">
+                                <apex:outputText value="{0, date, yyyy-MM-dd}">
+                                    <apex:param value="{!Endorsement_Eff_Date}" />
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">4.&nbsp;Table&nbsp;:</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <apex:outputPanel rendered="{!Policy_Type == 'SBP'}">
+                    <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                        <tbody>
+                            <tr style="height: 47px;" class="thead">
+                                <td style="width:14.2857%; height: 89px;text-align: center;" rowspan="3">Name and
+                                    <b>country</b>/market of subsidiary (Code)
+                                </td>
+                                <td style="width:14.2857%; height: 89px;text-align: center;" rowspan="3">Buyer’s name and
+                                    <b>country</b>/market (Code)
+                                </td>
+                                <td style="width: 83.3335%; height: 47px; text-align: center;" colspan="5">
+                                    <span>Premium Rates Per HKD100
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr style="height: 21px;" class="thead">
+                                <td style="width:14.2857%; height: 42px; text-align: center;" rowspan="2">DP</td>
+                                <td style="width: 66.6668%; height: 21px; text-align: center;" colspan="4">DA and OA - Period of credit
+                                </td>
+                            </tr>
+                            <tr style="height: 21px;" class="thead">
+                                <td style="text-align: center; width:14.2857%;">up to 30 days</td>
+                                <td style="text-align: center; width:14.2857%;">31-60 days</td>
+                                <td style="text-align: center; width:14.2857%;">61-90 days</td>
+                                <td style="text-align: center; width:14.2857%;">91-180 days</td>
+                            </tr>
+
+                            <!-- <apex:repeat var="data" value="{!dynamicPriceList}"> -->
+                                <tr>
+                                    <td style="text-align:center;">{!Subsidiary_Name} <br/> {!Subsidiary_Country}</td>
+                                    <!-- <td style="text-align:center;">First Loss Limit</td> -->
+                                    <td style="text-align:center;width:14.2857%;">{!Buyer_Name} <br/> {!Buyer_Country} </td>
+                                    <td style="text-align:center;width:14.2857%;">{!Premium_Rate_DP}</td>
+                                    <td style="text-align:center;width:14.2857%;">{!Premium_Rate_DA_OA_0_30}</td>
+                                    <td style="text-align:center;width:14.2857%;">{!Premium_Rate_DA_OA_31_60}</td>
+                                    <td style="text-align:center;width:14.2857%;">{!Premium_Rate_DA_OA_61_90}</td>
+                                    <td style="text-align:center;width:14.2857%;">{!Premium_Rate_DA_OA_91_180}</td>
+                                </tr>
+                            <!-- </apex:repeat> -->
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!Policy_Type == 'SUP'}">
+                    <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                        <tbody>
+                            <tr style="height: 47px;" class="thead">
+                                <td style="width: 16.6667%; height: 89px;text-align: center;" rowspan="3">Name and
+                                    <b>country</b>/market of subsidiary (Code)
+                                </td>
+                                <td style="width: 16.6667%; height: 89px;text-align: center;" rowspan="3">Buyer’s name and
+                                    <b>country</b>/market (Code)
+                                </td>
+                                <td style="width: 83.3335%; height: 47px; text-align: center;" colspan="5">
+                                    <span>Premium Rates Per HKD100
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr style="height: 21px;" class="thead">
+                                <td style="width: 16.6667%; height: 42px; text-align: center;" rowspan="2">DP</td>
+                                <td style="width: 66.6668%; height: 21px; text-align: center;" colspan="4">DA and OA - Period of credit
+                                </td>
+                            </tr>
+                            <tr style="height: 21px;" class="thead">
+                                <td style="text-align: center;width:14.2857%;">up to 30 days</td>
+                                <td style="text-align: center;width:14.2857%;">31-60 days</td>
+                                <td style="text-align: center;width:14.2857%;">61-90 days</td>
+                                <td style="text-align: center;width:14.2857%;">91-180 days</td>
+                            </tr>
+
+                            <tr style="height: 21px;">
+                                <td class="bottom_td" style="text-align: center;">
+                                    <span>«CODE_1»</span>
+                                </td>
+                                <td class="bottom_td" style="text-align: center;">
+                                    <span>«CODE_2»</span>
+                                </td>
+                                <td style="text-align: center;width:14.2857%;">DP_RATE</td>
+                                <td style="text-align: center;width:14.2857%;">DA_30_RATE</td>
+                                <td style="text-align: center;width:14.2857%;">DA_60_RATE</td>
+                                <td style="text-align: center;width:14.2857%;">DA_90_RATE</td>
+                                <td style="text-align: center;width:14.2857%;">DA_180_RATE</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!Policy_Type == 'OMBP'}">
+                    <table border="1" cellspacing="0" cellpadding="0" width="100%">
+                        <tbody>
+                            <tr style="height: 47px;" class="thead">
+                                <td style="width: 16.6667%; height: 89px;text-align: center;" rowspan="3">Name and
+                                    <b>country</b>/market of subsidiary (Code)
+                                </td>
+                                <td style="width: 16.6667%; height: 89px;text-align: center;" rowspan="3">Buyer’s name and
+                                    <b>country</b>/market (Code)
+                                </td>
+                                <td style="width: 83.3335%; height: 47px; text-align: center;" colspan="5">
+                                    <span>Premium Rates Per HKD100
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr style="height: 21px;" class="thead">
+                                <td style="width: 16.6667%; height: 42px; text-align: center;" rowspan="2">DP</td>
+                                <td style="width: 66.6668%; height: 21px; text-align: center;" colspan="4">DA and OA - Period of credit
+                                </td>
+                            </tr>
+                            <tr style="height: 21px;" class="thead">
+                                <td style="text-align: center;width:14.2857%;">up to 30 days</td>
+                                <td style="text-align: center;width:14.2857%;">31-60 days</td>
+                                <td style="text-align: center;width:14.2857%;">61-90 days</td>
+                                <td style="text-align: center;width:14.2857%;">91-180 days</td>
+                            </tr>
+
+                            <tr style="height: 21px;">
+                                <td class="bottom_td" style="text-align: center;">
+                                    <span>«CODE_1»</span>
+                                </td>
+                                <td class="bottom_td" style="text-align: center;">
+                                    <span>«CODE_2»</span>
+                                </td>
+                                <td style="text-align: center;width:14.2857%;">DP_RATE</td>
+                                <td style="text-align: center;width:14.2857%;">DA_30_RATE</td>
+                                <td style="text-align: center;width:14.2857%;">DA_60_RATE</td>
+                                <td style="text-align: center;width:14.2857%;">DA_90_RATE</td>
+                                <td style="text-align: center;width:14.2857%;">DA_180_RATE</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </apex:outputPanel>
+                <div class="hkecic">
+                    <p>Hong Kong Export Credit Insurance Corporation</p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_2">
+                <div class="block">
+                    <span class="block_heading">Nature of Endorsement</span>
+                    <p class="block_body">
+                        1. This Endorsement extends to insure contracts of sales between the Policyholder’s overseas subsidiary company (“the Subsidiary”)
+                        and the buyer specified in the Schedule to this Endorsement.
+                    </p>
+                    <p class="block_body">
+                        2. The terms and conditions of the Policy apply equally to this Endorsement except to the extent that they are varied or
+                        added. Where the context admits,
+                        <b>“Shipment”</b> includes the dispatch of goods to the buyer by the Subsidiary.
+
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">THE COVER</span>
+                    <p class="block_body">
+                        3. The
+                        <b>events of loss</b> covered under this Endorsement are:
+                        <p class="sub_1">
+                            (a) the
+                            <b>insolvency</b> of the buyer;
+                        </p>
+                        <p class="sub_1">
+                            (b) the failure of the buyer to pay for goods accepted by it within four months after the
+                            <b>due date</b>;
+                        </p>
+                        <p class="sub_1">
+                            (c) the failure of the buyer to take delivery of goods;
+                        </p>
+                        <p class="sub_1">
+                            (d) the operation of an
+                            <b>applicable law or regulation</b> of the buyer’s
+                            <b>country</b> which, beyond the control of both the Subsidiary and the buyer, prevents or restricts
+                            the transfer of payment to the Subsidiary’s
+                            <b>country</b> but only if the buyer has paid the equivalent amount payable in local currency into
+                            a bank account with an irrevocable instruction for transfer to the Subsidiary, to the extent
+                            the law allows;
+                        </p>
+                        <p class="sub_1">
+                            (e) the imposition of an
+                            <b>applicable law or regulation</b> by the buyer’s
+                            <b>country</b> which, beyond the control of both the Subsidiary and the buyer, prevents the import
+                            of the goods into the buyer’s
+                            <b>country</b>;
+                        </p>
+                        <p class="sub_1">
+                            (f) the cancellation of a previously issued authority to import goods by the buyer’s
+                            <b>country</b> which is beyond the control of both the Subsidiary and the buyer and without any
+                            fault of either of them;
+                        </p>
+                        <p class="sub_1">
+                            (g) a general moratorium decreed by the buyer’s
+                            <b>country</b> or by a third
+                            <b>country</b> through which the payment must be effected; and
+                        </p>
+                    </p>
+                </div>
+                <div class="footer">
+                    <p class="page_no" style="margin-top:20%;">Page 2 of 6</p>
+                    <p class="c_address">«COMPANY_ADDRESS»</p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_3">
+                <div class="block">
+                    <!-- <span class="block_heading"></span> -->
+                    <p class="block_body">
+                        <p class="sub_1">
+                            (h) the occurrence of war, revolution or riot, or any natural disaster in the buyer’s
+                            <b>country</b> which in whole or in part prevents performance of the
+                            <b>insurable contract</b>.
+                        </p>
+                        <p class="sub_1">
+                            Provided that for the purposes of this Endorsement, the Exclusions under Section VI of the Policy shall apply to exclude
+                            cover under this Endorsement in relation to the Subsidiary, as if references therein to the Policyholder
+                            included references to the Subsidiary, save for Exclusions 17.1, 17.2 and 17.3 for which the
+                            obligation to hold valid
+                            <b>credit limits</b>, declare any insurable
+                            <b>shipments</b> and pay premium rests upon the Policyholder.
+                        </p>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">ADDITIONAL CONDITIONS</span>
+                    <br/>
+                    <br/>
+                    <span class="block_heading">DECLARATIONS</span>
+                    <p class="block_body">
+                        4. Within 30 days from the date of dispatch of goods under any contract to which this Endorsement is applicable, the Policyholder
+                        must declare to HKECIC the
+                        <b>gross invoice value</b> of the goods.
+
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">PREMIUM</span>
+                    <p class="block_body">
+                        5. The Policyholder must pay premium calculated on the
+                        <b>gross invoice value</b> of goods at the appropriate rates specified in the Schedule to this Endorsement
+                        which may be amended from time to time by HKECIC.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">OTHER CONDITIONS</span>
+                    <p class="block_body">
+                        6. The Policyholder must require the Subsidiary to meet the terms and conditions of the Policy. Any failure by the Subsidiary
+                        to meet this requirement shall be deemed a failure by the Policyholder under the policy.
+                    </p>
+                    <p class="block_body">
+                        7. The Subsidiary has no rights whatsoever under the Policy. The Policyholder remains the insured under the Policy and retains
+                        the obligation to administer the Policy in relation to such contracts (including paying premium,
+                        making all applications and declarations and compromising and reaching settlement of claims).
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_4">
+                <div class="block">
+                    <span class="block_heading">WARRANTIES BY THE POLICYHOLDER</span>
+                    <p class="block_body">
+                        The Policyholder warrants and agrees that:
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">HOLDING OF SHARE CAPITAL</span>
+                    <p class="block_body">
+                        8. The Policyholder must directly or indirectly:
+                        <p class="sub_1">
+                            (a) hold 100 percent of the issued share capital of each Subsidiary as stated in item 4 of the Schedule to this Endorsement;
+                            and
+                        </p>
+                        <p class="sub_1">
+                            (b) have absolute control over the decisions to be made by director(s) and/or shareholder(s) of each of the Subsidiary.
+                        </p>
+                    </p>
+                    <p class="block_body">
+                        9. The Policyholder is fully responsible for the acts of the Subsidiary in connection with the abovesaid contracts of sale
+                        between the Subsidiary and their buyers.
+                    </p>
+                    <p class="block_body">
+                        10. HKECIC shall not be liable for any loss sustained by the Subsidiary after the Policyholder changes its shareholding in
+                        the Subsidiary or ceases to have absolute control over the Subsidiary, whichever is earlier.
+                    </p>
+                    <p class="block_body">
+                        11. If there is any change in the shareholding in or absolute control over the Subsidiary by the Policyholder during the
+                        currency of the Policy, the Policyholder must inform HKECIC immediately but not later than 7 days
+                        of such change.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">LOSS MINIMISATION</span>
+                    <p class="block_body">
+                        12. The Policyholder shall ensure that the Subsidiary acts as if uninsured and promptly takes all reasonable and practicable
+                        measures and all practicable actions required by HKECIC to prevent or minimise losses at all times.
+                        Such measures or actions include, but are not limited to the appointment of debt collectors, the
+                        institution of legal proceedings against the buyer or any guarantor of the buyer and the exercise
+                        of any rights in respect of any security held by the Subsidiary. In case of failure by the buyer
+                        to take delivery of goods, the Policyholder must obtain HKECIC's prior written approval before reselling
+                        or disposing of the goods by the Subsidiary.
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_5">
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        13. The failure of the Policyholder to comply with the warranties and undertakings as stated in Paragraphs 8 to 12 above
+                        shall give HKECIC, at its sole discretion, the right to declare any liability or obligation under
+                        this Policy null and void.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">RECOVERY PROCEDURES</span>
+                    <p class="block_body">
+                        14. After the Policyholder’s receipt of the
+                        <b>claim payment</b>:
+                        <p class="sub_1">
+                            (a) the Subsidiary must take all reasonable and practicable measures and all practicable actions required by HKECIC including
+                            the appointment of debt collectors, the institution of legal proceedings and the exercise of
+                            any rights in respect of any security held by it to obtain recoveries from whatever source; and
+                        </p>
+                        <p class="sub_1">
+                            (b) upon request, the Subsidiary must promptly render such assistance and provide such documents as HKECIC may require for
+                            obtaining recoveries.
+                        </p>
+                    </p>
+                    <p class="block_body">
+                        15. On receipt of any recoveries in connection with the
+                        <b>claim payment</b> by the Subsidiary or any person on its behalf, the Policyholder must pay to HKECIC
+                        an amount equivalent to the appropriate share specified in the Policy as if the recoveries have been
+                        received by the Policyholder. The said payment shall be made as soon as practicable, and in any event
+                        not later than one month after the date of receipt of such recoveries.
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">CLAW-BACK OF MONEY WRONGFULLY PAID</span>
+                    <p class="block_body">
+                        16. If the Subsidiary fails to take such measures and actions as stated in Paragraph 14(a) above and/or fails to render such
+                        assistance as stated in Paragraph 14(b) above, and/or if the Policyholder fails to make such payment
+                        as stated in Paragraph 15 above, all payments made by HKECIC including but not limited to the
+                        <b>claim payment</b> and expenses relating to the claim must be repaid by the Policyholder to HKECIC
+                        within 20
+                        <b>business days</b> of HKECIC’s demand. HKECIC reserves the right to charge interest on any amount
+                        paid by HKECIC at the rate of 1% per calendar month from the date HKECIC made the payment up to and
+                        including the date on which HKECIC actually receives the repayment.
+                    </p>
+                    <p class="block_body">
+                        Notes : (i) Terms in
+                        <b> bold</b> are as defined in the Policy.
+                        <br/>
+                        <span style="margin-left:7%;">
+                            (ii) This Endorsement with its Schedule constitutes part of the Policy.
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_6">
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        <p class="sub_1"></p>
+                        <p class="sub_2"></p>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</apex:page>

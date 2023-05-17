@@ -1,0 +1,566 @@
+<template>
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+    
+    <template if:false={showAmendForm}>
+        <div class="slds-grid slds section_head" id="sectionDecAndPrem" >
+            <h2>{label.Declaration_Record}</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon size="x-small" class="slds-current-color"
+                    alternative-text="Declaration Record" title="Declaration Record">
+                </lightning-icon>
+            </div>
+        </div>
+        <br/>
+        <lightning-card theme="slds-theme_shade">
+            <!--div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item 
+                            size="12" 
+                            small-device-size="3"  
+                            padding="around-small">
+                            <p class="p1">Company Name</p>
+                            <p class="p5">{companyName}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item 
+                            size="12" 
+                            small-device-size="3"    
+                            padding="around-small">
+                            <p class="p1">Login Account</p>
+                            <p class="p5">{logged_in_user}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item  
+                            size="12" 
+                            small-device-size="3"   
+                            padding="around-small">
+                            <p class="p1">Policy Number</p>
+                            <p class="p5">{policyNumber}</p>
+                        </lightning-layout-item>
+                    </lightning-layout>
+            </div-->
+            <div class="inner-container">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-large-size_2-of-12 slds-medium-size_6-of-6 slds-size_2-of-2">
+                        <p class="p1">{label.Company_Name}</p>
+                        <p class="p5">{companyName}</p>
+                    </div>
+                    <!--div class="slds-large-size_2-of-12 slds-medium-size_6-of-6 slds-size_2-of-2">
+                        <p class="p1">Login Account</p>
+                        <p class="p5">{logged_in_user}</p>
+                    </div-->
+                    <div class="slds-large-size_2-of-12 slds-medium-size_6-of-6 slds-size_2-of-2">
+                        <p class="p1">{label.Policy_Number}</p>
+                        <p class="p5">{policyNumber}</p>
+                    </div>
+                    <div class="slds-large-size_2-of-12 slds-medium-size_6-of-6 slds-size_2-of-2">
+                        <p class="p1">{label.Policy_Type}</p>
+                        <p class="p5">{policyType}</p>
+                    </div>
+                </div>
+            </div>
+            
+        </lightning-card>
+        <br/>
+        <lightning-card theme="slds-theme_shade" title="Search">
+            <div class="slds-grid slds-wrap" style="">
+                <div class="slds-large-size_2-of-12 slds-medium-size_8-of-8 slds-size_2-of-2"
+                        style="padding-right: 1%;padding-left:1%;">
+    
+                        <lightning-input class="input1" type="text" label={label.Select_Buyer} name="selecetdBuyerName" value={selecetdBuyerName} onchange={handleSearchFilter}></lightning-input>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size_8-of-8 slds-size_2-of-2"
+                        style="padding-right: 1%;padding-left:1%;">
+    
+                        <lightning-input class="input1" type="text" label={label.Search_Buyer_Name} name="typedBuyerName" value={typedBuyerName} onchange={handleSearchFilter}></lightning-input>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size_8-of-8 slds-size_2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:5px;">
+                    <p>Shipment Date</p>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-large-size_5-of-12">
+                            <lightning-input class="input1" type="date" name="shipStart" value={shipStart} variant="label-hidden"
+                                onchange={handleSearchFilter}></lightning-input>
+                        </div>
+                        <span class="span1">&nbsp;to&nbsp;</span>
+                        <div class="slds-large-size_5-of-12">
+                            <lightning-input class="input1" type="date" value={shipEnd} name="shipEnd" variant="label-hidden"
+                                onchange={handleSearchFilter}></lightning-input>
+                        </div>
+                    </div>
+    
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size_8-of-8 slds-size_2-of-2"
+                    style="padding-right: 1%; padding-left:1%; padding-top:0px;">
+                    <p>{label.Declaration_Received_Date}</p>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-large-size_5-of-12">
+                            <lightning-input class="input1" type="date" name="recieveStartDate" value={recieveStartDate} variant="label-hidden"
+                                onchange={handleSearchFilter}></lightning-input>
+                        </div>
+                        <span class="span1">&nbsp;to&nbsp;</span>
+                        <div class="slds-large-size_5-of-12">
+                            <lightning-input class="input1" type="date" name="recieveEndDate" value={recieveEndDate} variant="label-hidden"
+                                onchange={handleSearchFilter}></lightning-input>
+                        </div>
+                    </div>
+    
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size_8-of-8 slds-size_2-of-2"
+                        style="padding-right: 1%; padding-left:2%; padding-top:5%;">
+                        <lightning-button variant="destructive" label={label.Reset} title="Reset" onclick={clearSearchField}
+                            class="slds-var-m-left_x-small"></lightning-button>
+                        <lightning-button variant="destructive" label={label.Search} title="Search" onclick={searchDeclaredShipments}
+                            class="slds-var-m-left_x-small"></lightning-button>
+                    </div>
+            </div>
+        </lightning-card>
+        <br/>
+        <lightning-card theme="slds-theme_shade" title={label.Declaration_Record}>
+            <div class="slds-scrollable_x">
+                <table class="slds-table slds-box slds-box_x-small  slds-table_cell-buffer slds-table_bordered slds-table_col-bordered " >
+                    <thead class="">
+                       
+                        <tr class="slds-line-height_reset">
+                            <template for:each={keys} for:item="key">
+                                <th key={key.fieldName} class="" scope="col">
+                                    <div class="slds-truncate slds-line-clamp" style="display: flex;" title="Name">
+                                        {key.label}
+                                        <template if:true={key.sortable}>
+                                            <div class="sortIconContainer">
+                                                <lightning-icon class={key.upIconClass} icon-name="utility:up" variant="success"
+                                                    alternative-text="up" size="xx-small" title={label.Sort_ascending}
+                                                    data-id={key.fieldName} onclick={sortAsending}>
+                                                </lightning-icon>
+                                                <lightning-icon class={key.downIconClass} icon-name="utility:down"
+                                                    variant="success" alternative-text="down" size="xx-small"
+                                                    title={label.Sort_descending} data-id={key.fieldName} onclick={sortDecending}>
+                                                </lightning-icon>
+                                            </div>
+                                        </template>
+                                        
+                                    </div>
+    
+                                </th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={allShipDecRecords} for:item='shipDec'>
+                            <tr key={shipDec.id}>
+                                <td>
+                                    <lightning-input 
+                                        onchange={handleShipDecSettlement} 
+                                        type="checkbox" 
+                                        value={shipDec.id}
+                                        name="shipDecCheckBox">
+                                    </lightning-input>
+                                </td>
+                                <td>{shipDec.buyerName}</td>
+                                <td>{shipDec.buyerCode}</td>
+                                <td>{shipDec.shipMentDate}</td>
+                                <td>{shipDec.ecicCurrency}</td>
+                                <td>
+                                    <lightning-formatted-number value={shipDec.grossInvoiceValue} format-style="currency" currency-display-as="symbol" currency-code={shipDec.ecicCurrency}
+                                    ></lightning-formatted-number>
+
+                                    </td>
+                                <td>{shipDec.paymentTerm}</td>
+                                <td>{shipDec.portOfLoading}</td>
+                                <td>{shipDec.countryOrigin}</td>
+                                <td>{shipDec.destinationCountry}</td>
+                                <td>{shipDec.phRefNo}</td>
+                                <td>{shipDec.status}</td>
+                                <td>{shipDec.isSettled}
+                                    
+                                </td>
+                                <td>
+                                    <lightning-input 
+                                        onchange={handleDownloadAll} 
+                                        type="checkbox" 
+                                        value={shipDec.id}
+                                        name="downoadCheckbox">
+                                    </lightning-input>
+                                </td>
+                                <td>
+                                    <lightning-button-icon 
+                                        icon-name="utility:edit"  
+                                        alternative-text="Amend" 
+                                        value={shipDec.id}
+                                        onclick={amendShipDec}
+                                        title="Amend">
+                                    </lightning-button-icon>
+    
+                                </td>
+                                <td>
+                                    <lightning-button-icon-stateful 
+                                        icon-name="utility:preview" 
+                                        selected={shipDec.isShowDetais} 
+                                        onclick={handlePreview} 
+                                        value={shipDec.id}
+                                        alternative-text="View">
+                                    </lightning-button-icon-stateful>
+    
+                                </td>
+                                <td>
+                                    <lightning-button-icon 
+                                        icon-name="utility:delete"    
+                                        alternative-text="Delete"   
+                                        class="slds-m-left_xx-small" 
+                                        name={shipDec.id}
+                                        value={shipDec.id}
+                                        onclick={handleDelete}
+                                        title="Delete">
+                                    </lightning-button-icon>
+        
+                                </td>
+                                
+                            </tr>
+                            <template if:true={shipDec.isShowDetais}>
+                                
+                                    <tr key={shipDec.id}>
+                                        <td colspan="4">
+                                            <lightning-card>
+                                                <table rules=none class="slds-table slds-box slds-box_x-small ">
+                                                    <tr>
+                                                        <td class="p1" style='border:none;'>{label.Declaration_Receive_Date}</td>
+                                                        <td style='border:none;'>{shipDec.createdDate}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p1" style='border:none;'>{label.Pre_Shipment_Declaration_Yes_No}</td>
+                                                        <td style='border:none;'>{shipDec.preShipmentDeclaration}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p1" style='border:none;' >{label.Premium_HKD}</td>
+                                                        <td style='border:none;' >{shipDec.premium}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p1" style='border:none;'>{label.Due_Date}</td>
+                                                        <td style='border:none;'>{shipDec.invoiceDate}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p1" style='border:none;'>{label.Endorsement}</td>
+                                                        <td style='border:none;'>{shipDec.endorsement}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p1" style='border:none;' >{label.Shipment_was_made_by_an_overseas_subsidiary}</td>
+                                                        <td style='border:none;'>{shipDec.subsYesNo}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p1" style='border:none;'>{label.Harmonized_Code}</td>
+                                                        <td style='border:none;'>{shipDec.harmonizedCode}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p1" style='border:none;'>{label.EC_Reach_Reference_No}</td>
+                                                        <td style='border:none;'>{shipDec.phRefNo}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p1" style='border:none;' >{label.Revision_History}</td>
+                                                        <td style='border:none;'>
+                                                            <lightning-button variant="base" label="View" title="Revision History" value={shipDec.id} onclick={showRevisionHistory} class="slds-m-left_x-small"></lightning-button>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </lightning-card>
+                                        </td>
+                                    </tr> 
+                            </template>
+                        </template>
+                        
+                    </tbody>
+                    
+                </table>
+            </div>
+            <p slot="footer" align="right">
+                
+                <lightning-button-menu slot="actions" label={label.Download} title="Download"  onselect={downloadData}>
+                    <lightning-menu-item value="PDF" label={label.PDF}></lightning-menu-item>
+                    <lightning-menu-item value="Excel" label={label.Excel}></lightning-menu-item>
+                </lightning-button-menu>
+                &nbsp;&nbsp;
+                <lightning-button 
+                    variant="destructive" 
+                    label={label.Save} 
+                    onclick={handleSettlement}
+                    slot="actions">
+                </lightning-button>
+            </p>
+        </lightning-card> 
+        <template if:true={isShowCancelScreen}>
+            <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+               
+                <header class="slds-modal__header slds-text-title_bold" style="font-size:15px;">
+                    {label.Cancel_Declaration}
+                </header>
+                <div class="slds-modal__content slds-p-around_small slds-scrollable" id="modal-content-id-1">
+                    <lightning-card theme="slds-theme_shade" title={label.Please_specify_the_reason_of_cancelling_this_declaration}>
+                        
+                        <table>
+                            <tr><td><lightning-input type="checkbox"  name="input1" label={label.Duplicated_declaration}></lightning-input> </td></tr>
+                            <tr><td><lightning-input type="checkbox"  name="input1" label={label.Shipment_cancelled}></lightning-input> </td></tr>
+                            <tr><td><lightning-input type="checkbox"  name="input1" label={label.No_credit_shipment}></lightning-input> </td></tr>
+                            <tr><td><lightning-input type="checkbox"  name="input1" label={label.Others}></lightning-input>   </td></tr>
+                        </table>
+                    </lightning-card>
+                    <br>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button 
+                        variant="destructive" 
+                        label={label.Confirm} 
+                        onclick={confirmCancelling}>
+                    </lightning-button>
+                    
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    
+    
+        </template> 
+        <template if:true={cancelConfirmationScreen}>
+            <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+               
+                <header class="slds-modal__header slds-text-title_bold" style="font-size:15px;">
+                    {label.Cancel_Declaration}
+                </header>
+                <div class="slds-modal__content slds-p-around_small slds-scrollable" id="modal-content-id-2">
+                    {label.Your_request_for_declaration_cancellation_has_been_submitted}
+    
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button 
+                        variant="destructive" 
+                        label={label.OK} 
+                        onclick={cancelConfirmScren}>
+                    </lightning-button>
+                    
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    
+    
+        </template> 
+        <template if:true={showRevisionHistoryScreen}>
+            <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+               
+                <header class="slds-modal__header slds-text-title_bold" style="font-size:15px;">
+                   {label.Revision_History}
+                </header>
+                <div class="slds-modal__content slds-var-p-around_medium slds-scrollable" id="modal-content-id-3">
+                    <h2>{label.Revise_Date}</h2>
+                    <template for:each={allShipDecHistoryRecords} for:item='shipDecHistory'>
+                                
+                        <div key={shipDecHistory.Id}>
+                            
+                            <div class="slds-grid slds section_head" id={shipDecHistory.Id} onclick={expandHandler}>
+                               
+                                <h2>{shipDecHistory.createdDate}</h2>
+                                <div class="slds-col_bump-left">
+                                    <lightning-icon icon-name={shipDecHistory.coverButtonIcon} size="x-small" class="slds-current-color" alternative-text="Reviosion History" title="Reviosion History">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                            <template if:true={shipDecHistory.isShowDetais}>
+                                <div class="section_container">
+                                    <div class="formContainer">
+                                        <div class="slds-grid ">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Declaration_Receive_Date}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.createdDate}
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid ">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Pre_Shipment_Declaration_Yes_No}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.preShipmentDeclaration}
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Buyer_Name}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.buyerName}
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Buyer_Code}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.buyerCode}
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Shipment_Date}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.shipMentDate}
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Currency}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.ecicCurrency}
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Gross_Invoice_Value_Amount}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.grossInvoiceValue}
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{labels.Gross_Invoice_Value_Amount_HKD}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.grossInvoiceValue}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Premium_HKD}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.grossInvoiceValue}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Premium_Terms}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.paymentTerm}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Due_Date}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.dueDate}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Endorsement}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.preShipmentDeclaration}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Shipment_was_made_by_an_overseas_subsidiary}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.subsYesNo}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Port_of_Loading_Ship_From}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.portOfLoading}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Country_Market_of_Origin}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.countryOrigin}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Destination_Country_Market_Ship_to}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.destinationCountry}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.Harmonized_Code}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.harmonizedCode}
+                                            </div>
+                                        </div> 
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                                                <span>{label.EC_Reach_Reference_No}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                                                {shipDecHistory.phRefNo}
+                                            </div>
+                                        </div> 
+                                        
+                                        
+                                    </div>
+                    
+                                </div>
+                            </template>
+                        </div> 
+                </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button 
+                        variant="destructive" 
+                        label={label.Close} 
+                        onclick={cancelRevisionHistoryScreen}>
+                    </lightning-button>
+                    
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    
+    
+        </template> 
+        
+        <br>
+        
+    </template>
+    <template if:true={showAmendForm}>
+        <c-ship-dec-submission-form shipment-id={shipmentDecId}></c-ship-dec-submission-form>
+    </template>
+    
+</template>

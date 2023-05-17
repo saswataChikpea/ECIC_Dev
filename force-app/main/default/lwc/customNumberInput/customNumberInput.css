@@ -1,0 +1,8 @@
+.input_small_c {
+    /* border: 1px solid #e1d8d8; */
+    border-radius: 50px;
+}
+
+.disabled {
+    color: var(--lwc-colorTextInputDisabled, rgb(107, 109, 112));
+}

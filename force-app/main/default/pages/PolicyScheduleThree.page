@@ -1,0 +1,217 @@
+<apex:page controller="PolicyDocument_Pdf_controller" 
+    sidebar="false" 
+    showHeader="false" 
+    standardStylesheets="false"
+    applyBodyTag="false"
+    renderAs="PDF">
+    <apex:stylesheet value="{!$Resource.PolicyScheduleThree}" />
+    <head>
+        <style>
+            @page {
+                size: A4;
+                margin-top: 100px;
+                margin-left: .5in;
+                margin-right: .5in;
+                margin-bottom: 150px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+            
+            div.header {
+                position: running(header);
+            }
+            div.footer {     
+                /* padding: 1px; */
+                bottom:0;
+                position: running(footer);
+            }
+            .pagenumber:before {
+                content: counter(page);
+            }
+            .pagecount:before {
+                content: counter(pages);
+            }
+            .company_addr{
+                float: left;
+                font-size: 8.5px;
+                color: #000;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <img src="{!$Resource.ECIC_logo}" width="300" height="50" alt="logo" />
+        </div>
+        
+        <apex:outputPanel rendered="{!Policy_Type == 'SUP'}">
+            <div class="heading">
+                <span>SELF-UNDERWRITTEN POLICY (SUP) - SCHEDULE III</span>
+            </div>
+            <div class="policy_number">
+                <span class="title">Policy Number:</span>
+                <span>{!Policy_Number}</span>
+            </div>
+            <div class="issue_date">
+                <span class="title">Issue Date:</span>
+                {!scheduleThreeIssueDate}
+                <!-- <apex:outputText styleClass="output_date" value="{0,date,MMMM d ',' yyyy}">
+                    <apex:param value="{!Policy_Issue_Date}" />
+                </apex:outputText> -->
+            </div>
+            <div class="effective_date">
+                <span class="title">Effective Date:</span>
+                <!-- <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                    <apex:param value="{!Policy_Schedule}" />
+                </apex:outputText> -->
+                {!scheduleThreeEffectiveDate}
+            </div>
+            <div class="sub_heading">
+                <p>
+                    <u>Premium Rebate</u>
+                </p>
+            </div>
+            <div class="para">
+                <p>1.This Schedule III sets out the premium rebate which the Policyholder shall be entitled under the Policy.</p>
+                <p>2.Upon the commencement of a new policy period, the Policyholder shall be entitled to a one-off premium rebate
+                    equivalent to 5 % of the total amount of the premium invoiced and received by HKECIC for the
+                    <b>shipments</b>
+                    made under all
+                    <b>insurable</b>
+                    <b>contract</b>s during the preceding policy period. The premium rebate shall be finalised and credited
+                    to the Policyholder's account upon Policyholder’s confirmation of declaration of all
+                    <b>insurable</b>
+                    <b>shipments</b> and full settlement of all outstanding premium attributable to the policy period concerned.</p>
+                <p>3. The premium rebate shall be applied to offset any premium of
+                    <b>shipments</b> made from the new policy period onwards or any amount due to HKECIC by the Policyholder,
+                    whether under this Policy or otherwise.</p>
+                <p>4.In the event that any claim including expense reimbursement is subsequently payable by HKECIC on the
+                    <b>shipments</b>
+                    made in any previous policy period for which premium rebate has been made, such payable shall be offset by the premium rebate
+                    of the related policy period up to the lower of the claim payable amount or the rebate in its original
+                    sum. Any balance of the premium rebate on the Policyholder’s account shall be settled with the Policyholder
+                    upon the termination of the Policy.</p>
+            </div>
+            
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!Policy_Type == 'SBP'}">
+            
+            <div class="heading">
+                <span>SMALLBUSINESS POLICY (SBP) - SCHEDULE III</span>
+            </div>
+            <div class="policy_number">
+                <span class="title_sbp">Policy Number:</span>
+                <span>{!Policy_Number}</span>
+            </div>
+            <div class="issue_date">
+                <span class="title_sbp">Issue Date:</span>
+                <!-- <apex:outputText styleClass="output_date" value="{0,date,MMMM d ',' yyyy}">
+                    <apex:param value="{!Policy_Issue_Date}" />
+                </apex:outputText> -->
+                {!scheduleThreeIssueDate}
+            </div>
+            <div class="effective_date">
+                <span class="title_sbp">Effective Date:</span>
+                <!-- <apex:outputText value="{0,date,MMMM d ',' yyyy}">
+                    <apex:param value="{!Policy_Schedule}" />
+                </apex:outputText> -->
+                {!scheduleThreeEffectiveDate}
+            </div>
+            <div class="para_sbp">
+                <p>
+                    <b>1. Declarations</b>
+                    <br/>
+                    <p>The Policy requires the Policyholder to declare
+                        <b>shipments</b> made under the
+                        <b>insurable</b>
+                        <b>contract</b>s as specified below (Clause 10):</p>
+                </p>
+                <div class="box">
+                    <p>
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                            <tr class="sub_para_sbp">
+                                <!-- <td>
+                                    <p style="margin-left: 20px;">
+                                        The Policyholder must declare to HKECIC in the form specified by HKECIC (or in such other form acceptable to HKECIC):
+                                    </p>
+                                    <p style="margin-left: 20px;">a) the
+                                        <b>gross invoice value</b> of the goods shipped within 21 days from the date of shipment
+                                        under any
+                                        <b>insurable</b>
+                                        <b>contract</b>; or
+                                    </p>
+                                    <p style="margin-left: 20px;">b) for each of the buyers within 15 days of the following month the aggregate amount
+                                        of the
+                                        <b>gross invoice value</b> of the goods shipped in the preceding month.</p>
+                                </td> -->
+                                <td>
+                                    <p>
+                                        The Policyholder must declare to HKECIC in the form specified by HKECIC (or in such other form acceptable to HKECIC):
+                                    </p>
+                                    <br/>
+                                    a. within 21 days of the following month the gross invoice value of the goods shipped in the 
+                                    preceding month under any <b>insurable contract.</b>
+                                    <br/><br/>
+                                    b. for each of the buyers within 21 days of the following month the aggregate amount of the 
+                                    gross invoice value of the goods shipped in the preceding month.
+                                    <br/><br/>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </p>
+                </div>
+
+            </div>
+            <div class="para_sbp">
+                <p>
+                    <b>
+                        2. Premium Rebate
+                    </b>
+                </p>
+                <div class="sub_para_sbp">
+                    <p>a) This Schedule III sets out the premium rebate which the Policyholder shall be entitled under the Policy.</p>
+                    <p>b) Upon the commencement of a new policy period, the Policyholder shall be entitled to a one-off premium
+                        rebate equivalent to 5 % of the total amount of the premium invoiced and received by HKECIC for the
+                        <b>shipments</b> made under all
+                        <b>insurable</b>
+                        <b>contract</b>s during the preceding policy period. The premium rebate shall be finalised and credited
+                        to the Policyholder's account upon Policyholder’s confirmation of declaration of all
+                        <b>insurable</b>
+                        <b>shipments</b> and full settlement of all outstanding premium attributable to the policy period concerned.</p>
+                    <p>c) The premium rebate shall be applied to offset any premium of
+                        <b>shipments</b> made from the new policy period onwards or any amount due to HKECIC by the Policyholder,
+                        whether under this Policy or otherwise.</p>
+                    <p>d) In the event that any claim including expense reimbursement is subsequently payable by HKECIC on the
+                        <b>shipments</b> made in any previous policy period for which premium rebate has been made, such payable
+                        shall be offset by the premium rebate of the related policy period up to the lower of the claim payable
+                        amount or the rebate in its original sum. Any balance of the premium rebate on the Policyholder’s
+                        account shall be settled with the Policyholder upon the termination of the Policy.</p>
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <div class="footer">
+           
+            <p>
+                <span style="color:red;font-size:10px;">ECIC 950 1/3/2016</span>
+                <p>
+                    <small class="footer_text">
+                        2/F., Tower 1, South Seas Centre, 75 Mody Road, Tsimshatsui East, Kowloon, Hong Kong
+                        <br/> Tel : 2732 9988 Fax : 2722 6277 E-mail : ec-reach@hkecic.com
+                        <br/> EC-Reach portal :
+                        <a href="www.ec-reach.com.hk">www.ec-reach.com.hk</a>
+                    </small>
+                </p>
+            </p>
+            <p align="right">Page<span class="pagenumber" /> of <span class="pagecount" /></p> 
+        </div>
+        <div style="page-break-after:auto;" />
+        <div style="page-break-before:auto;" />
+    </body>
+
+</apex:page>

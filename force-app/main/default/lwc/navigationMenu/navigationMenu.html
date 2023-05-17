@@ -1,0 +1,152 @@
+<template>
+    <!-- Vertical Navigation List for Mobile -->
+    <template if:true={showHamburgerMenu}>
+        <div class="slds-is-fixed slds-grid hamburger">
+            <div class="slds-col slds-size_5-of-6">
+                <div class="
+                        slds-grid
+                        slds-var-p-left_small
+                        slds-var-p-top_small
+                        slds-grid_vertical
+                        hamburger-menu
+                    ">
+                    <div class="slds-col">
+                        <span>
+                            <nav role="navigation" class="slds-nav-vertical">
+                                <ul class="slds-has-block-links_space">
+                                    <template for:each={menuItems} for:item="item">
+                                        <li key={item.id} class="navbar-items">
+                                            <c-navigation-menu-item item={item}></c-navigation-menu-item>
+                                            <template if:true={item.childs.length}>
+                                                <div class="innerItem">
+                                                    <ul>
+                                                        <template for:each={item.childs} for:item="item2">
+                                                            <li key={item2.id}
+                                                                class="navbar-items slds-var-p-horizontal_large">
+
+                                                                <c-navigation-menu-item item={item2}>
+                                                                </c-navigation-menu-item>
+                                                            </li>
+
+                                                        </template>
+                                                    </ul>
+                                                </div>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </nav>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+
+                <a style="color:black" href={href} onclick={handleHamburgerMenuToggle}>
+                    <!-- <img class="
+                            hamburger-menu-icon
+                            slds-var-p-left_small
+                            slds-var-p-top_small
+                        " src={xIcon} /> -->
+                    More
+                    <lightning-icon icon-name="utility:down" size="xx-small" title="">
+                    </lightning-icon>
+                </a>
+            </div>
+        </div>
+    </template>
+    <div class="slds-grid slds-grid_vertical-align-center">
+        <div class="
+                slds-col
+                slds-var-p-left_small
+                slds-var-p-top_small
+                slds-size_3-of-4
+                slds-large-size_1-of-5
+            ">
+            <span>
+                <img class="logo"
+                    src="https://kennychun--dev2--c.documentforce.com/servlet/servlet.FileDownload?file=0150l000000nHSp"
+                    alt="Logo">
+            </span>
+        </div>
+        <div class="
+                slds-col
+                slds-var-p-top_small
+                slds-var-p-horizontal_large
+                slds-show_large
+            ">
+            <span>
+                <nav role="navigation">
+                    <ul class="slds-list_horizontal slds-has-block-links_space">
+                        <template for:each={singleMenuItems} for:item="item">
+                            <li key={item.id} class="navbar-items slds-var-p-horizontal_large">
+                                <c-navigation-menu-item item={item}></c-navigation-menu-item>
+
+                            </li>
+                        </template>
+
+                    </ul>
+                </nav>
+            </span>
+        </div>
+        <!-- <div class="
+                slds-col
+                slds-var-p-top_small
+                slds-col_bump-left
+                slds-grid_align-end
+                slds-show_large
+            ">
+            <div class="
+                    slds-grid slds-grid_align-end
+                    slds-gutters_medium
+                    slds-grid_vertical-align-center
+                ">
+                <div class="slds-col">
+                    <span>
+                        <a href="/customer/s" class="navbar-items">My Account</a>
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span>
+                        <lightning-button variant="brand" label={buttonLabel} title="Primary action"
+                            onclick={handleClick} class="slds-var-m-right_x-small"></lightning-button>
+                    </span>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="slds-col slds-size_1-of-6">
+            <!-- <a style="color:black" href={href} onclick={handleHamburgerMenuToggle}>
+              
+                More3
+                <lightning-icon icon-name="utility:down" size="xx-small" title="">
+                </lightning-icon>
+            </a> -->
+            <lightning-button-menu alternative-text="More123" label="More123">
+                <template for:each={menuItems} for:item="item">
+                    <lightning-menu-subheader key={item.id} label={item.label}>
+                    </lightning-menu-subheader>
+                    <template for:each={item.childs} for:item="item2">
+                        <p key={item.id} style="padding: 0 .5rem 0 .5rem;  line-height: var(--lwc-lineHeightText,1.5);
+                        font-weight: var(--lwc-fontWeightRegular,400);max-width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;">
+                            <!-- <lightning-menu-item key={item.id} value="MenuItemTwo" label="M"> -->
+
+                            <c-navigation-menu-item item={item2}></c-navigation-menu-item>
+                            <!-- </lightning-menu-item> -->
+
+                        </p>
+
+
+                    </template>
+
+
+                </template>
+            </lightning-button-menu>
+        </div>
+
+    </div>
+</template>

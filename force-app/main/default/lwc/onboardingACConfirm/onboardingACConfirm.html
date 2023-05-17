@@ -1,0 +1,39 @@
+<template>
+    <c-onboarding-progress active-index="5"></c-onboarding-progress>
+    <div class="body_div">
+        <div class="slds-grid slds-wrap mt_1">
+            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 red_bold">
+                <span>Company Name</span>
+            </div>
+            <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                <input type="text" class="slds-input input_small_c" readonly="" value={companyName} />
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap mt_1">
+            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 red_bold">
+                <span>Username</span>
+            </div>
+            <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                <input type="text" class="slds-input input_small_c" readonly="" value={companyEmail} />
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap mt_1">
+            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 red_bold">
+                <span>Proposal ID</span>
+            </div>
+            <div class="slds-size_1-of-1 slds-large-size_1-of-2">
+                <input type="text" class="slds-input input_small_c" readonly="" value={proposalId} />
+            </div>
+        </div>
+
+        <div class="slds-grid slds-grid_align-center slds-grid_vertical text-body">
+            <span>
+                Thank you! <br />Your proposal has been submitted successfully and sent to the SME team for review.
+                We will get back to you soon.
+            </span>
+            <button onclick={navDashboard} class="slds-button next_button">Go to My Dashboard</button>
+
+        </div>
+
+    </div>
+</template>

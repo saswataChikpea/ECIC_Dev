@@ -1,0 +1,204 @@
+<template>
+    <!--template if:true={isLoading}>
+        <div class="exampleHolder slds-align_absolute-center">
+            <lightning-spinner variant="brand" alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template-->
+    <!--template for:each={jsonData.data} for:item="content">
+        <span key={content.managedContentId}>{content.contentNodes.body.value}<br></span>
+        
+    </template-->
+
+
+    <lightning-card theme="slds-theme_shade">
+        <div slot="title">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{productTitle}<br>
+            <div style="font-size: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Policy No : {policyNumber}</div>
+        </div>
+        <!--template if:true={isLoading}>
+            <div class="exampleHolder">
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </template-->
+        <lightning-formatted-rich-text value={policyTermHeaderContent}></lightning-formatted-rich-text><br>
+
+        <div class="slds-grid slds section_head" id="sectionCover" onclick={expandHandler}>
+            <h2>I. THE COVER</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={coverButtonIcon} size="x-small" class="slds-current-color" alternative-text="document" title="document">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={isCoverSectionexpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={cover}></lightning-formatted-rich-text><br>
+
+            </div>
+        </template>
+        <div class="slds-grid slds section_head" id="sectionContractsAndRelatedConditions" onclick={expandHandler}>
+            <h2>II. CONTRACTS COVERED AND RELATED CONDITIONS</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={contractsButtonIcon} size="x-small" class="slds-current-color"
+                    alternative-text="CONTRACTS COVERED AND RELATED CONDITIONS" title="CONTRACTS COVERED AND RELATED CONDITIONS">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={isContractsSectionexpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={contractsCoveredAndRelatedConditions}></lightning-formatted-rich-text><br>
+    
+            </div>
+        </template>
+        <div class="slds-grid slds section_head" id="sectionCreditLimit" onclick={expandHandler}>
+            <h2>III. CREDIT LIMIT</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={creditLimitIcon} size="x-small" class="slds-current-color"
+                    alternative-text="CREDIT LIMIT" title="CREDIT LIMIT">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={creditLimitExpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={creditLimit}></lightning-formatted-rich-text><br>
+    
+            </div>
+        </template>
+        <template if:false={isProductSBP}>
+            
+
+            <div class="slds-grid slds section_head" id="sectionPremium" onclick={expandHandler}>
+                <h2>IV. PREMIUM</h2>
+                <div class="slds-col_bump-left">
+                    <lightning-icon icon-name={premiumButtonIcon} size="x-small" class="slds-current-color"
+                        alternative-text="PREMIUM" title="PREMIUM">
+                    </lightning-icon>
+                </div>
+            </div>
+            <template if:true={isPremiumSectionexpanded}>
+                <div class="section_container">
+                    <lightning-formatted-rich-text value={premium}></lightning-formatted-rich-text><br>
+        
+                </div>
+            </template>
+        </template>
+        <template if:true={isProductSBP}>
+            
+            <div class="slds-grid slds section_head" id="sectionDecAndPrem" onclick={expandHandler}>
+                <h2>IV. DECLARATIONS AND PREMIUM</h2>
+                <div class="slds-col_bump-left">
+                    <lightning-icon icon-name={decAndPremIcon} size="x-small" class="slds-current-color"
+                        alternative-text="DECLARATIONS AND PREMIUM" title="DECLARATIONS AND PREMIUM">
+                    </lightning-icon>
+                </div>
+            </div>
+            <template if:true={decAndPremExpanded}>
+                <div class="section_container">
+                    <lightning-formatted-rich-text value={decAndPrem}></lightning-formatted-rich-text><br>
+                </div>
+            </template>
+        </template>
+        
+        
+
+        <div class="slds-grid slds section_head" id="sectionLossMinimisation" onclick={expandHandler}>
+            <h2>V. LOSS MINIMISATION</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={lossMinimisationIcon} size="x-small" class="slds-current-color"
+                    alternative-text="LOSS MINIMISATION" title="LOSS MINIMISATION">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={lossMinimisationExpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={lossMinimisationContent}></lightning-formatted-rich-text><br>
+    
+            </div>
+        </template>
+
+        <div class="slds-grid slds section_head" id="sectionExclusions" onclick={expandHandler}>
+            <h2>VI. EXCLUSIONS</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={exclusionsIcon} size="x-small" class="slds-current-color"
+                    alternative-text="EXCLUSIONS" title="EXCLUSIONS">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={exclusionsExpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={exclusionsContent}></lightning-formatted-rich-text><br>
+            </div>
+        </template>
+
+        <div class="slds-grid slds section_head" id="sectionClaimAndRec" onclick={expandHandler}>
+            <h2>VII. CLAIMS AND RECOVERIES	</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={claimAndRecIcon} size="x-small" class="slds-current-color"
+                    alternative-text="CLAIMS AND RECOVERIES" title="CLAIMS AND RECOVERIES">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={claimAndRecExpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={claimAndRecContent}></lightning-formatted-rich-text><br>
+            </div>
+        </template>
+
+        <div class="slds-grid slds section_head" id="sectionGenCondition" onclick={expandHandler}>
+            <h2>VIII. GENERAL CONDITIONS</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={genConditionIcon} size="x-small" class="slds-current-color"
+                    alternative-text="GENERAL CONDITIONS" title="GENERAL CONDITIONS">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={genConditionExpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={genConditionContent}></lightning-formatted-rich-text><br>
+            </div>
+        </template>
+
+        <div class="slds-grid slds section_head" id="sectionMiscellaneous" onclick={expandHandler}>
+            <h2>IX. MISCELLANEOUS</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={miscellaneousIcon} size="x-small" class="slds-current-color"
+                    alternative-text="MISCELLANEOUS" title="MISCELLANEOUS">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={miscellaneousExpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={miscellaneousContent}></lightning-formatted-rich-text><br>
+            </div>
+        </template>
+
+        <div class="slds-grid slds section_head" id="sectionConfidentiality" onclick={expandHandler}>
+            <h2>X. CONFIDENTIALITY</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={confidentialityIcon} size="x-small" class="slds-current-color"
+                    alternative-text="CONFIDENTIALITY" title="CONFIDENTIALITY">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={confidentialityExpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={confidentialityContent}></lightning-formatted-rich-text><br>
+            </div>
+        </template>
+
+        <div class="slds-grid slds section_head" id="sectionDefnitions" onclick={expandHandler}>
+            <h2>XI. DEFINITIONS</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon icon-name={defnitionsIcon} size="x-small" class="slds-current-color"
+                    alternative-text="DEFINITIONS" title="DEFINITIONS">
+                </lightning-icon>
+            </div>
+        </div>
+        <template if:true={defnitionsExpanded}>
+            <div class="section_container">
+                <lightning-formatted-rich-text value={defnitionsContent}></lightning-formatted-rich-text><br>
+            </div>
+        </template>
+        
+    </lightning-card>
+</template>

@@ -1,0 +1,629 @@
+<template>
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+    <template if:true={isShowShipDecSubmissionForm}>
+        <div class="slds-grid slds section_head" id="sectionDecAndPrem" >
+            <h2>{label.Declaration_Submission}</h2>
+            <div class="slds-col_bump-left">
+                <lightning-icon size="x-small" class="slds-current-color"
+                    alternative-text="Declaration Record" title="Declaration Record">
+                </lightning-icon>
+            </div>
+        </div>
+        <br/>
+        <lightning-card theme="slds-theme_shade">
+            
+            <div class="inner-container">
+                <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                    <div class="slds-large-size_2-of-12 slds-medium-size_6-of-6 slds-size_2-of-2">
+                        <p class="p1">{label.Company_Name}</p>
+                        <p class="p5">{companyName}</p>
+                    </div>
+                    <!--div class="slds-large-size_2-of-12 slds-medium-size_6-of-6 slds-size_2-of-2">
+                        <p class="p1">Login Account</p>
+                        <p class="p5">{logged_in_user}</p>
+                    </div-->
+                    <div class="slds-large-size_2-of-12 slds-medium-size_6-of-6 slds-size_2-of-2">
+                        <p class="p1">{label.Policy_Number}</p>
+                        <p class="p5">{policyNumber}</p>
+                    </div>
+                    <div class="slds-large-size_2-of-12 slds-medium-size_6-of-6 slds-size_2-of-2">
+                        <p class="p1">{label.Policy_Type}</p>
+                        <p class="p5">{policyType}</p>
+                    </div>
+                </div>
+            </div>
+            
+        </lightning-card>
+        <br/>
+        <lightning-card theme="slds-theme_shade" title="Declaration">
+            <!--lightning-button 
+                variant="destructive"  
+                onclick={handleCreateShipRecord}
+                label="By Entry" 
+                slot="actions">
+            </lightning-button-->
+            <lightning-button 
+                variant="destructive" 
+                onclick={gotoBulkScreen}
+                label={label.By_Batch} 
+                slot="actions">
+            </lightning-button>
+            <div class="slds-text-align_right">
+                <span class="red">*</span><span>{label.Mandatory_field}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            
+            
+            <div class="formContainer">
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Buyer_Name}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <div onkeyup={handleKeyUp}>
+                            <lightning-input 
+                            required 
+                            class="input1  validValue buyerName" 
+                            label="label" 
+                            type="text"
+                            value={buyerName} 
+                            name="buyerName" 
+                            variant="label-hidden">
+                        </lightning-input>
+                        </div>
+                        <!-- <lightning-input 
+                            required 
+                            class="input1  validValue buyerName" 
+                            label="label" 
+                            type="text"
+                            value={buyerName} 
+                            name="buyerName" 
+                            variant="label-hidden" 
+                            onchange={searchBuyer}>
+                        </lightning-input> -->
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Buyer_Code}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+    
+                        <lightning-input 
+                            required 
+                            value={buyerCode} 
+                            label="label"
+                            class="input1 validValue buyerCode" 
+                            type="text" 
+                            name="buyerCode" 
+                            variant="label-hidden"
+                            onchange={searchBuyer}>
+                        </lightning-input>
+                    </div>
+                </div>
+                <template if:true={isClientRelatedToEN68}>
+                    <div class="slds-grid slds-wrap mb_1">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                            <span>Who is the contractual seller?</span><span class="red">*</span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                            <!-- <lightning-input 
+                                type="checkbox" 
+                                label="Policyholder" 
+                                name="contactualSellerQuestionOne">
+                            </lightning-input>
+                            <br>
+                            <lightning-input 
+                                type="checkbox" 
+                                label="b.Subsidiary in Mainland China / overseas" 
+                                name="contactualSellerQuestionTwo">
+                            </lightning-input> -->
+                            <lightning-combobox 
+                                class="input1" 
+                                name="contractualSeller" 
+                                value={contractualSeller} 
+                                variant="label-hidden"
+                                placeholder="Select Seller" 
+                                options={contactualSellerOptions} 
+                                onchange={handleInputData}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                    
+                </template>
+                
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Shipment_Declaration_Type}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-combobox 
+                            required 
+                            class="input1 validValue shipmentType" 
+                            name="shipmentType"
+                            value={shipmentType} 
+                            placeholder="-Select-" 
+                            variant="label-hidden"
+                            options={shipmentTypeList} 
+                            onchange={handleShipDecType}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Pre_Shipment_Declaration}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <div class="slds-grid ">
+                            <lightning-input 
+                                type="checkbox" 
+                                label={label.Yes} 
+                                name="preShipYes" 
+                                checked={preShipYes}
+                                onchange={checkPreShipDec}>
+                            </lightning-input>
+                            <lightning-input 
+                                type="checkbox" 
+                                label={label.No} 
+                                name="preShipNo" 
+                                checked={preShipNo}
+                                onchange={checkPreShipDec}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Contractual_party_is_overseas_subsidiary}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <div class="slds-grid ">
+                            <lightning-input 
+                                type="checkbox" 
+                                label={label.Yes} 
+                                name="shipOverSubYes"
+                                checked={shipOverSubYes} 
+                                onchange={handleInputData}>
+                            </lightning-input>
+                            <lightning-input 
+                                type="checkbox" 
+                                label={label.No} 
+                                name="shipOverSubno" 
+                                checked={shipOverSubno}
+                                onchange={handleInputData}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Endorsement}</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <!-- <lightning-combobox 
+                            class="input1" 
+                            name="endorsement" 
+                            value={endorsementValue} 
+                            variant="label-hidden"
+                            placeholder="Select Endorsement" 
+                            options={endorsementAllList} 
+                            onchange={handleInputData}>
+                        </lightning-combobox> -->
+                        <lightning-combobox 
+                            class="input1" 
+                            name="endorsement" 
+                            value={endorsementValue} 
+                            variant="label-hidden"
+                            placeholder="Select Endorsement" 
+                            options={edorsementOptions} 
+                            onchange={handleInputData}>
+                    </lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1" if:true={preShipNo}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{shipmeDateLabel}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <div class="slds-grid">
+                            <template if:false={isShipmentMonth}>
+                                <lightning-input 
+                                    required 
+                                    label="label" 
+                                    class="input1 validValue shipmentDate" 
+                                    type="date"
+                                    value={shipmentDate} 
+                                    name="shipmentDate" 
+                                    variant="label-hidden"
+                                    onchange={handleInputData}>
+                                </lightning-input>
+                            </template>
+                            <template if:true={isShipmentMonth}>
+                                <lightning-combobox 
+                                    class="input1" 
+                                    name="shipmentMonth" 
+                                    value={shipmentMonthValue} 
+                                    variant="label-hidden"
+                                    placeholder="Select Month" 
+                                    options={shipmentMonthList} 
+                                    onchange={handleInputData}>
+                                 </lightning-combobox>
+                                 <lightning-combobox 
+                                    style="margin-left: .2rem;"
+                                    class="input1" 
+                                    name="shipmentYear" 
+                                    value={shipmentYearValue} 
+                                    variant="label-hidden"
+                                    placeholder="Select Year" 
+                                    options={shipmentYearList} 
+                                    onchange={handleInputData}>
+                                 </lightning-combobox>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1" if:true={preShipYes}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Contract_Date}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-input 
+                            label="label" 
+                            required class="input1 validValue contractDate" 
+                            type="date"
+                            value={contractDate} 
+                            name="contractDate" 
+                            variant="label-hidden"
+                            onchange={handleContractDate}>
+                        </lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Currency}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-combobox 
+                            required 
+                            name="ecic_currency" 
+                            value={ecic_currency}
+                            placeholder="-Select-" 
+                            options={currencyOptions} 
+                            variant="label-hidden"
+                            onchange={handleCurrency} 
+                            class="input1 validValue ecic_currency">
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Gross_Invoice_Value_Amount}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-input 
+                            required 
+                            label="label" 
+                            class="input1 validValue givValue" 
+                            type="number"
+                            name="givValue" 
+                            value={givValue} 
+                            variant="label-hidden" 
+                            onchange={handleGIV}>
+                        </lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Payment_Terms}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <div class="slds-grid">
+                            <lightning-combobox 
+                                required 
+                                class="input1 validValue paymentTermType"
+                                variant="label-hidden" 
+                                name="paymentTermType" 
+                                value={paymentTermType}
+                                placeholder="-Select-" 
+                                options={Payment_terms} 
+                                onchange={handleInputData}>
+                            </lightning-combobox>
+                            <lightning-input 
+                                style="margin-left: .2rem;" 
+                                required
+                                class="input1 validValue paymentTermDay" 
+                                type="text" 
+                                label="label"
+                                name="paymentTermDay" 
+                                value={paymentTermDay} 
+                                variant="label-hidden"
+                                onchange={handleInputData}>
+                            </lightning-input>
+                            <span style="margin: auto 0 auto .2rem">Days</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1" if:true={preShipNo}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Invoice_Due_Date}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-input 
+                            required 
+                            class="input1" 
+                            label="label" 
+                            type="date" 
+                            name="invoiceDate"
+                            value={invoiceDate} 
+                            variant="label-hidden" 
+                            onchange={handleInputData}>
+                        </lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Port_of_Loading_Ship_From}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-combobox 
+                            required 
+                            name="shipFrom" 
+                            value={shipFrom} 
+                            placeholder="-Select-"
+                            options={countryOptions} 
+                            variant="label-hidden" 
+                            onchange={handleInputData}
+                            class="input1 validValue shipFrom">
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Country_of_Origin}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-combobox 
+                            required 
+                            name="countryOfOrigin" 
+                            value={countryOfOrigin}
+                            placeholder="-Select-" 
+                            options={countryOptions} 
+                            variant="label-hidden"
+                            onchange={handleInputData} 
+                            class="input1  validValue countryOfOrigin">
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Destination_Country_Market_Ship_to}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-combobox 
+                            name="shipTo" 
+                            required value={shipTo} 
+                            placeholder="-Select-"
+                            options={countryOptions} 
+                            variant="label-hidden" 
+                            onchange={handleInputData}
+                            class="input1 validValue shipTo">
+                        </lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Harmonized_Code}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-4 ">
+                        <div class="slds-grid slds-wrap">
+    
+                            <lightning-input 
+                                required 
+                                label="label"
+                                class="slds-size_1-of-2  validValue harmonizeCode" 
+                                type="text" 
+                                name="harmonizeCode"
+                                value={harmonizeCode} 
+                                variant="label-hidden" 
+                                onchange={handleInputData}>
+                            </lightning-input>
+                            <div class="slds-size_1-of-2"
+                                style="margin: auto 0; font-size: smaller; padding: 0 .5rem;">
+                                <lightning-formatted-url 
+                                    value="https://www.censtatd.gov.hk/trader/hscode/index.jsp"
+                                    tooltip="https://www.censtatd.gov.hk/trader/hscode/index.jsp"
+                                    label={label.Search_Harmonized_Code_link} 
+                                    target="_blank">
+                                </lightning-formatted-url>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap mb_1">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 bold">
+                        <span>{label.Policyholder_s_Reference_No_if_any}</span><span class="red">*</span>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 ">
+                        <lightning-input 
+                            label="label" 
+                            class="input1" 
+                            type="text" 
+                            name="refNo"
+                            value={refNo} 
+                            variant="label-hidden" 
+                            onchange={handleInputData}>
+                        </lightning-input>
+                    </div>
+                </div>
+                
+            </div>
+        </lightning-card>
+        <br>
+        <template if:true={showLateDeclaration}>
+           
+            <div class="slds-grid" style="margin-top: 1rem;">
+                <div class="slds-col">
+                    {label.Late_declaration}
+                </div>
+                <div class="slds-col" style="margin-left: 1rem;">
+                    <div class="" style="margin-bottom: .6rem;">
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-checkbox">
+                                <input type="checkbox" name="1st" id="1st" onchange={handleInputData}
+                                    aria-describedby="error_01" />
+                                <label class="slds-checkbox__label" for="1st">
+                                    <span class="slds-checkbox_faux">&nbsp;</span>
+                                    <span class="slds-form-element__label">{label.Not_Overdue_Shipment}</span>
+                                </label>
+                            </div>
+    
+                        </div>
+                    </div>
+                    <div class="" style="margin-bottom: .6rem;">
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-checkbox">
+                                <input type="checkbox" name="2nd" id="2nd" onchange={handleInputData}
+                                    aria-describedby="error_01" />
+                                <label class="slds-checkbox__label" for="2nd">
+                                    <span class="slds-checkbox_faux">&nbsp;</span>
+                                    <span class="slds-form-element__label">{label.No_overdue_payment}</span>
+                                </label>
+                            </div>
+        
+                        </div>
+                    </div>
+                    <div class="" style="margin-bottom: .6rem;">
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-checkbox">
+                                <input type="checkbox" name="3rd" id="3rd" onchange={handleInputData}
+                                    aria-describedby="error_01" />
+                                <label class="slds-checkbox__label" for="3rd">
+                                    <span class="slds-checkbox_faux">&nbsp;</span>
+                                    <span class="slds-form-element__label">{label.No_adverse_info}</span>
+                                </label>
+                            </div>
+    
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+    
+                        <div class="" style="margin-bottom: .6rem;">
+                            <div class="slds-form-element slds-has-error">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" name="1st" id="4th" onchange={handleInputData}
+                                        aria-describedby="error_01" />
+                                    <label class="slds-checkbox__label" for="4th">
+                                        <span class="slds-checkbox_faux">&nbsp;</span>
+                                        <span class="slds-form-element__label">{label.Others_Please_specify}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="others" 
+                            id="others" 
+                            value={lateDecOtherReason} 
+                            class="input_small" 
+                            style="width: 200px; margin: 0 1rem" 
+                            onchange={handleInputData}>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:false={showLateDeclaration}> 
+            <p><u>{label.Note}</u></p><br>
+            <p>{label.PH_declarations} </p>
+            <br>
+        </template>
+        <template if:true={isAmendForm}>
+            <div class="slds-align_absolute-center">
+                <lightning-button 
+                    variant="destructive"  
+                    onclick={handleUpdateShipRecord}
+                    label="Next" 
+                    slot="actions">
+                </lightning-button>
+            </div>
+        </template>
+        <template if:false={isAmendForm}>
+            <div class="slds-align_absolute-center">
+                <lightning-button 
+                    variant="destructive"  
+                    onclick={handleNext}
+                    label="Next" 
+                    slot="actions">
+                </lightning-button>
+            </div>
+        </template>
+        
+        <template if:true={isShowAmendReasonScreen}>
+            <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+               
+                <header class="slds-modal__header slds-text-title_bold" style="font-size:15px;">
+                    {label.Amend_Declaration}
+                </header>
+                <div class="slds-modal__content slds-p-around_small slds-scrollable" id="modal-content-id-3">
+                    <lightning-card theme="slds-theme_shade" title="Please specify the reason of cancelling this declaration">
+                        
+                        <table>
+                            <tr>
+                                <td>
+                                    <lightning-input 
+                                        type="checkbox"  
+                                        name="typingMistake" 
+                                        label={label.Typing_mistake} 
+                                        onchange={handleAmendReason}>
+                                    </lightning-input> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <lightning-input 
+                                        type="checkbox"  
+                                        name="Others" 
+                                        label="Others Please specify" 
+                                        onchange={handleAmendReason}>
+                                    </lightning-input><br>
+                                    <lightning-input 
+                                        type="text" 
+                                        value={ReasonForAmendment}  
+                                        name="userReason" 
+                                        onchange={handleAmendReason}>
+                                    </lightning-input>   
+                                </td>
+                            </tr>
+                        </table>
+                    </lightning-card>
+                    <br>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button 
+                        variant="destructive" 
+                        label="Submit" 
+                        onclick={submitAmend}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        </template> 
+    </template>
+   
+    <template if:true={isShowShipDecRecordScreen}>
+        <c-ship-dec-record></c-ship-dec-record>
+    </template>
+    <template if:true={isShowBulkScreen}>
+        <c-ship-dec-submission-bulk></c-ship-dec-submission-bulk>
+    </template>
+    
+</template>

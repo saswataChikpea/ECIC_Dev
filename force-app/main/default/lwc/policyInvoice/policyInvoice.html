@@ -1,0 +1,338 @@
+<template>
+    <!--<div class="slds-clearfix">
+        <div class="slds-float_right">
+            <lightning-button-group>
+                <lightning-button-stateful 
+                    selected={scheduleButtonStatefulState} 
+                    icon-name-when-on="utility:check"
+                    label-when-off="Schedule"
+                    label-when-on="Schedule"
+                    onclick={handleSchedule}>
+                </lightning-button-stateful>
+                <lightning-button-stateful 
+                    selected={endorsementButtonStatefulState} 
+                    label-when-off="Endorsement"
+                    label-when-on="Endorsement"
+                    icon-name-when-on="utility:check"
+                    onclick={handleEndorsement}>
+                </lightning-button-stateful>
+                <lightning-button-stateful 
+                    selected={laButtonStatefulState} 
+                    icon-name-when-on="utility:check"
+                    label-when-off="LV"
+                    label-when-on="LV"
+                    onclick={handleLV}>
+                </lightning-button-stateful>
+                <lightning-button-menu 
+                    onselect={handleOnselect}
+                    variant="border-filled" 
+                    menu-alignment="right" 
+                    alternative-text="Show menu">
+                    <lightning-menu-item value="RenewPolicy" label="Renew Policy"></lightning-menu-item>
+                    <lightning-menu-item value="TerminatePolicy" label="Terminate Policy"></lightning-menu-item>
+                </lightning-button-menu>
+            </lightning-button-group>
+        </div>
+    </div> -->
+    <br/>
+    <lightning-card>
+       <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-5  slds-medium-size_2-of-6 slds-large-size_2-of-12">
+                <p class="p1">{label.Company_Name}</p>
+                <p class="p5">{companyName}</p>
+            </div>
+            <div class="slds-size_1-of-5  slds-medium-size_2-of-8 slds-large-size_2-of-12">
+                <p class="p1">{label.Login_Account}</p>
+                <p class="p5">{logged_in_user}</p>
+            </div>
+            <div class="slds-size_1-of-5  slds-medium-size_2-of-8 slds-large-size_2-of-12">
+                <p class="p1">{label.Policy_Number}</p>
+                <p class="p5">{policyNumber}</p>
+            </div>
+            
+       </div>
+    </lightning-card>
+    <br/>
+    <lightning-card title="Unpaid Invoices">
+       
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+            <thead>
+                <tr>
+                    
+                    <th>{label.Invoice_No}</th>
+                    <th>{label.Issue_Date}</th>
+                    <th>{label.Due_Date}</th>
+                    <th>{label.Amount} </th>
+                    <th>{label.Select}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={unpaidInvoiceData} for:item='unPaidInvoice'>
+                    <tr key={unPaidInvoice.Id}>
+                        
+                        <td>{unPaidInvoice.name}</td>
+                        <td>{unPaidInvoice.invoiceDate}</td>
+                        <td>{unPaidInvoice.dueDate}</td>
+                        <td>HKD <lightning-formatted-number value={unPaidInvoice.premium}></lightning-formatted-number></td>
+                        <td>
+                            <lightning-input 
+                                onchange={handleInvoiceSelection} 
+                                checked={unPaidInvoice.invoiceCheckBox}
+                                type="checkbox" 
+                                value={unPaidInvoice.Id}
+                                name="invoiceCheckBox">
+                            </lightning-input>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+        <p slot="footer" align="right">
+                <button onclick={downloadInvoice} class="slds-button back_button"><span>{label.Download_Invoice}</span>
+                </button>
+                <button onclick={proceedToPay} class="slds-button next_button">
+                    <span>{label.Pay}</span>
+                </button>
+        </p>    
+    </lightning-card><br/>
+    <lightning-card title="Invoice / Payment Records">
+       
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+            <thead>
+                <tr>
+                    <th>{label.Invoice_No}</th>
+                    <th>{label.Issue_Date}</th>
+                    <th>{label.Due_Date}</th>
+                    <th>{label.Amount} </th>
+                    <th>{label.Status} </th>
+                    <th>{label.Invoice} </th>
+                    <th>{label.Payment_Receipt}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={paidInvoiceData} for:item='paidInvoice'>
+                    <tr key={paidInvoice.Id}>
+                        <td>{paidInvoice.name}</td>
+                        <td>{paidInvoice.invoiceDate}</td>
+                        <td>{paidInvoice.dueDate}</td>
+                        <td>HKD <lightning-formatted-number value={paidInvoice.premium}></lightning-formatted-number></td>
+                        <td>{paidInvoice.status}</td>
+                        <td>
+                            <lightning-input 
+                                type="checkbox" 
+                                onchange={handlePaidInvoiceSelection} 
+                                value={paidInvoice.Id} 
+                                name="invoice">
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input 
+                                type="checkbox" 
+                                onchange={handlePaymentSelection} 
+                                value={paidInvoice.Id} 
+                                name="payment_receipt">
+                            </lightning-input></td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+        <p slot="footer" align="right">
+                
+                <button onclick={payInvoice} class="slds-button next_button"><span>{label.Download_Selected_Document}</span></button>
+        </p>    
+    </lightning-card>
+    <template if:true={showVFPage}>
+        <!--div role="dialog" tabindex="-1" aria-labelledby="header43" aura:id="Modalbox" class="slds-modal slds-modal_large">
+            <div class="slds-modal__container" style="width: 40%;">
+                
+                <div class="slds-modal__content"> 
+                    <iframe src={vfPageUrl} width="40%" height="50px;" frameborder="0"></iframe>
+                </div>
+                <div class="slds-modal__footer">
+                   
+                </div>
+            </div>
+        </div-->
+        <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-modal__header_empty"></header>
+                <div class="slds-modal__content slds-p-around_small slds-scrollable" id="modal-content-id-2">
+                    <iframe src={vfPageUrl} ></iframe>
+                    <!--template onforminput={payPostURL}  >
+                        {paymentRequestData}
+                        {paymentReqDataDataSignature}
+                        <input type="submit" id="submit" value="Proceed To Pay" />
+                    </template-->
+                       
+                    
+                    
+                    
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="Neutral" label={label.Cancel} onclick={paymentPopCancel}></lightning-button>
+                </footer>
+            </div>
+        </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={showPaymentTermsAndCOnditions}>
+        <section 
+            role="dialog" 
+            tabindex="-1" 
+            aria-labelledby="modal-heading-01" 
+            aria-modal="true" 
+            aria-describedby="modal-content-id-1" 
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-text-title_bold" style="font-size:15px;">
+                    {label.TERMS_AND_CONDITIONS_FOR_PAYMENT}
+                </header>
+                <div class="slds-modal__content slds-p-around_small slds-scrollable section_container_payment mt_1 " id="modal-content-id-3" onscroll={handleScroll}>
+                    <table>
+                        <tr>
+                            <td>
+                               {label.Policy_Invoice_Terms}
+                               <br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {label.Policy_Invoice_Terms2}
+                                    <br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {label.Policy_Invoice_Terms3}
+                                <br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {label.Policy_Invoice_Terms4}
+                                    <br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {label.Policy_Invoice_Terms5}
+                                <br><br>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {label.Policy_Invoice_Terms5a}
+                                        
+                                                <br><br>    
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {label.Policy_Invoice_Terms5b}  
+                                            <br><br> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {label.Policy_Invoice_Terms5c}
+                                            <br><br>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {label.Policy_Invoice_Terms6}
+                                <br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {label.Policy_Invoice_Terms7}
+                                    <br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {label.Policy_Invoice_Terms8}
+                                <br><br>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class={disableNextClass}>
+                    <div class="mt_1">
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-checkbox">
+                                <input 
+                                    type="checkbox" 
+                                    name="checkbox1" 
+                                    checked={checkbox1Value} 
+                                    id="checkbox1"
+                                    onchange={handleCheckboxChange} 
+                                    aria-describedby="error_01" />
+                                <label 
+                                    class="slds-checkbox__label" 
+                                    for="checkbox1">
+                                    <span class="slds-checkbox_faux">&nbsp;</span>
+                                    <span class="slds-form-element__label red_bold">
+                                        {label.Policy_Invoice_Terms9}</span>
+                                </label>
+                            </div>
+                            <!--div if:true={showCheckboxError} class="slds-form-element__help color_red">
+                                {checkboxNotSelectedErrorMsg}</div-->
+                        </div>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <div class="slds-var-m-around_medium slds-grid slds-grid_vertical-align-start">
+                        <img src={mastercardLogoUrl} style="height: 48px;">
+                        <img style="height: 48px;
+                        margin-left: 8px;" src={visaLogoUrl}>
+                        <img style="height: 46px;
+                        margin-left: 16px;margin-top: 2px;" src={jcbLogoUrl}>
+                        <div class="slds-grid slds-grid_align-center mt_1" style="width: 64%;">
+                            <button 
+                                onclick={showPrevious} 
+                                class="slds-button back_button">
+                                <span>{label.Back}</span>
+                            </button>
+                            <button 
+                                disabled={btnDisabled} 
+                                onclick={alertUserForGLoabalPayRedirect}
+                                class="slds-button slds-button_destructive next_button">
+                                <span>{label.Next}</span>
+                            </button>
+                            <!--button 
+                            disabled={btnDisabled} 
+                            onclick={alertUserForGLoabalPayRedirect}
+                            class="slds-button slds-button_destructive next_button">
+                            <span>
+                                <template if:true={showPay}>
+                                    <form id="theForm" action="https://testsecureacceptance.cybersource.com/pay" method="post">
+                                        <apex:panelGrid columns="1" style="margin-top:1em;">
+                                            <lightning-formatted-text hidden value="Email salesforce.com and info.salesforce.com" ></lightning-formatted-text>
+                                        </apex:panelGrid>
+                                        <apex:panelGrid columns="2" style="margin-top:1em;">
+                                            <input type="submit" id="submit" value="Next" />
+                                        </apex:panelGrid>
+                                    </form>
+                                </template>
+                            </span>
+                            </button-->
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+</template>

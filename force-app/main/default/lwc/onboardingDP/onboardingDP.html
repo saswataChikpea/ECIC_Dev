@@ -1,0 +1,255 @@
+<template>
+    <c-onboarding-progress active-index="2"></c-onboarding-progress>
+    <div if:false={isLoaded}>
+        <lightning-spinner alternative-text="Loading..." variant="large">
+        </lightning-spinner>
+    </div>
+    <div class="card_body">
+        <!-- <h2 style="margin:1em; color: red;"><strong>Choose your desired policy (Dynamic Pricing)</strong></h2>
+            <h2 style="margin-left:1em; margin-top: 2em; color:royalblue;"><strong>
+                    According to your information, we suggest you choose the highted Policy
+                </strong></h2> -->
+        <div class="slds-card default_padding">
+            <template if:true={shouldShowRecommendedProduct}>
+                <div if:false={productSearchError} class="slds-grid slds-grid_align-center ">
+                    <span style="font-weight: bold;">{label.Recommended_Product} &nbsp;</span>
+                    <span class="red_bold">{recommendedProductName}</span>
+                </div>
+                <div class="slds-grid slds-wrap slds-grid_align-center">
+                    <div class="card1 ibanner_img">
+                        <img class="banner_img" src={recommendedProductUrl} alt="">
+                    </div>
+                </div>
+            </template>
+            <!-- <div if:true={productSearchError} class="slds-grid slds-grid_align-center ">
+                <span style="font-weight: bold;">{productSearchError}</span>
+            </div> -->
+            <div class="slds-grid slds-grid_align-center mt_1">
+                <span class="policy-tutorial">{label.Choose_a_Product}</span>
+            </div>
+            <div class="slds-grid slds-grid_align-center mt_1">
+                <div class="slds-col slds-size_5-of-12 center_vertical line_div"></div>
+                <div>
+
+                    <img class="circular_img"
+                        src="https://i.pinimg.com/originals/27/73/98/277398fde0e665c8d490b6dd579448ee.jpg" alt="">
+
+                </div>
+                <div class="slds-col slds-size_5-of-12 center_vertical line_div"></div>
+
+            </div>
+            <div class="product_container mt_1">
+                <div class="slds-grid slds-wrap slds-grid_align-space" style="width: 80%;">
+                    <template if:true={showProducts}>
+                        <template for:each={showProducts} for:item="prdt">
+                            <div key={prdt.Id} id={prdt.Id} onclick={handleProductSelect} class={prdt.cardClassName}>
+
+                                <div class="ibanner_img">
+                                    <img class="banner_img" src={prdt.Image_Url__c} alt="">
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </div>
+
+
+
+            <template if:false={showProductDetails}>
+                <div style="height: 40vh;"></div>
+            </template>
+            <template if:true={showProductDetails}>
+                <div if:true={selectedProductName} class="slds-grid slds-grid_align-center mt_1">
+                    {label.Applying_for} &nbsp;
+                    <span class="red_bold">{showSelectedProductName}</span>
+                </div>
+                <template if:false={isProductSBP}>
+                    <div class="slds-grid slds-wrap slds-grid_align-space mt_1">
+                        <!-- <template if:false={isProductOMBP}>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <div class="slds-grid slds-grid_align-center mt_1">
+                                <span class="center_vertical bold" style="margin-right: 1rem;">
+                                    Base Premium Rate on {premium_rate_on}
+                                </span>
+                                <div class="section_value" style="margin:0">
+                                    <span>{basePremiumRate}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </template> -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <div class="slds-grid slds-grid_align-center mt_1">
+                                <span class="center_vertical bold" style="margin-right: 1rem;">
+                                    {label.Final_Premium_Rate_on} {premium_rate_on}
+                                </span>
+                                <div class="section_value" style="margin:0">
+                                    <span>{finalPremiumRate}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={isProductSBP}>
+                    <div class="slds-grid mt_1">
+                        <div class=" section_container" style="width: 80%; margin: 0 auto; text-align: center;">
+                            <h2 class="bold" style="margin:0 auto;">
+                                {label.Final_Premium_Rates_on_DE}
+                            </h2>
+                            <div class="slds-grid slds-wrap slds-grid_align-space  " style="margin-top: 1rem;">
+                                <div class="slds-col slds-medium-size_1-of-6 ">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">{label.Country} </span>
+                                        <span class="premiumValue">{label.Grade_A}</span>
+                                        <span class="premiumValue">{label.Grade_B_C}</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">{label.DP} </span>
+                                        <span class="premiumValue">{sbpPriceRate.DP_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DP_NonA}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">{label.DA_OA_0_30}</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_0_30_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_0_30_NonA}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">{label.DA_OA_31_60} </span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_31_60_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_31_60_NonA}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">{label.DA_OA_61_90} </span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_61_90_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_61_90_NonA}%</span>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-medium-size_1-of-6">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">{label.DA_OA_91_120} </span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_91_180_A}%</span>
+                                        <span class="premiumValue">{sbpPriceRate.DA_OA_91_180_NonA}%</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </template>
+
+                <div class="mt_1 ">
+                    <div class="mb_2">
+                        <div class="slds-grid slds-wrap slds-grid_align-space section_container">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <div class="slds-grid slds-grid_vertical align_center">
+                                    <template if:true={isProductOMBP}>
+                                        <span class="bold">{label.Indemnity_Ratio}</span>
+                                        <lightning-combobox class="section_dropdown" name="Indemnity_Percentage__c"
+                                            label="Status" value="0" variant="label-hidden" readonly=""
+                                            options={indemnityRatioOptions} onchange={handleQChange}
+                                            placeholder="Select an option">
+                                        </lightning-combobox>
+                                    </template>
+
+
+                                    <template if:false={isProductOMBP}>
+                                        <div class="slds-grid slds-grid_vertical align_center">
+                                            <span class="bold">{label.Indemnity_Ratio}</span>
+                                            <lightning-combobox class="section_dropdown" name="Indemnity_Percentage__c"
+                                                label="Status" value={indemnityRatio} variant="label-hidden"
+                                                options={indemnityRatioOptions} onchange={handleQChange}
+                                                placeholder="Select an option">
+                                            </lightning-combobox>
+                                        </div>
+                                        <!-- <div class="slds-grid slds-grid_vertical slds-align-center">
+                                        <span style="margin: 2rem 0 0 0">Premium Reduction:</span>
+                                        <span class="section_value">
+                                            -{indemnityRatio}%</span>
+                                    </div> -->
+                                    </template>
+                                </div>
+                            </div>
+                            <div class={showNQLClass}>
+                                <div class="slds-grid slds-grid_vertical align_center">
+                                    <span class="bold">{label.First_Loss_non_qualify_loss_for_each_claim}</span>
+
+                                    <lightning-combobox class="section_dropdown" name="NQL__c" label="Status"
+                                        value={nQL} variant="label-hidden" options={NQLOptions} onchange={handleQChange}
+                                        placeholder="Select an option">
+                                    </lightning-combobox>
+                                </div>
+                                <!-- <div class="slds-grid slds-grid_vertical slds-align-center">
+                                    <span style="margin: 2rem 0 0 0">Premium Reduction:</span>
+                                    <span class="section_value">
+                                        -{nQL}%</span>
+                                </div> -->
+                            </div>
+                            <!-- </div> -->
+                            <div class={showExclutionsClass}>
+                                <div class="slds-grid slds-grid_vertical align_center">
+                                    <div class="slds-grid slds-grid_vertical align_center">
+                                        <span class="bold">{label.Exclusion_PI}</span>
+                                        <div class="slds-grid" style="margin-top: .5rem;">
+                                            <!-- <c-custom-radio eventname="handleradiochange" btnname="Exclusions__c"
+                                            options={exclusionOptions} onhandleradiochange={handleQChange}>
+                                        </c-custom-radio> -->
+                                            <template for:each={exclusionOptions} for:item="option">
+                                                <div class="slds-form-element" key={option.dataId}>
+                                                    <div class="slds-form-element__control">
+                                                        <div class="slds-checkbox">
+                                                            <input type="checkbox" name="Exclusions__c"
+                                                                checked={option.isChecked} data-id={option.dataId}
+                                                                onchange={handleCheckboxChange} id={option.dataId} />
+                                                            <label class="slds-checkbox__label" for={option.dataId}>
+                                                                <span class="slds-checkbox_faux">&nbsp;</span>
+                                                                <span
+                                                                    class="slds-form-element__label">{option.label}</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <!-- 
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-checkbox">
+                                                    <input type="checkbox" name="Exclusions__c" id="Exclusions__c"
+                                                        onchange={handleQChange} aria-describedby="error_01" />
+                                                    <label class="slds-checkbox__label" for="Exclusions__c">
+                                                        <span class="slds-checkbox_faux">&nbsp;</span>
+                                                        <span class="slds-form-element__label">Repudiation Risks</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        </div>
+                                    </div>
+                                    <!-- <div class="slds-grid slds-grid_vertical slds-align-center">
+                                    <span style="margin: 2rem 0 0 0">Premium Reduction:</span>
+                                    <span class="section_value">
+                                        -{exclusion}%</span>
+                                </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <div class="slds-grid slds-grid_align-center mt_1">
+                <button onclick={showPrevious} class="slds-button back_button"><span>{label.Back}</span>
+                </button>
+                <button if:true={selectedProductName} onclick={showOnboardingFillInProposal}
+                    class="slds-button next_button">{label.Next}
+                </button>
+            </div>
+        </div>
+    </div>
+</template>

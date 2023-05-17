@@ -1,0 +1,60 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class=" inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 1%;">
+                <div class="slds-large-size_11-of-12 slds-medium-size--5-of-6 slds-size--2-of-2">&nbsp;</div>
+                <div class="slds-size_1-of-12">
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" title="Close" onclick={closeModal}></lightning-icon>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <p class="p1">{label.Date_f2f}:</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <lightning-input type="date" name="input1" variant="label-hidden" min={min_date} max={max_date} data-id="appointment_date"
+                                onchange={handleAppointmentDate}></lightning-input>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <p class="p1">{label.Time}:</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <lightning-input type="time" min="10:00" max="18:00" name="input1" variant="label-hidden"
+                                onchange={handleAppointmentTime}></lightning-input>
+                </div>
+            </div>
+            <!-- <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <p class="p1">End Time:</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <lightning-input type="time" name="input1" variant="label-hidden"
+                                onchange={handleAppointmentEndTime}></lightning-input>
+                </div>
+            </div> -->
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <p class="p1">{label.Number_of_participants}</p>
+                </div>
+                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <lightning-input type="number" name="input1" variant="label-hidden" max=50 min=1
+                                onchange={handleParticipantNumber}></lightning-input>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">&nbsp;</div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                    <template if:true={show_submit}>
+                    <lightning-button variant="destructive" label={label.Submit} title="Submit" onclick={handleSubmit}
+                                class="slds-m-left_x-small"></lightning-button>
+                    </template>
+                    <p>{submit_msg}</p>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

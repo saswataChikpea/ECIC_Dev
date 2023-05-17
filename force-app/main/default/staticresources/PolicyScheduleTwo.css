@@ -1,0 +1,86 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+.left_table{
+    float: left;
+    width: 50%;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 10.667px;
+}
+div>table>tbody>tr>td>.country_name{
+    text-align: left;
+}
+.right_table{
+    float: right;
+    width: 50%;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 10.667px;
+}
+.country_name{
+    text-align: left;
+}
+
+.notes{
+    float: left;
+    text-align: left;
+    font-size: 10.667px;
+    /* margin-top: 100px; */
+}
+.heading{
+    color: #000080;
+    font-size: 16.5px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+    margin: 20px;
+}
+.policy_number{
+    float: left;
+    width: 50%;
+}
+.issue_date{
+    margin-left: 400px;
+}
+.effective_date{
+    margin-left: 400px;
+}
+.output_date{
+    margin-left: 20px;
+}
+.title{
+    font-weight: bold;
+    color: #000080;
+    font-size: 13.33px;
+    padding: 20px;
+    margin-bottom: 5px;
+}
+.para{
+    color: #000080;
+    font-size: 16.5px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+.sub_heading{
+    text-decoration: underline;
+}
+.table_head{
+    background-color :#e5e5e5;
+    color: #000080;
+}
+.part2{
+    background: #c0c0c0;
+}
+.notes_para{
+    margin-left: 50px;
+}
+.notes_para_sbp{
+    font-size: 16.5px;
+}
+.empty_sup{
+    margin-top: 100px;
+}
+.empty_sbp{
+    margin-top: 100px;
+}

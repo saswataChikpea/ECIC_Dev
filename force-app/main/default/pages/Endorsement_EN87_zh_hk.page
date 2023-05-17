@@ -1,0 +1,410 @@
+<apex:page controller="PolicyDocument_Pdf_controller" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false"
+    readOnly="true" renderAs="PDF" sidebar="false" showHeader="false">
+    <apex:stylesheet value="{!$Resource.EN}" />
+
+    <head>
+        <style>
+            @media print {
+                .noprint {
+                    display: none;
+                }
+            }
+
+            body { font-family: Arial Unicode MS; }
+            font { font-family: Arial Unicode MS !important; }
+
+            @page {
+                size: A4;
+                margin-top: 150px;
+                margin-bottom: 50px;
+                margin-left: 20px;
+                margin-right: 20px;
+                @bottom-right {
+                    content: element(footer);
+                }
+                @top-center {
+                    content: element(header);
+                }
+            }
+
+            div.header {
+                margin: 0px;
+                padding: 0px;
+                position: running(header);
+            }
+
+            div.footer {
+                display: block;
+                padding: 0px;
+                position: running(footer);
+            }
+
+            .pagenumber:before {
+                content: counter(page);
+            }
+
+            .pagecount:before {
+                content: counter(pages);
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="header">
+            <apex:image value="{!$Resource.ECIC_logo}" width="300" height="50" />
+            <div class="heading">
+                由海外附屬公司銷售批單
+                <br/> （境外銷售）
+                <br/> （批單編號：EN87）
+                <br/>
+            </div>
+        </div>
+        <div class="footer" align="center" style="color:#000000;font-size:12px;padding-right:40px;">
+            <div class="page_no">第
+                <span class="pagenumber" /> 頁，共
+                <span class="pagecount" />頁
+            </div>
+            <div class="c_address">公司地址</div>
+        </div>
+        <div>
+            <div class="page_1">
+
+                <div>
+                    <p class="schedule">附表</p>
+                    <p class="confidential">機密</p>
+                    <p class="issue_date">
+                        <span>發出日期 :</span>
+                        <apex:outputText styleClass="output_date" value="{0, date, yyyy-MM-dd}">
+                            <apex:param value="{!Endorsement_Issue_Date}" />
+                        </apex:outputText>
+                    </p>
+                </div>
+                <div class="table_1">
+                    <table>
+                        <tr>
+                            <td class="title">1.&nbsp;保戶名稱及地址</td>
+                            <td class="colon">:</td>
+                        </tr>
+                        <tr>
+                            <td class="p_value">{!Policy_Holder_Name}</td> <br/>
+                        </tr>
+                        <tr>
+                            <td class="p_value">
+                                {!Registered_Address_Line_1} <br/> 
+                                {!Registered_Address_Line_2} <br/>
+                                {!Registered_Address_Line_3} <br/>
+                                {!Registered_District} <br/>
+                                {!Registered_Territory}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">2.&nbsp;保單編號</td>
+                            <td class="colon">:</td>
+                            <td class="value">{!Policy_Number}</td>
+                        </tr>
+                        <tr>
+                            <td class="title">3.&nbsp;本批單生效日期</td>
+                            <td class="colon">:</td>
+                            <td class="value">
+                                <apex:outputText value="{0, date, yyyy-MM-dd}">
+                                    <apex:param value="{!Endorsement_Eff_Date}" />
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title">4.&nbsp;列表 :&nbsp;:</td>
+                        </tr>
+                    </table>
+                    <apex:outputPanel rendered="{!Policy_Type == 'SBP'}">
+                        <table width="100%" border="2" cellspacing="0" cellpadding="0">
+                            <tr class="thead">
+                                <td colspan="2">附屬公司名稱
+及所在國家／市場（編碼）</td>
+                                <td rowspan="3" style="text-align:center;width:12.5%;">買家名稱及
+所在國家／市場（編碼）</td>
+                                <td colspan="5">保險費率（每百港元）</td>
+                            </tr>
+                            <tr class="thead">
+                                <td rowspan="2" style="font-size:8px;width:12.5%;">附屬公司</td>
+                                <td rowspan="2" style="font-size:8px;width:12.5%;">保戶持有的
+已發行股本百分比</td>
+                                <td rowspan="2" style="text-align:center;width:12.5%;">付款交單</td>
+                                <td colspan="4">承兌交單及掛帳－付款期限</td>
+                            </tr>
+                            <tr class="thead">
+                                <td style="text-align:center;width:12.5%;">30天或以下</td>
+                                <td style="text-align:center;width:12.5%;">31至60天</td>
+                                <td style="text-align:center;width:12.5%;">61至90天</td>
+                                <td style="text-align:center;width:12.5%;">91至180天</td>
+                            </tr>
+                            <tbody>
+                                <!-- <apex:repeat var="data" value="{!dynamicPriceList}"> -->
+                                    <tr>
+                                        <td style="text-align:center;width:12.5%;">{!Subsidiary_Name} <br/> {!Subsidiary_Country}</td>
+                                        <td style="text-align:center;width:12.5%;">First Loss Limit</td>
+                                        <td style="text-align:center;width:12.5%;">{!Buyer_Name} <br/> {!Buyer_Country}  </td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DP}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_0_30}</td>
+                                        <td style="text-align:center;width:12.5%;">{{!Premium_Rate_DA_OA_31_60}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_61_90}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_91_180}</td>
+                                    </tr>
+                                <!-- </apex:repeat> -->
+                            </tbody>
+                        </table>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!Policy_Type == 'SUP'}">
+                        <table width="100%" border="2" cellspacing="0" cellpadding="0">
+                            <tr class="thead">
+                                <td colspan="2">附屬公司名稱
+及所在國家／市場（編碼）</td>
+                                <td rowspan="3" style="text-align:center;width:12.5%;">買家名稱及
+所在國家／市場（編碼）</td>
+                                <td colspan="5">保險費率（每百港元）</td>
+                            </tr>
+                            <tr class="thead">
+                                <td rowspan="2" style="font-size:8px;width:12.5%;">附屬公司</td>
+                                <td rowspan="2" style="font-size:8px;width:12.5%;">保戶持有的
+已發行股本百分比</td>
+                                <td rowspan="2" style="text-align:center;width:12.5%;">付款交單</td>
+                                <td colspan="4">承兌交單及掛帳－付款期限</td>
+                            </tr>
+                            <tr class="thead">
+                                <td style="text-align:center;width:12.5%;">30天或以下</td>
+                                <td style="text-align:center;width:12.5%;">31至60天</td>
+                                <td style="text-align:center;width:12.5%;">61至90天</td>
+                                <td style="text-align:center;width:12.5%;">91至180天</td>
+                            </tr>
+                            <tbody>
+                                <!-- <apex:repeat var="data" value="{!dynamicPriceList}"> -->
+                                    <tr>
+                                        <td style="text-align:center;width:12.5%;">{!Subsidiary_Name} <br/> {!Subsidiary_Country}</td>
+                                        <td style="text-align:center;width:12.5%;">First Loss Limit</td>
+                                        <td style="text-align:center;width:12.5%;">{!Buyer_Name} <br/> {!Buyer_Country}  </td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DP}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_0_30}</td>
+                                        <td style="text-align:center;width:12.5%;">{{!Premium_Rate_DA_OA_31_60}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_61_90}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_91_180}</td>
+                                    </tr>
+                                <!-- </apex:repeat> -->
+                            </tbody>
+                        </table>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!Policy_Type == 'OMBP'}">
+                        <table width="100%" border="2" cellspacing="0" cellpadding="0">
+                            <tr class="thead">
+                                <td colspan="2">附屬公司名稱
+及所在國家／市場（編碼）</td>
+                                <td rowspan="3" style="text-align:center;width:12.5%;">買家名稱及
+所在國家／市場（編碼）</td>
+                                <td colspan="5">保險費率（每百港元）</td>
+                            </tr>
+                            <tr class="thead">
+                                <td rowspan="2" style="font-size:8px;width:12.5%;">附屬公司</td>
+                                <td rowspan="2" style="font-size:8px;width:12.5%;">保戶持有的
+已發行股本百分比</td>
+                                <td rowspan="2" style="text-align:center;width:12.5%;">付款交單</td>
+                                <td colspan="4">承兌交單及掛帳－付款期限</td>
+                            </tr>
+                            <tr class="thead">
+                                <td style="text-align:center;width:12.5%;">30天或以下</td>
+                                <td style="text-align:center;width:12.5%;">31至60天</td>
+                                <td style="text-align:center;width:12.5%;">61至90天</td>
+                                <td style="text-align:center;width:12.5%;">91至180天</td>
+                            </tr>
+                            <tbody>
+                                <!-- <apex:repeat var="data" value="{!dynamicPriceList}"> -->
+                                    <tr>
+                                        <td style="text-align:center;width:12.5%;">{!Subsidiary_Name} <br/> {!Subsidiary_Country}</td>
+                                        <td style="text-align:center;width:12.5%;">First Loss Limit</td>
+                                        <td style="text-align:center;width:12.5%;">{!Buyer_Name} <br/> {!Buyer_Country}  </td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DP}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_0_30}</td>
+                                        <td style="text-align:center;width:12.5%;">{{!Premium_Rate_DA_OA_31_60}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_61_90}</td>
+                                        <td style="text-align:center;width:12.5%;">{!Premium_Rate_DA_OA_91_180}</td>
+                                    </tr>
+                                <!-- </apex:repeat> -->
+                            </tbody>
+                        </table>
+                    </apex:outputPanel>
+
+                </div>
+                <div class="hkecic">
+                    <p>香港出口信用保險局</p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_2">
+
+                <div class="block">
+                    <span class="block_heading"> 批單性質</span>
+                    <p class="block_body">
+                        1. 保單的承保範圍憑本批單伸延至保戶的海外附屬公司（「附屬公司」）與本批單附表列明的買家之間簽訂的銷售合同。
+                    </p>
+                    <p class="block_body">
+                        2. 除經更改或增補外，保單的條款及條件同等適用於本批單。在上下文允許的情況下，保單中的<b>貨物啟運</b>包括附屬公司發送貨物予買家。
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">承保範圍</span>
+                    <p class="block_body">
+                        3. 本批單承保下列損失事項：
+                        <p class="sub_1">
+                            (a) 買家破產或無力償還債務；
+                        </p>
+                        <p class="sub_1">
+                            (b) 付款限期後四個月內，買家未對已收取貨物支付貨款；
+                        </p>
+                        <p class="sub_1">
+                            (c) 買家沒有提取貨物；
+                        </p>
+                        <p class="sub_1">
+                            (d) 在附屬公司及買家均無法控制的情況下，買家所在<b>國家適用</b>法律或法規的實施禁止或限制買家匯款至附屬公司所在<b>國家</b>，但前提是在法律允許的範圍內，買家已將應付的貨款以等額當地貨幣存入銀行帳戶，並已發出向附屬公司匯款的不可撤銷的指示；
+                        </p>
+                        <p class="sub_1">
+                            (e)在附屬公司及買家均無法控制的情況下，買家所在<b>國家適用</b>法律或法規的實施禁止將貨物進口至買家所在<b>國家</b>；
+
+                        </p>
+                        <p class="sub_1">
+                            (f) 在附屬公司及買家均無法控制且雙方均無過失的情況下，買家所在<b>國家</b>撤銷已簽發的進口授權；
+                        </p>
+                        <p class="sub_1">
+                            (g) 買家所在<b>國家</b>或貨款支付須經由的第三方<b>國家</b>頒布延期付款令；及
+                        </p>
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_3">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        <p class="sub_1">
+                            (h)買家所在<b>國家</b>發生戰爭、革命或暴動或任何自然災害，導致無法全部或部分履行可受保合同。
+                        </p>
+                        <p class="sub_1">
+                            若為本批單之目的，除保單第17.1條、第17.2條及第17.3條列明的除外責任不適用於附屬公司外（即有關取得有效信用限額、申報可受保的貨物啟運及繳納保險費的義務仍須由保戶承擔），保單第VI章列明的除外責任同等適用於本批單，凡保單中涉及保戶之處同等適用於附屬公司，以摒除本局在本批單項下就附屬公司之承保。
+
+                        </p>
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">附加條件</span>
+                    <br/>
+                    <br/>
+                    <span class="block_heading">申報</span>
+                    <p class="block_body">
+                        4. 在適用本批單的任何合同項下的貨物發送後30日內，保戶須按照持有附屬公司已發行股本百分比的相同比例，向信保局申報該等貨物的發票總額（「按擁有權比例計算的發票總額」）。
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">保險費率</span>
+                    <p class="block_body">
+                        5. 保戶須繳納保險費。保險費根據按擁有權比例計算的發票總額，按本批單附表列明的適當的保險費率計算（該保險費率可由信保局不時修訂）。
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">其他條件</span>
+                    <p class="block_body">
+                        6. 保戶必須要求附屬公司滿足保單的條款及條件。否則，附屬公司未滿足此要求即被視為保戶未遵守保單條款。
+                    </p>
+                    <p class="block_body">
+                        7. 附屬公司並不享有保單項下的任何權利。保戶仍為保單的受保人並保有管理與該等合同相關的保單的義務（包括繳納保險費、遞交所有申請及申報、協商及達成索償）。
+                    </p>
+                </div>
+
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_4">
+
+                <div class="block">
+                    <span class="block_heading">保戶保證</span>
+                    <p class="block_body">
+                        保戶保證並同意：
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">持有股本</span>
+                    <p class="block_body">
+                        8. 保戶必須直接或間接：
+                        <p class="sub_1">
+                            (a) 持有本批單附表第4項列明的每間附屬公司的已發行股本百分比；並
+                        </p>
+                        <p class="sub_1">
+                            (b) 擁有對每間附屬公司的董事及／或股東所作的決定的控制權。
+                        </p>
+                    </p>
+                    <p class="block_body">
+                        9. 保戶須就附屬公司與其買家所簽訂的上述銷售合同所作出的行為承擔全部責任。
+                    </p>
+                    <p class="block_body">
+                        10. 對於自保戶變更其在附屬公司中的股本持有比例後，或保戶對附屬公司失去控制權後（以兩者中較早者為準），附屬公司所遭受的損失，信保局概不承擔賠償責任。
+                    </p>
+                    <p class="block_body">
+                        11. 在保單有效期內，如保戶對附屬公司的股本持有比例或控制權出現任何變更，保戶須立即通知信保局，但最遲不得超過該變更發生之日後的7日內。
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">盡量減少損失</span>
+                    <p class="block_body">
+                        12. 保戶必須確保附屬公司猶如未投保般行事並盡快採取一切合理可行的措施及信保局要求的一切可行的行動以在任何時候避免或盡量減少損失。該等措施或行動包括但不限於委託債務追收公司協助收帳，向買家或買家的擔保人提出法律訴訟及對附屬公司持有的任何抵押品行使任何權利。如買家沒有提取貨物，附屬公司在轉售或處置該貨物前，保戶須事先徵得信保局的書面同意。
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_5">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        13. 如保戶無法履行上述第8至12段列明的任何保證及承諾，信保局可全權酌情決定宣告信保局在保單上的法律責任及義務失效。
+
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">追償程序</span>
+                    <p class="block_body">
+                        14. 在保戶收到賠償後：
+                        <p class="sub_1">
+                            (a) 附屬公司須採取一切合理可行的措施及信保局要求的一切可行的行動，包括委託債務追收公司協助收帳，提出法律訴訟及對保戶持有的抵押品行使任何權利，以從任何來源獲得追償；及
+                        </p>
+                        <p class="sub_1">
+                            (b) 一經要求，附屬公司須盡快向信保局提供追償所需的相關協助及文件。
+                        </p>
+                    </p>
+                    <p class="block_body">
+                        15. 附屬公司或其任何代理人一經收到與賠償有關的任何追償款項，即等同保戶收到相關款項。保戶須在可行情況下盡快將信保局按保單規定比例應得的部分款項退還給信保局，在任何情況下最遲不得超過收到追償款項之日後一個月。
+                    </p>
+                </div>
+                <div class="block">
+                    <span class="block_heading">償還誤付的款項</span>
+                    <p class="block_body">
+                        16. 如附屬公司沒有依照上述第14(a)段的規定採取相應措施及行動，及／或沒有依據上述第14(b)段的規定提供相關協助及文件，及／或保戶沒有依據上述第15段的規定退還款項，一經信保局要求，保戶必須於要求後的20個<b>工作日</b>內償還信保局支付的所有款項，包括但不限於賠償及與<b>賠償</b>相關的費用。信保局保留權利向其已支付的任何款項收取由信保局支付款項之日起直至信保局收到償還款項之日為止按月利率1%計算的利息。
+                    </p>
+                </div>
+            </div>
+            <div style="page-break-after:always;" />
+            <div style="page-break-before:always;" />
+            <div class="page_6">
+
+                <div class="block">
+                    <span class="block_heading"></span>
+                    <p class="block_body">
+                        註： (i) 粗體顯示詞語的釋義載於保單內。
+                        <br/>
+                        <span style="margin-left:7%;">
+                            (ii) 本批單及其附表乃保單的構成部分。
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</apex:page>

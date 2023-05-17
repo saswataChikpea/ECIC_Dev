@@ -1,0 +1,75 @@
+<template>
+    <template if:true={isLoading}>
+        <div class="exampleHolder">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+    
+    <h2 class="slds-align_absolute-center slds-text-heading_medium top_text">{pageTitle}</h2>
+    <br>
+    <template if:false={isOmbp}>
+        <table  style="border-collapse: collapse; width: 100%;">
+            <tbody>
+                <tr>
+                    <td class="first_table_content"><b>Policy Number:</b></td>
+                    <td class="first_table_content">{policyNumber}</td>
+                    <td class="first_table_content"><b>Issue Date:</b></td>
+                    <td class="first_table_content">{issueDate}</td>
+                </tr>
+                <tr>
+                    <td class="first_table_content"></td>
+                    <td class="first_table_content"></td>
+                    <td class="first_table_content"><b>Effective Date:</b></td>
+                    <td class="first_table_content">{policyCommDate}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <ul class="slds-list_ordered">
+            <div style="font-family: 'Montserrat'; font-size: 20px;">
+                <template if:true={isSbp}>
+                    <b><li>Declarations</li></b>
+                    The Policy requires the Policyholder to declare <b>shipments</b> made under the <b>insurable contracts</b> 
+                    as specified below (Clause 8):
+                    <br>
+                    <table border="1">
+                        <tr>
+                            <!-- <td>
+                                The Policyholder must declare to HKECIC in the form specified by HKECIC (or in such other form acceptable to HKECIC):
+                                <br>
+                                a.&nbsp;&nbsp;the <b>gross invoice value</b> of the goods shipped within 21 days from the date of shipment under any insurable contract; or 
+                                <br>
+                                b.&nbsp;&nbsp;for each of the buyers within 15 days of the following month the aggregate amount of the <b>gross invoice value</b> of the goods shipped in the preceding month.
+                                <br>
+                            </td> -->
+                            <td>
+                                <p>
+                                    The Policyholder must declare to HKECIC in the form specified by HKECIC (or in such other form acceptable to HKECIC):
+                                </p>
+                                <br/>
+                                a. within 21 days of the following month the gross invoice value of the goods shipped in the 
+                                preceding month under any <b>insurable contract.</b>
+                                <br/><br/>
+                                b. for each of the buyers within 21 days of the following month the aggregate amount of the 
+                                gross invoice value of the goods shipped in the preceding month.
+                                <br/><br/>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                </template>
+               
+                <b><li>Premium Rebate</li></b>
+                <br>
+                a.&nbsp;&nbsp;This Schedule III sets out the premium rebate which the Policyholder shall be entitled under the Policy.
+                <br>
+                b.&nbsp;&nbsp;Upon the commencement of a new policy period, the Policyholder shall be entitled to a one-off premium rebate equivalent to {rebate_rate}% of the total amount of the premium invoiced and received by HKECIC for the shipments made under all insurable contracts during the preceding policy period.  The premium rebate shall be finalised and credited to the Policyholder's account upon Policyholder’s confirmation of declaration of all insurable shipments and full settlement of all outstanding premium attributable to the policy period concerned. 
+                <br> 
+                c.&nbsp;&nbsp;The premium rebate shall be applied to offset any premium of shipments made from the new policy period onwards or any amount due to HKECIC by the Policyholder, whether under this Policy or otherwise.
+                <br>
+                d.&nbsp;&nbsp;In the event that any claim including expense reimbursement is subsequently payable by HKECIC on the shipments made in any previous policy period for which premium rebate has been made, such payable shall be offset by the premium rebate of the related policy period up to the lower of the claim payable amount or the rebate in its original sum.  Any balance of the premium rebate on the Policyholder’s account shall be settled with the Policyholder upon the termination of the Policy. 
+
+            </div>
+        </ul>
+    </template>
+</template>

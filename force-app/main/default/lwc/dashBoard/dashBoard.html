@@ -1,0 +1,304 @@
+<template>
+
+    <div class="container">
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_8-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                <div class="inner-container" style="margin-left: 1%;">
+                    <p class="p1">{label.Reminder}</p>
+                    <hr class="hr1" />
+                    <div style="max-height:140px;overflow-y:scroll;min-height:135px;">
+                        <template for:each={task_list} for:item="task">
+                            <div key={task.Id}>
+                                <p class="p1">{task.Subject}</p>
+                                <p class="p5">{task.Description}</p>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="slds-size_1-of-12">&nbsp;</div> -->
+            <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                <div class="inner-container" style="margin-left: 1%;padding-left: 6%;">
+                    <p class="p1">{label.Policy}</p>
+                    <hr class="hr1" />
+                    <p style="padding-top: 1%;padding-bottom: 1%"><span
+                            class="p4">{label.Company_Name}:</span>&nbsp;&nbsp;&nbsp;<span
+                            class="p5">{account_name}</span></p>
+                    <p style="padding-top: 1%;padding-bottom: 1%"><span
+                            class="p4">{label.Current_Policy}:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="p5">{policy_type}</span></p>
+                    <p style="padding-top: 1%;padding-bottom: 1%"><span
+                            class="p4">{label.Policy_Number}:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="p5">{policy_no}</span></p>
+                    <p style="padding-top: 1%;padding-bottom: 1%"><span
+                            class="p4">{label.Effective_Date}:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="p5">{effective_date}</span></p>
+                    <p style="padding-top: 1%;padding-bottom: 1%"><span
+                            class="p4">{label.Renewal_Date}:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="p5">{renewal_date}</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_8-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                <div class="inner-container" style="margin-left: 1%;overflow-y:auto;">
+                    <div class="" if:true={quoteData.length} style="margin-bottom: 1rem;">
+                        <p class="p1">{label.Quotations}</p>
+                        <hr class="hr1" style="width:40%;" />
+                        <div class="tableContainer">
+                            <lightning-datatable key-field="Id" data={quoteData} columns={quoteColumns}
+                                onrowaction={handleRowActionQuote}>
+                            </lightning-datatable>
+                        </div>
+                    </div>
+                    <div class="" if:true={proposalData.length}>
+                        <p class="p1">{label.Outstanding_Policy_Applications}</p>
+                        <hr class="hr1" style="width:40%;" />
+                        <div class="tableContainer">
+                            <lightning-datatable key-field="Id" data={proposalData} columns={proposalColumns}
+                                onrowaction={handleRowActionProposal}>
+                            </lightning-datatable>
+                        </div>
+                    </div>
+                    <button if:true={showCreateAnotherProposalButton} class="slds-button"
+                        style="border: none; text-decoration: underline;"
+                        onclick={createNewProposal}>{label.Create_a_new_policy_application}</button>
+                </div>
+            </div>
+            <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+
+                <!-- <div class="inner-container"
+                    style="margin-left: 1%;max-height:15rem;min-height:12rem;overflow-y:auto;padding-left:6%;">
+                    <p class="p1" style="text-align: center;">{label.To_do_List}</p>
+                    <hr class="hr1" style="width:40%;margin-left:29%;" />
+
+                    <template for:each={task_list} for:item="task">
+                        <div key={task.Id}>
+                            <p class="p1">{task.Subject}</p>
+                            <p class="p5">{task.Description}</p>
+                        </div>
+                    </template>
+                </div> -->
+
+                <div class="inner-container"
+                    style="margin-left: 1%;max-height:15rem;min-height:12rem;overflow-y:auto;margin-top:2%;">
+                    <p class="p1" style="text-align: center;">{label.E_Communication}</p>
+                    <hr class="hr1" style="width:40%;margin-left:29%;" />
+                    <!-- <div class="slds-grid slds-grid--wrap "
+                        style="margin-top:2%;border:1px solid red;border-radius: 5px;margin-right:1%;">
+                        <div class="slds-size_2-of-12" style="margin-top:2%;margin-bottom:2%;">
+                            <span style="color: rgb(94, 131, 201);padding-left:30%;">Title</span>
+                        </div>
+                        <div class="slds-size_8-of-12">
+                            &nbsp;
+                        </div>
+                        <div class="slds-size_2-of-12" style="margin-top:2%;margin-bottom:2%;">
+                            <Span style="color: darkgray;">Sender</Span>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-grid--wrap "
+                        style="margin-top:2%;border:1px solid red;border-radius: 5px;margin-right:1%;">
+                        <div class="slds-size_2-of-12" style="margin-top:2%;margin-bottom:2%;">
+                            <span style="color: rgb(94, 131, 201);padding-left:30%;">Title</span>
+                        </div>
+                        <div class="slds-size_8-of-12">
+                            &nbsp;
+                        </div>
+                        <div class="slds-size_2-of-12" style="margin-top:2%;margin-bottom:2%;">
+                            <Span style="color: darkgray;">Sender</Span>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-grid--wrap "
+                        style="margin-top:2%;border:1px solid red;border-radius: 5px;margin-right:1%;">
+                        <div class="slds-size_2-of-12" style="margin-top:2%;margin-bottom:2%;">
+                            <span style="color: rgb(94, 131, 201);padding-left:30%;">Title</span>
+                        </div>
+                        <div class="slds-size_8-of-12">
+                            &nbsp;
+                        </div>
+                        <div class="slds-size_2-of-12" style="margin-top:2%;margin-bottom:2%;">
+                            <Span style="color: darkgray;">Sender</Span>
+                        </div>
+                    </div> -->
+                    <template for:each={feedItems} for:item="feed">
+                        <div class="slds-grid slds-grid--wrap " key={feed.Id}
+                            style="margin-top:2%;border:1px solid red;border-radius: 5px;margin-right:1%;">
+
+                            <div class="slds-size_8-of-12" style="margin-top:2%;margin-bottom:2%;">
+                                <p style="padding-left: 2%;">{feed.Title}</p>
+                                <p style="padding-left: 2%;">{feed.Body}</p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_8-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                <div class="inner-container" style="margin-left: 1%;overflow-y:auto;">
+                    <div class="" if:true={buyerVettingData.length} style="margin-bottom: 1rem;">
+                        <p class="p1">Outstanding Buyer Vetting Status</p>
+                        <hr class="hr1" style="width:40%;" />
+                        <div class="tableContainer">
+                            <lightning-datatable key-field="Id" data={buyerVettingData} columns={buyerVettingColumns}
+                                onrowaction={handleRowActionQuote}>
+                            </lightning-datatable>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_8-of-12 slds-medium-size--6-of-6 slds-size--2-of-2" style="margin-top: 1%;">
+                <div class="inner-container" style="margin-left: 1%;min-height:20rem;overflow-y:auto;">
+                    <p class="p1">{label.Credit_Limit_Approval_Process_Status}</p>
+                    <hr class="hr1" style="width:35%;" />
+                    <div class="slds-grid slds-grid--wrap" style="padding-top: 2%;">
+                        <div class="slds-size_2-of-12">
+                            <p class="p4" style="word-wrap: break-word"> {label.Application_Received}</p>
+
+                        </div>
+                        <span class="span1">&nbsp;>&nbsp;</span>
+                        <div class="slds-size_2-of-12">
+
+                            <p class="p4" style="word-wrap: break-word">{label.Gathering_Buyer_Credit_Information}
+                            </p>
+
+                        </div>
+                        <span class="span1">&nbsp;>&nbsp;</span>
+                        <div class="slds-size_2-of-12">
+
+                            <p class="p4" style="word-wrap: break-word">{label.Application_under_Assessment}</p>
+
+                        </div>
+                        <span class="span1">&nbsp;>&nbsp;</span>
+                        <div class="slds-size_2-of-12">
+
+                            <p class="p4" style="word-wrap: break-word">
+                                {label.Gathering_Additional_Buyer_Credit_Information}
+                            </p>
+
+                        </div>
+                        <span class="span1">&nbsp;>&nbsp;</span>
+                        <div class="slds-size_2-of-12">
+
+                            <p class="p4" style="word-wrap: break-word">{label. Assessment_Completed}</p>
+                        </div>
+                    </div>
+                    <template for:each={cl_list} for:item="cl">
+                        <div key={cl.Id} class="slds-grid slds-grid--wrap div1" style="margin-right:2%;margin-top:1%;">
+                            <div class="slds-size_2-of-12">
+
+                                <p if:true={cl.Buyer_Name__c} class="p1">{cl.Buyer_Name__c}</p>
+                            </div>
+                            <div class="slds-size_2-of-12">
+                                <p class="p6">({cl.Name})</p>
+                            </div>
+                            <div class="slds-size_4-of-12">
+                                &nbsp;
+                            </div>
+                            <div class="slds-size_4-of-12">
+                                <div class="slds-progress-bar slds-progress-bar_circular" style="margin-top: 3%;"
+                                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" role="progressbar">
+                                    <span class={progress}>
+                                        <span class="slds-assistive-text">Progress: 40%</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_8-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                style="margin-top: 1%;background-color:white;border-radius:9px;margin:1%;">
+                <lightning-accordion allow-multiple-sections-open>
+                    <lightning-accordion-section name="A" label={label.HKECIC_Calendar}
+                        style="font-size: 14px;font-weight:bold;">
+                        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                            <div class="slds-large-size_8-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                                style="margin-top: 1%;">
+                                <div class="inner-container2" style="margin-left: 1%;">
+                                    <div id="calendar" class="fullcalendarjs"></div>
+                                </div>
+                            </div>
+
+                            <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                                style="margin-top: 1%;">
+                                <div class="inner-container2" style="margin-left: 1%;padding:5%;">
+                                    <p style="text-align: center;padding-bottom:4%;font-weight:bold">
+                                        {label.Upcoming_Event}</p>
+                                    <template for:each={returnedEvents} for:item="event">
+
+                                        <template if:false={event.is_user_approved}>
+                                            <!-- <p key={event.Id}><span style="color: red;">&#9679;</span><span style=""><lightning-formatted-date-time year="numeric" month="numeric" day="numeric"  value={event.StartDateTime} style="font-weight: 800;padding-left: 3%;font-size: 13px;"></lightning-formatted-date-time></span></p> -->
+                                            <p key={event.Id}><span style="color: red;">&#9679;</span><span
+                                                    style="font-weight: 800;padding-left: 3%;font-size: 13px;">{event.formatted_date}</span>
+                                            </p>
+                                            <!-- <p key={event.Id}><span style="color: rgb(240 134 10);padding-left:6%;" data-id={event.Id} onclick={handleUpdateEvent}><a href="javascript:void(0)">{event.Subject}</a></span></p> -->
+                                            <a key={event.Id}
+                                                style="color: rgb(240 134 10);padding-left:6%;text-decoration: underline;"
+                                                data-id={event.Id} onclick={handleUpdateEvent}
+                                                href="javascript:void(0)">{event.Subject}</a>
+                                            <p key={event.Id}><span style="padding-left:6%;">Time:
+                                                    <lightning-formatted-date-time value={event.StartDateTime}
+                                                        hour="numeric" minute="numeric">
+                                                    </lightning-formatted-date-time>
+                                                </span></p>
+                                        </template>
+                                        <template if:true={event.is_user_approved}>
+                                            <!-- <p key={event.Id}><span style="color: red;">&#9679;</span><span style=""><lightning-formatted-date-time year="numeric" month="numeric" day="numeric"  value={event.StartDateTime} style="font-weight: 800;padding-left: 3%;font-size: 13px;"></lightning-formatted-date-time></span></p> -->
+                                            <p key={event.Id}><span style="color: red;">&#9679;</span><span
+                                                    style="font-weight: 800;padding-left: 3%;font-size: 13px;">{event.formatted_date}</span>
+                                            </p>
+                                            <!-- <p key={event.Id}><span style="color: rgb(95 140 225);padding-left:6%;" data-id={event.Id} onclick={handleUpdateEvent}>{event.Subject}</span></p> -->
+                                            <a key={event.Id}
+                                                style="color: rgb(95 140 225);padding-left:6%;text-decoration: underline;"
+                                                data-id={event.Id} onclick={handleUpdateEvent}
+                                                href="javascript:void(0)">{event.Subject}</a>
+                                            <p key={event.Id}><span style="padding-left:6%;">Time:
+                                                    <lightning-formatted-date-time value={event.StartDateTime}
+                                                        hour="numeric" minute="numeric">
+                                                    </lightning-formatted-date-time>
+                                                </span></p>
+                                        </template>
+                                    </template>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                            <div class="slds-large-size_8-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                                style="margin-top: 1%;">
+                                &nbsp;
+                            </div>
+                            <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                                style="margin-top: 1%;">
+                                <button
+                                    style="color: black;background-color:rgb(244 167 45);border-radius:20px;margin-top:2%;margin-left:10%;"
+                                    class="slds-button slds-button_neutral"
+                                    onclick={openF2FModal}>{label.Face_to_face_appointment}</button>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+                <template if:true={showf2fModal}>
+                    <c-face-to-face-appointment accountid={accId} onclosef2fmodal={closef2fmodal}>
+                    </c-face-to-face-appointment>
+                </template>
+                <template if:true={showf2fUpdateModal}>
+                    <c-face-toface-appointment-update accountid={accId} selectedevent={selectedEvent}
+                        onclosef2fupdatemodal={closef2fupdatemodal}></c-face-toface-appointment-update>
+                </template>
+                <!-- <template if:true={show_welcome_modal}>
+                    <c-welcome-modal accountid={accId} onclosewelcomemodal={closewelcomemodal}></c-welcome-modal>
+                </template> -->
+            </div>
+        </div>
+
+    </div>
+</template>

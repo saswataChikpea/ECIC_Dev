@@ -1,0 +1,17 @@
+<template>
+    <div style="margin-left:3%;border:none!important">
+        <template for:each={options} for:item="item" class="card1">
+            <fieldset key={item.value} style="display: block; float: left; border:none">
+                <div class="slds-form-element__control card1">
+                    <span class="slds-checkbox card1">
+                        <input name="checkboxgroup" id={item.value} type="checkbox" value={item.value} onchange={handleSelected}/>
+                        <label class="slds-checkbox__label" for={item.value}>
+                            <span class="slds-checkbox_faux"></span>
+                            <span class="slds-form-element__label">{item.label}</span>
+                        </label>
+                    </span>
+                </div>
+            </fieldset>
+        </template><br /><br />
+    </div>
+</template>

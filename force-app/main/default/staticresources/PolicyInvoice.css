@@ -1,0 +1,66 @@
+/* .body{
+    font-size: 16px;
+} */
+.draft{
+    color: red;
+    text-align: center;
+    font-size: 24px;
+}
+.invoice{
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    font-size: 19px;
+}
+
+.title{
+    font-size: 12px;
+    text-align: center;
+}
+.value{
+    font-size: 12px;
+    text-align: center;
+}
+._td{
+    height: 50px;
+    width: 25px;
+}
+.left_div{
+    float: left;
+    width: 50%;
+    margin:0%;
+}
+.right_div{
+    float: right;
+    width: 50%;
+}
+
+.table_1,.footer,.footer_ombp,.table_2{
+    margin-top: 50px;
+    float: left;
+    width: 100%;
+}
+.block{
+    background-color: #d3d3d3;
+    /* padding: 10px; */
+    margin-bottom: 14px;
+    margin-left: 10px;
+    font-size: 14px;
+    width: 350px;
+}
+._tr{
+    background-color: #d3d3d3;
+}
+.highlight{
+    background-color: yellow;
+}
+.output_date{
+    text-align: center;
+}
+ul{
+    list-style-type: square;
+}
+/* .rotate{
+    transform: rotate(45deg);
+} */
+

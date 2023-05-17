@@ -1,0 +1,394 @@
+<template>
+    <div if:true={loading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>Please Wait
+    </div>
+    <div if:false={loading}>
+        <div class="container">
+            <p class="p8" style="margin-left:2%;margin-bottom:1%;">{label.Credit_Limit_Application}</p>
+        <div class="inner-container">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Company_Name}</p>
+                    <p class="p5">{policydetail.Exporter__r.Name}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Number}</p>
+                    <p class="p5">{policydetail.Legacy_Customer_Number__c}</p>
+                </div>
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Policy_Type}</p>
+                    <p class="p5">{policydetail.Product__r.Name}</p>
+                </div>
+                <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <p class="p1">{label.Free_Credit_Check_Facility_Balance}</p>
+                    <p class="p5"><span onclick={handleCreditCheckFacility}>{policydetail.Available_Credit_Check__c} (<a href="javascript:void(0)">Details</a>)</span></p>
+                </div>
+
+                <div class="slds-large-size_2-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <!-- <lightning-button variant="destructive" label="CL Application Draft" title="CL Application Draft"
+                        class="slds-m-left_x-small" onclick={handleOpenClApplyNew}></lightning-button> -->
+                    <!-- <button style="color: black;" class="slds-button slds-button_neutral"
+                        onclick={handleOpenClApplyNew}>New Application</button> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section1" onclick={expandHandler1}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section1.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section1.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section1.isSectionOpen}>
+                        
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{label.Policyholder}</p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{policydetail.Exporter__r.Name}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">1. Are you holding a valid credit limit on the buyer?<span
+                                        style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.is_credit_limit_exist}</p>
+                            </div>
+                        </div> -->                                          
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {buyer_label} {label.Country_Market}<span style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                 <p class="p4">{clconfirmationdata.Buyer_Country__c}</p>
+                            </div>
+                        </div>
+                        <!-- <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">5. Destination Country / Market<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Destination_Market__c}</p>
+                            </div>
+                        </div> -->
+                        
+                            
+                        
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {buyer_label} {label.Name}<span style="color: red;">*</span></p>
+                            </div>                         
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Buyer_Name__c}</p>
+                            </div>
+                        </div>
+                            
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {buyer_label} {label.Address}<span style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Buyer_Address_Line_1__c}</p>
+                                <p class="p4">{clconfirmationdata.Buyer_Address_Line_2__c}</p>
+                                <p class="p4">{clconfirmationdata.Buyer_Address_Line_3__c}</p>
+                                <p class="p4">{clconfirmationdata.Buyer_Address_Line_4__c}</p>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Registration_Number_If_any}</p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Buyer_Registration_Number__c}</p>
+                            </div>
+                        </div>
+                        <!-- <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> Harmonized Code<span style="color: red;">*</span></p>
+                            </div>
+                            <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Harmonized_Code__c}</p>                                        
+                            </div>
+                        </div> -->
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p4"> {label.Goods_Involved}<span style="color: red;">*</span></p>
+                                </div>
+                                <template if:true={is_miscellaneous}>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.Goods_or_Services_Involved__c}&nbsp;,&nbsp;{clconfirmationdata.Specific_Goods_Involved__c}</p>                                        
+                                    </div>
+                                </template>
+                                <template if:false={is_miscellaneous}>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.Goods_or_Services_Involved__c}</p>                                        
+                                    </div>
+                                </template>
+                                
+                            </div>
+                            
+                            
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Application_Amount_HKD}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <div class="slds-large-size_7-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                            <lightning-slider label="" value={clconfirmationdata.CL_Application_Amount__c} max={application_amount_max} min={application_amount_min} step=50000 variant="label-hidden" onchange={handleCLAAmountChange}></lightning-slider>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Payment_Terms}<span style="color: red;">*</span></p>
+                                    </div>
+                                    <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container" >
+                                        <lightning-combobox value={clconfirmationdata.Payment_Term_Type__c} placeholder="-Select-" options={payment_terms} class="input2" style="width:70%;"
+                                            variant="label-hidden" disabled onchange={handlePaymentTermTypeChange}>
+                                        </lightning-combobox>
+                                    </div>  
+                                    <div class="slds-large-size_3-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container" >
+                                        <lightning-input type="number" disabled variant="label-hidden" class="input2" value={clconfirmationdata.Payment_Term_Days__c}
+                                            onchange={handlePaymentTermDaysChange}></lightning-input>
+                                    </div>
+                                </div>
+                                                     
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section2" onclick={expandHandler2}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section2.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section2.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section2.isSectionOpen}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Is_this_your_new_buyer}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Is_New_Buyer__c}</p>
+                            </div>
+                        </div>
+                        <template if:true={is_new_buyer}>                            
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.How_long_have_you_been_trading_with_this} {buyer_label}?<span style="color: red;">*</span>
+                                        </p>
+                                    </div>
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.Buyer_Trading_Time__c}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{label.Please_provide_the_amount_and_payment_terms_of_the_shipments_you_made_to_this} {buyer_label} {label.in_the_last_12_months_HKD}<span style="color: red;">*</span>
+                                        </p>
+                                    </div>
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{shipment_payment_terms_amount} , {clconfirmationdata.Shipment_Payment_Term_Days_12_Months__c}&nbsp; Days</p>
+                                        <p class="p4">{clconfirmationdata.Shipment_Payment_Term_Method_12_Months1__c}</p>
+                                        <p class="p4">{clconfirmationdata.Shipment_Payment_Term_Method_12_Months2__c}</p>
+                                        <p class="p4">{clconfirmationdata.Shipment_Payment_Term_Method_12_Months3__c}</p>
+                                        <p class="p4">{clconfirmationdata.Shipment_Payment_Term_Method_12_Months4__c}</p>
+                                        <p class="p4">{clconfirmationdata.Shipment_Payment_Term_Method_12_Months5__c}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4"> {label.Is_there_any_amount_currently_unpaid_for_more_than_60_days_from_the_due_date_for} {buyer_label}?<span style="color: red;">*</span>
+                                        </p>
+                                    </div>
+                                    <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                        <p class="p4">{clconfirmationdata.Is_Unpaid_Amount__c}</p>
+                                    </div>
+                                </div>                            
+                        </template>
+                        
+                        <template if:true={flag_unpaid_shipment}>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <p class="p8" style="margin-bottom:1%;">{label.Unpaid_Shipment_Details}</p>
+                                </div>
+                                <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                                <div class="slds-large-size_12-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>
+                                                    <p class="p1">{label.Shipment_Invoice_date}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Gross_Invoice_Value_Currency}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Gross_Invoice_Value_Amount}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Payment_Terms}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Due_Date_CLA}<span style="color:red">*</span></p>
+                                                </th>
+                                                <th>
+                                                    <p class="p1">{label.Remark}</p>
+                                                </th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <template for:each={clconfirmationdata.Outstanding_Payments__r} for:item="inv" for:index="indx">
+                                            <tr key={inv.key} id={inv.key}>
+                                                <td>
+                                                    <p class="p4">{inv.Shipment_Or_Invoice_Date__c}</p>
+                                                </td>
+                                                <td style="padding-left: 1%;">
+                                                    <p class="p4">{inv.Gross_Invoice_Currency__c}</p>
+                                                </td>
+                                                <td>                                                    
+                                                    <p class="p4">{inv.Gross_Invoice_Amount__c}</p>
+                                                </td>
+                                                <td>
+                                                    <p class="p4">{inv.Payment_Term_Type__c} &nbsp;&nbsp;{inv.Payment_Term_Days__c}&nbsp;Days</p>
+                                                </td>
+                                                <td>
+                                                    <p class="p4">{inv.Due_Date__c}</p>
+                                                </td>
+                                                <td>
+                                                    <p class="p4">{inv.Remarks__c}</p>
+                                                </td>                                                
+                                            </tr>
+                                        </template>
+                                    </table>                                   
+                                    
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="inner-container" style="margin-top: 2%;">
+            <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+                <div class="slds-large-size_1-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    &nbsp;
+                </div>
+                <div class="slds-large-size_10-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                    <div class="section_head slds-grid slds-wrap" id="section3" onclick={expandHandler3}
+                        style="margin-top: 1%;">
+                        <div class="slds-large-size_4-of-12 slds-medium-size--6-of-6 slds-size--2-of-2"
+                            style="padding-left: 1%;">
+                            <p class="p4" style="text-align:left">{section3.label}</p>
+                        </div>
+
+                        <div class="slds-col_bump-left">
+                            <lightning-icon icon-name={section3.iconName} size="x-small" class="slds-current-color"
+                                alternative-text="down" title="down">
+                            </lightning-icon>
+                        </div>
+                    </div>
+                    <div class="section_container" if:true={section3.isSectionOpen}>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Do_you_have_any_orders_confirmed_negotiation_with_this} {buyer_label}?<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Order_Confirmed_or_Negotiation__c}</p>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Please_provide_the_amount_and_payment_terms_of_the_orders}.<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <!-- <p class="p4">{clconfirmationdata.Order_Payment_Term_Amount__c} , {clconfirmationdata.Order_Payment_Term_Type__c}</p> -->
+                                <p class="p4">{payment_term_order_amount} , {clconfirmationdata.Order_Payment_Term_Days__c} &nbsp;Days</p>
+                                <p class="p4">{clconfirmationdata.Confirm_Order_Payment_Terms_Method1__c} </p>
+                                <p class="p4">{clconfirmationdata.Confirm_Order_Payment_Terms_Method2__c} </p>
+                                <p class="p4">{clconfirmationdata.Confirm_Order_Payment_Terms_Method3__c} </p>
+                                <p class="p4">{clconfirmationdata.Confirm_Order_Payment_Terms_Method4__c} </p>
+                                <p class="p4">{clconfirmationdata.Confirm_Order_Payment_Terms_Method5__c} </p>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.When_will_the_shipments_commence}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Shipment_Commence_Month__c} , {clconfirmationdata.Shipment_Commence_Year__c}</p>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-wrap" style="padding-top: 1%;padding-left:2%;">
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4"> {label.Remark}<span style="color: red;">*</span>
+                                </p>
+                            </div>
+                            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2 cl_container">
+                                <p class="p4">{clconfirmationdata.Remarks__c}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="slds-grid slds-wrap" style="padding-top: 2%;">
+            <div class="slds-large-size_5-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                &nbsp;
+            </div>
+            <div class="slds-large-size_6-of-12 slds-medium-size--6-of-6 slds-size--2-of-2">
+                <button class="slds-button slds-button_neutral btn3" onclick={handleCancel}>Cancel</button>
+                <button class="slds-button slds-button_neutral btn2" onclick={handleConfirm} >Submit</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div if:true={showCheckFacilityModal}>
+        <c-cl-check-facility policydetail={policydetail} ondisplayclfacilitychange={handleDisplayccfmodal}></c-cl-check-facility>
+    </div>
+</template>
